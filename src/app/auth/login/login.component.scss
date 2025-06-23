@@ -1,5 +1,22 @@
 @use "../../../styles.scss" as *;
 
-.con {
-  background: white;
+.container {
+  margin-top: 300px;
+  max-width: 500px;
+
+  #con {
+    background: white;
+    margin-top: 300px;
+    flex-direction: column;
+    padding: 40px;
+    text-align: left;
+    gap: 12px;
+    width: 100%;
+
+    .img-con {
+      img {
+        width: 100%;
+      }
+    }
+  }
 }

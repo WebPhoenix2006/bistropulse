@@ -3,14 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
 import { authGuard } from '../auth/auth.guard';
+import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent, 
+    component: LayoutComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
-      
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [authGuard],
+      },
+      { path: 'resturant-list', component: RestaurantListComponent },
     ],
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -18,6 +23,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

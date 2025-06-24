@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { ButtonComponent } from '../../shared/components/button/button.component';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -7,4 +6,6 @@ import { ButtonComponent } from '../../shared/components/button/button.component
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {}
+export class LoginComponent {
+  passwordVisible = signal<boolean>(false);
+}

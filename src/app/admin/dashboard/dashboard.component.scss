@@ -1,4 +1,20 @@
 @use "../../../styles.scss" as *;
+
+::ng-deep ngx-charts-line-chart {
+    font-family: "Inter", sans-serif;
+    .tooltip {
+        background-color: #fff !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        color: #333;
+        padding: 10px;
+        font-weight: 600;
+        border-radius: 8px;
+    }
+    .line-series {
+        stroke-width: 3;
+    }
+}
+
 .heading {
     .title {
         border-left: 10px solid $primary;
@@ -18,7 +34,6 @@
     }
 }
 .dashboard-main {
-    padding: 16px 24px;
     .order-states {
         display: flex;
         .order-stat {
@@ -80,6 +95,7 @@
                 border-radius: 5px;
                 background-color: #f7f7f7;
                 gap: 16px;
+                margin-bottom: 46px;
                 p {
                     margin-bottom: 0;
                     font-size: 16px;

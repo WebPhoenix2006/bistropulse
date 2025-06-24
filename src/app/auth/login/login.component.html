@@ -7,32 +7,47 @@
 
       <h2 class="my-3">sign in with username and password</h2>
 
-      <div class="input-wrapper form-control">
-        <span><i class="fa-solid fa-envelope"></i></span>
-        <input type="text" placeholder="Username" />
-      </div>
+      <form class="form-wrapper">
+        <div class="input-wrapper form-control position-relative">
+          <p class="label position-absolute">
+            Username <span class="required">*</span>
+          </p>
+          <span><i class="fa-solid fa-envelope"></i></span>
+          <input type="text" name="username" />
+        </div>
 
-      <div class="input-wrapper form-control position-relative">
-        <span><i class="fa-solid fa-lock"></i></span>
-        <input
-          [type]="passwordVisible() ? 'text' : 'password'"
-          placeholder="Password"
-        />
+        <div class="input-wrapper form-control position-relative">
+          <p class="label position-absolute">
+            Password <span class="required">*</span>
+          </p>
+          <span><i class="fa-solid fa-lock"></i></span>
+          <input
+            [type]="passwordVisible() ? 'text' : 'password'"
+            name="password"
+          />
+          <button
+            id="visibility-toggler"
+            type="button"
+            class="toggle-password"
+            (click)="passwordVisible.set(!passwordVisible())"
+          >
+            <i
+              class="fa-solid"
+              [ngClass]="passwordVisible() ? 'fa-eye' : 'fa-eye-slash'"
+            ></i>
+          </button>
+        </div>
 
-        <button
-          id="visibility-toggler"
-          type="button"
-          class="toggle-password"
-          (click)="passwordVisible.set(!passwordVisible())"
-        >
-          <i
-            class="fa-solid"
-            [ngClass]="passwordVisible() ? 'fa-eye' : 'fa-eye-slash'"
-          ></i>
-        </button>
-      </div>
+        <p class="awareness-text text-center">
+          The
+          <span class="required" style="color: red; font-weight: bold"
+            >"*"</span
+          >
+          Indicates Required Fields
+        </p>
 
-      <app-button buttonText="Sign in" color="primary" />
+        <app-button buttonText="Sign in" color="primary" />
+      </form>
     </div>
   </div>
 </div>

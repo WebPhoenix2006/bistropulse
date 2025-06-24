@@ -8,8 +8,21 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [ButtonComponent, SearchFieldComponent, SvgIconsComponent, SidebarComponent, NavbarComponent],
+  declarations: [
+    ButtonComponent,
+    SearchFieldComponent,
+    SvgIconsComponent,
+    SidebarComponent,
+    NavbarComponent,
+    SearchFieldComponent,
+  ],
   imports: [CommonModule, RouterModule],
-  exports: [ButtonComponent, SearchFieldComponent, SvgIconsComponent, SidebarComponent, NavbarComponent],
+  exports: [
+    ButtonComponent,
+    SearchFieldComponent,
+    SvgIconsComponent,
+    SidebarComponent,
+    NavbarComponent,
+  ],
 })
 export class SharedModule {}

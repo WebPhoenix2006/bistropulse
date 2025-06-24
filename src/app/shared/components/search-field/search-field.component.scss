@@ -1,0 +1,32 @@
+@use "../../../../styles.scss" as *;
+
+label {
+  display: flex;
+  color: $secondary;
+  font-size: 15px;
+  gap: 10px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $gray;
+  padding: 8px;
+  max-width: 100px;
+
+  span {
+    width: 20%;
+    display: flex;
+    text-align: center;
+
+    i {
+      width: 100%;
+    }
+  }
+
+  input {
+    width: 80%;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+}

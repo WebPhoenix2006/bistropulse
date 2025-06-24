@@ -5,8 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './search-field.component.html',
   styleUrl: './search-field.component.scss',
   standalone: false,
-
 })
-export class SearchFieldComponent {
-
-}
+export class SearchFieldComponent {}

@@ -1,7 +1,7 @@
 @use "../../../../styles.scss" as *;
 
 // 🎨 Variables
-$sidebar-width: 260px;
+$sidebar-width: 270px;
 $sidebar-bg: #ffffff;
 $sidebar-text: #333;
 $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
@@ -15,14 +15,14 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     height: 100vh;
     background-color: $sidebar-bg;
     color: $sidebar-text;
-    padding: 20px 18px;
+    padding: 20px 5px 18px 20px;
     display: flex;
     flex-direction: column;
     z-index: 1000;
 
     .logo {
         width: 100%;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         text-align: center;
 
         img {
@@ -32,6 +32,7 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         }
     }
     .nav {
+        overflow-y: auto;
         li {
             width: 100%;
 
@@ -40,7 +41,7 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
                 display: flex;
                 gap: 15px;
                 align-items: center;
-                padding: 14px 20px;
+                padding: 14px 0px;
                 color: $secondary !important;
                 font-size: 14px;
                 line-height: 24px;
@@ -59,15 +60,21 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
                 i.fa-chevron-down {
                     font-size: 12px;
                 }
+                &:hover{
+                    color: $primary !important;
+                }
                 
             }
-            #restaurantNav{
+            #restaurantNav, #ordernav, #advertnav{
                 padding-left: 30px;
             }
 
             .collapse {
                 .nav-link {
                     color: $secondary !important;
+                    &:hover{
+                        color: $primary !important
+                    }
                 }
             }
         }

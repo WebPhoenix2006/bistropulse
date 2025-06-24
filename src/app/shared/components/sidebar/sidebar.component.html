@@ -36,16 +36,82 @@
           <div class="collapse" id="restaurantNav">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link" routerLink="/products">All Products</a>
+                <a class="nav-link" routerLink="/">Restaurant List</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" routerLink="/categories">Categories</a>
+                <a class="nav-link" routerLink="/">New Restaurant Request</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/inventory">Inventory</a>
-              </li>
+              
             </ul>
           </div>
+        </li>
+        <li>
+          <a routerLink="/">
+            <span><svg-icons name="bike"></svg-icons></span>
+            <span>Rider Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex justify-content-between align-items-center"
+            data-bs-toggle="collapse"
+            href="#ordernav"
+            role="button"
+            aria-expanded="false"
+            aria-controls="ordernav"
+          >
+            <span>
+              <svg-icons name="books"></svg-icons>
+              Order Management
+            </span>
+            <i class="fa fa-chevron-down"></i>
+          </a>
+
+          <div class="collapse" id="ordernav">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/">Restaurant List</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/">New Restaurant Request</a>
+              </li>
+              
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex justify-content-between align-items-center"
+            data-bs-toggle="collapse"
+            href="#advertnav"
+            role="button"
+            aria-expanded="false"
+            aria-controls="advertnav"
+          >
+            <span>
+              <svg-icons name="advertisement"></svg-icons>
+              Advertisement
+            </span>
+            <i class="fa fa-chevron-down"></i>
+          </a>
+
+          <div class="collapse" id="advertnav">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/">Restaurant List</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/">New Restaurant Request</a>
+              </li>
+              
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a routerLink="/">
+            <span><svg-icons name="people"></svg-icons></span>
+            <span>Employee Management</span>
+          </a>
         </li>
       </ul>
     </nav>

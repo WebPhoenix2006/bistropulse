@@ -1,26 +1,97 @@
 @use "../../../styles.scss" as *;
+.heading {
+    .title {
+        border-left: 10px solid $primary;
+        border-radius: 3px;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 32px;
+        letter-spacing: -2%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 36.5px;
 
-.dashboard-main{
+        h5 {
+            margin-bottom: 0 !important;
+            margin-left: 8px;
+        }
+    }
+}
+.dashboard-main {
     padding: 16px 24px;
-    .order-states{
-        .active-orders{
+    .order-states {
+        display: flex;
+        .order-stat {
             display: flex;
             align-items: center;
             padding: 16px;
             border-radius: 5px;
             background-color: #fff;
             gap: 16px;
-            p{
+            p {
                 margin-bottom: 0;
                 font-size: 16px;
                 font-weight: 400;
                 color: $secondary;
             }
-            strong{
+            strong {
                 font-size: 24px;
                 font-weight: bold;
                 line-height: 38px;
                 letter-spacing: 0px;
+            }
+        }
+    }
+    .recent-order-request {
+        padding: 28px 24px;
+        background-color: #fff;
+        margin-top: 16px;
+        border-radius: 5px;
+
+        .table-parent {
+            .table {
+                .tbody {
+                    tr {
+                        td span {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 8px;
+                        }
+                        td input {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .total-revs {
+        margin-top: 16px;
+        .total-revenue {
+            border-radius: 5px;
+            padding: 28px 24px;
+            background-color: #fff;
+            .rev-stat {
+                display: flex;
+                align-items: center;
+                padding: 16px;
+                border-radius: 5px;
+                background-color: #f7f7f7;
+                gap: 16px;
+                p {
+                    margin-bottom: 0;
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $secondary;
+                }
+                strong {
+                    font-size: 24px;
+                    font-weight: bold;
+                    line-height: 38px;
+                    letter-spacing: 0px;
+                }
             }
         }
     }

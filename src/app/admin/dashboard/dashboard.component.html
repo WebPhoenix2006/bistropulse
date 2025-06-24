@@ -1,19 +1,181 @@
 <div class="dashboard-main">
-    <div class="order-states">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="active-orders">
-                    <div class="img">
-                        <img src="assets/images/active-orders.png" alt="active-orders">
-                    </div>
-                    <div class="count">
-                        <p>Active Orders</p>
-                        <strong>
-                            2390
-                        </strong>
-                    </div>
-                </div>
-            </div>
+  <div class="order-states">
+    <div class="row w-100">
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="active-orders order-stat">
+          <div class="img">
+            <img src="assets/images/active-orders.png" alt="active-orders" />
+          </div>
+          <div class="count">
+            <p>Active Orders</p>
+            <strong> 2390 </strong>
+          </div>
         </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="pending-orders order-stat">
+          <div class="img">
+            <img src="assets/images/pending-orders.png" alt="pending-orders" />
+          </div>
+          <div class="count">
+            <p>Pending Orders</p>
+            <strong> 2390 </strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="delivered-orders order-stat">
+          <div class="img">
+            <img
+              src="assets/images/delivered-orders.png"
+              alt="delivered-orders"
+            />
+          </div>
+          <div class="count">
+            <p>Delivered Orders</p>
+            <strong> 2390 </strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="returned-orders order-stat">
+          <div class="img">
+            <img
+              src="assets/images/returned-orders.png"
+              alt="returned-orders"
+            />
+          </div>
+          <div class="count">
+            <p>Returned Orders</p>
+            <strong> 2390 </strong>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="recent-order-request">
+    <div class="heading">
+      <div class="title">
+        <h5>Recent order request</h5>
+      </div>
+    </div>
+    <div class="table-parent">
+      <table class="table">
+        <thead class="thead">
+          <tr>
+            <td></td>
+            <td>
+              <strong>Order ID</strong>
+            </td>
+            <td>
+              <strong>Date</strong>
+            </td>
+            <td>
+              <strong>Customer</strong>
+            </td>
+            <td>
+              <strong>Restaurant</strong>
+            </td>
+            <td>
+              <strong class="d-flex align-items-center"
+                >Price <span><svg-icons name="reorder"></svg-icons></span
+              ></strong>
+            </td>
+            <td>
+              <strong>Status</strong>
+            </td>
+            <td>
+              <strong>Action</strong>
+            </td>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr>
+            <td>
+              <input type="checkbox" class="" />
+            </td>
+            <td>
+              <span>B13789</span>
+            </td>
+            <td>
+              <span>Feb 08, 2022</span>
+            </td>
+            <td>
+              <div class="customer d-flex align-items-center" style="gap: 8px">
+                <div class="profile">
+                  <img
+                    src="assets/images/profile-img.png"
+                    alt="profile-img"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="name">Dianne Russell</div>
+              </div>
+            </td>
+            <td>
+              <span>Louis Vuitton</span>
+            </td>
+            <td>
+              <span>$90.00</span>
+            </td>
+            <td>
+              <span class="text-warning"> Pending </span>
+            </td>
+            <td>
+              <div class="actions">
+                <svg-icons name="ellipsis"></svg-icons>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="total-revs">
+    <div class="row w-100">
+      <div class="col-lg-7 col-md-12 col-sm-12">
+        <div class="total-revenue">
+          <div class="heading">
+            <div class="title">
+              <h5>Recent order request</h5>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="rev-stat">
+                  <div class="img">
+                    <img
+                      src="assets/images/income-stat.png"
+                      alt="total-income"
+                    />
+                  </div>
+                  <div class="count">
+                    <p>Income</p>
+                    <strong> $1,390,39 </strong>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="rev-stat">
+                  <div class="img">
+                    <img
+                      src="assets/images/expense-stat.png"
+                      alt="total-income"
+                    />
+                  </div>
+                  <div class="count">
+                    <p>Expense</p>
+                    <strong> $1,390,39 </strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -5,4 +5,13 @@ $background: #f4f4f4;
 body {
   background-color: $background !important;
   height: 100vh;
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
+strong {
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+

@@ -3,9 +3,9 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
-  imports: [CommonModule],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
+  standalone: false,
 })
 export class ButtonComponent {
   @Input() buttonText: string = 'default text';

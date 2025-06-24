@@ -27,17 +27,20 @@
                     line-height: 24px;
                     letter-spacing: -1%;
                 }
-                .with-icon{
+                .with-icon {
                     display: flex;
                     align-items: center;
                     position: relative;
-                    i{
+                    
+                    i {
                         position: absolute;
                         left: 16px;
                         z-index: 999;
                         top: 50%;
-                        transform: translateY(-50%);
+                        transform: translateY(-50%) scale(1);
                         color: $primary;
+                        transition: .1s linear all;
+                        
                     }
                 }
                 input {
@@ -46,9 +49,21 @@
                     border-radius: 4px;
                     border: 1px solid $primary;
                     position: relative;
+
                     &:focus {
                         box-shadow: none;
+                        & + span i {
+                        transform: translateY(-50%) scale(1.3);
+                            transition: .1s all linear;
+                        }
                     }
+                }
+            }
+            .submit {
+                width: 100%;
+                ::ng-deep button {
+                    width: 100% !important;
+                    margin-top: 12px;
                 }
             }
         }

@@ -3,7 +3,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 
 @Component({
   selector: 'app-login',
-  imports: [ButtonComponent],
+  standalone: false,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

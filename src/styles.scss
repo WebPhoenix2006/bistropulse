@@ -15,3 +15,40 @@ strong {
   font-style: normal;
 }
 
+app-dynamic-tooltip {
+  .tooltip-card {
+    background: #2d2d2d !important;
+    color: #fff !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+    font-size: 13px !important;
+    font-family: 'Inter', sans-serif !important;
+    position: relative !important;
+    max-width: 240px !important;
+  }
+
+  .tooltip-card::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 30px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #2d2d2d;
+  }
+
+  .tooltip-header {
+    font-size: 13px;
+    color: #e0e0e0;
+    margin-bottom: 6px;
+  }
+
+  .tooltip-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+  }
+}

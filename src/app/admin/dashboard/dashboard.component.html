@@ -186,10 +186,73 @@
               [roundDomains]="true"
               [timeline]="false"
               [xAxisTickFormatting]="xAxisTickFormatting"
+              [tooltipTemplate]="customTooltip"
             />
           </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-12 col-sm-12">
+        <div class="sales">
+            <div class="heading">
+                <div class="title">
+                    <h5>Sales</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="sales-stats">
+                        <div class="count">
+                            <p>Total Sales</p>
+                            <strong>1,390</strong>
+                        </div>
+                        <div class="percentage">
+                            <div class="badge text-warning">
+                                <svg-icons name="arrow-up"></svg-icons>
+                                <span>2.35%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="sales-stats">
+                        <div class="count">
+                            <p>Bindirigu Sales</p>
+                            <strong>139</strong>
+                        </div>
+                        <div class="percentage">
+                            <div class="badge badge2 text-warning">
+                                <svg-icons name="arrow-up-blue"></svg-icons>
+                                <span>2.35%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="sales-stats">
+                        <div class="count">
+                            <p>Damm Sales</p>
+                            <strong>1,123</strong>
+                        </div>
+                        <div class="percentage">
+                            <div class="badge badge3 text-warning">
+                                <svg-icons name="arrow-up-green"></svg-icons>
+                                <span>2.35%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #customTooltip let-model="model">
+  <app-dynamic-tooltip
+    [label]="
+      model.series.name + ' • ' + (model.name | date : 'yyyy-MM-ddTHH:mm:ss')
+    "
+    [value]="model.value"
+  ></app-dynamic-tooltip>
+</ng-template>

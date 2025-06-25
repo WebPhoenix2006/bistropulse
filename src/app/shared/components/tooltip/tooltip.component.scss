@@ -1,0 +1,36 @@
+// .tooltip-card {
+//   background: #2d2d2d;
+//   color: #fff;
+//   padding: 10px 14px;
+//   border-radius: 8px;
+//   max-width: 240px;
+//   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+//   font-family: 'Inter', sans-serif;
+//   position: relative;
+//   font-size: 13px;
+//   animation: fadeIn 0.25s ease-in-out;
+// }
+
+// .tooltip-card::after {
+//   content: "";
+//   position: absolute;
+//   bottom: -8px;
+//   left: 30px;
+//   width: 0;
+//   height: 0;
+//   border-left: 8px solid transparent;
+//   border-right: 8px solid transparent;
+//   border-top: 8px solid #2d2d2d;
+// }
+
+// .tooltip-header {
+//   font-size: 13px;
+//   color: #e0e0e0;
+//   margin-bottom: 6px;
+// }
+
+// .tooltip-value {
+//   font-size: 20px;
+//   font-weight: 600;
+//   color: #fff;
+// }

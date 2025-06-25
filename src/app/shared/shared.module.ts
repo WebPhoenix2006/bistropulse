@@ -6,6 +6,7 @@ import { SvgIconsComponent } from './components/svg-icons/svg-icons.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
+import { TooltipComponent } from './components/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,8 @@ import { RouterModule } from '@angular/router';
     SidebarComponent,
     NavbarComponent,
     SearchFieldComponent,
+    TooltipComponent
+
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -23,6 +26,7 @@ import { RouterModule } from '@angular/router';
     SvgIconsComponent,
     SidebarComponent,
     NavbarComponent,
+    TooltipComponent
   ],
 })
 export class SharedModule {}

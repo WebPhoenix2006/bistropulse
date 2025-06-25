@@ -7,14 +7,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-
 @NgModule({
   declarations: [LayoutComponent, DashboardComponent],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    RouterModule,
-    SharedModule
-  ]
+  imports: [CommonModule, AdminRoutingModule, RouterModule, SharedModule],
 })
-export class AdminModule { }
+export class AdminModule {}

@@ -5,17 +5,20 @@
         <img src="assets/images/logo-full.png" alt="logo" />
       </div>
 
-      <h2 class="my-3">sign in with username and password</h2>
+      <h2 class="my-3">Sign in with username and password</h2>
 
-      <form class="form-wrapper">
+      <!-- ✅ Connect form to FormGroup -->
+      <form class="form-wrapper" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Username field -->
         <div class="input-wrapper form-control position-relative">
           <p class="label position-absolute">
             Username <span class="required">*</span>
           </p>
           <span><i class="fa-solid fa-envelope"></i></span>
-          <input type="text" name="username" />
+          <input type="text" formControlName="username" />
         </div>
 
+        <!-- Password field with toggle -->
         <div class="input-wrapper form-control position-relative">
           <p class="label position-absolute">
             Password <span class="required">*</span>
@@ -23,13 +26,13 @@
           <span><i class="fa-solid fa-lock"></i></span>
           <input
             [type]="passwordVisible() ? 'text' : 'password'"
-            name="password"
+            formControlName="password"
           />
           <button
             id="visibility-toggler"
             type="button"
             class="toggle-password"
-            (click)="passwordVisible.set(!passwordVisible())"
+            (click)="togglePasswordVisibility()"
           >
             <i
               class="fa-solid"
@@ -40,13 +43,14 @@
 
         <p class="awareness-text text-center">
           The
-          <span class="required" style="color: red; font-weight: bold"
-            >"*"</span
-          >
+          <span class="required" style="color: red; font-weight: bold">*</span>
           Indicates Required Fields
         </p>
 
-        <app-button buttonText="Sign in" color="primary" />
+        <!-- ✅ Submit button triggers form submit -->
+        <div class="submit">
+          <button type="submit" class="btn btn-primary w-100">Sign in</button>
+        </div>
       </form>
     </div>
   </div>

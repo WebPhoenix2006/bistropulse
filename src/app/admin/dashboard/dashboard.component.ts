@@ -11,6 +11,7 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 })
 export class DashboardComponent {
   curve = curveBasis;
+  currentTabIndex = 0;
 
   colorScheme: Color = {
     name: 'customScheme',
@@ -52,4 +53,7 @@ export class DashboardComponent {
       ],
     },
   ];
+  onTabChange(index:number){
+    this.currentTabIndex = index;
+  }
 }

@@ -33,6 +33,44 @@
         }
     }
 }
+
+.table-parent {
+    .table {
+        .tbody {
+            tr {
+                td span {
+                    display: flex;
+                    align-items: center;
+                    margin-top: 8px;
+                }
+                td input {
+                    display: flex;
+                    align-items: center;
+                    margin-top: 16px;
+                }
+            }
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            margin-top: 10px;
+            margin-right: 20px;
+            .icon {
+                ::ng-deep svg {
+                    padding: 3px;
+                    border-radius: 5px;
+                    transition: 0.3s all linear;
+
+                    &:hover {
+                        background-color: #ccc;
+                        transition: 0.3s all linear;
+                    }
+                }
+            }
+        }
+    }
+}
 .dashboard-main {
     .order-states {
         display: flex;
@@ -87,6 +125,7 @@
         .total-revenue {
             border-radius: 5px;
             padding: 28px 24px;
+            height: 100%;
             background-color: #fff;
             .rev-stat {
                 display: flex;
@@ -95,7 +134,7 @@
                 border-radius: 5px;
                 background-color: #f7f7f7;
                 gap: 16px;
-                margin-bottom: 46px;
+                margin-bottom: 16px;
                 p {
                     margin-bottom: 0;
                     font-size: 16px;
@@ -114,13 +153,14 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 24px;
+            padding: 24px 24px 70px 24px;
+            height: 100%;
             border-radius: 5px;
             background-color: #fff;
             gap: 16px;
-            margin-bottom: 46px;
+            margin-bottom: 16px;
             .sales-stats {
-                padding: 55px 24px 40px 67px;
+                padding: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -150,6 +190,192 @@
                 .badge3 {
                     background-color: #27ae5f33;
                     color: #27ae60 !important;
+                }
+            }
+        }
+    }
+    .restaurants-row {
+        margin-top: 16px;
+        .restaurants {
+            border-radius: 5px;
+            padding: 28px 24px 60px 24px;
+            background-color: #fff;
+            height: 100%;
+
+            .tabs {
+                ::ng-deep .tabs-wrapper {
+                    margin-bottom: 44px;
+                }
+                .pending-restaurants {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    gap: 28px;
+                    width: 100%;
+                    background-color: $gray;
+                    padding: 16px;
+                    border-radius: 5px;
+                    margin-bottom: 20px;
+                    .count {
+                        p {
+                            color: $secondary;
+                        }
+                        strong {
+                            font-weight: bold;
+                            font-size: 24px;
+                        }
+                    }
+                    .ellipsis {
+                        border-radius: 5px;
+                        position: absolute;
+                        top: 16px;
+                        right: 24px;
+                        transition: all 0.3s linear;
+                        padding: 3px;
+                        &:hover {
+                            background-color: #ccc;
+                            transition: all 0.3s linear;
+                        }
+                    }
+                }
+            }
+        }
+        .ranked-restaurants {
+            border-radius: 5px;
+            padding: 30px 24px;
+            background-color: #fff;
+            height: 100%;
+
+            .ranks {
+                .rank {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 16px;
+                    padding: 16px;
+                    background-color: $gray;
+                    border-radius: 5px;
+                    margin-bottom: 12px;
+                    .details {
+                        h5 {
+                            font-size: 16px;
+                            font-weight: 700;
+                            line-height: 20px;
+                        }
+                        small {
+                            color: $secondary;
+                        }
+                    }
+                    .count {
+                        display: flex;
+                        flex-direction: column;
+                        strong {
+                            font-size: 20px;
+                            font-weight: bold;
+                            line-height: 20px;
+                        }
+                        small {
+                            color: $secondary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .reviews-table {
+        margin-top: 16px;
+
+        .reviews {
+            border-radius: 5px;
+            padding: 28px 24px 60px 24px;
+            background-color: #fff;
+            height: 100%;
+            .pages {
+                margin-top: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .count {
+                    width: 670x;
+                    padding: 5px 10px;
+                    border: 2px solid $gray;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 5px;
+                    span {
+                        font-weight: bold;
+                    }
+                }
+                .pagination {
+                    padding: 5px 10px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    .nav-pages {
+                        .nav {
+                            display: flex;
+                            gap: 13px;
+                        }
+                        a {
+                            display: flex;
+                            text-decoration: none;
+                            padding: 5px 10px;
+                            font-weight: bold;
+                            color: $secondary;
+                            &.active {
+                                color: #000;
+                                border: 2px solid #ccc;
+                                border-radius: 5px;
+                                background-color: #f4f4f4;
+                            }
+                        }
+                    }
+                    .left,
+                    .right {
+                        padding: 10px 15px;
+                        i {
+                            font-size: 24px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .customers {
+        margin-top: 16px;
+        .customers-table {
+            border-radius: 5px;
+            padding: 28px 24px 60px 24px;
+            background-color: #fff;
+            height: 100%;
+        }
+    }
+    .rewards-points {
+        margin-top: 16px;
+        .rewards {
+            border-radius: 5px;
+            padding: 28px 24px 60px 24px;
+            background-color: #fff;
+            height: 100%;
+            .rwrd-points{
+                display: flex;
+                align-items: center;
+                padding: 16px;
+                border: 1px solid $gray;
+                border-radius: 14px;
+                margin-bottom: 24px;
+                gap: 32px;
+                .count{
+                    p{
+                        color: $secondary;
+                        font-size: 14px;
+                    }
+                    strong{
+                        font-size: 24px;
+                        font-weight: bold;
+
+                    }
                 }
             }
         }

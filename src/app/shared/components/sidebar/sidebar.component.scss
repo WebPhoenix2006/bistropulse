@@ -5,7 +5,11 @@ $sidebar-width: 270px;
 $sidebar-bg: #ffffff;
 $sidebar-text: #333;
 $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-
+.hide-sidebar {
+    width: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
 // 🧱 Fixed Sidebar Layout
 .sidebar {
     position: fixed;
@@ -19,16 +23,35 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     z-index: 1000;
+    transition: all 0.3s ease-in-out;
 
     .logo {
         width: 100%;
         margin-bottom: 20px;
         text-align: center;
+        position: relative;
 
         img {
             max-width: 100%;
             max-height: 60px;
             object-fit: contain;
+        }
+        .icon {
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            right: 20px;
+            border: none;
+            i {
+                color: $primary;
+                font-size: 30px !important;
+            }
+            transition: all 0.3s linear;
+
+            &:hover {
+                background-color: #ccc;
+                transition: all 0.3s linear;
+            }
         }
     }
     .nav {
@@ -60,20 +83,21 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
                 i.fa-chevron-down {
                     font-size: 12px;
                 }
-                &:hover{
+                &:hover {
                     color: $primary !important;
                 }
-                
             }
-            #restaurantNav, #ordernav, #advertnav{
+            #restaurantNav,
+            #ordernav,
+            #advertnav {
                 padding-left: 30px;
             }
 
             .collapse {
                 .nav-link {
                     color: $secondary !important;
-                    &:hover{
-                        color: $primary !important
+                    &:hover {
+                        color: $primary !important;
                     }
                 }
             }

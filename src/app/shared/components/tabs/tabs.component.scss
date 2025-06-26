@@ -1,0 +1,34 @@
+      .tabs-wrapper {
+        width: 100%;
+        padding: 0 12px;
+        background: #fff;
+      }
+
+      .tab-list {
+        display: flex;
+        list-style: none;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+      }
+
+      .tab-list li {
+        padding: 7px;
+        margin-right: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 2px solid #f4f4f4;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        color: #555;
+      }
+
+      .tab-list li:hover {
+        color: #000;
+      }
+
+      .tab-list li.active {
+        color: #007bff;
+        border-color: #007bff;
+      }

@@ -7,6 +7,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
+import { TabComponent } from './components/tab/tab.component';
+import { TabsComponent } from './components/tabs/tabs.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,10 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
     SidebarComponent,
     NavbarComponent,
     SearchFieldComponent,
-    TooltipComponent
+    TooltipComponent,
+    TabComponent,
+    TabsComponent
+
 
   ],
   imports: [CommonModule, RouterModule],
@@ -26,7 +31,10 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
     SvgIconsComponent,
     SidebarComponent,
     NavbarComponent,
-    TooltipComponent
+    TooltipComponent,
+    TabComponent,
+    TabsComponent
+
   ],
 })
 export class SharedModule {}

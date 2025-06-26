@@ -11,14 +11,23 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [authGuard],
       },
-      { path: 'resturant-list', component: RestaurantListComponent },
+      {
+        path: 'restaurant-list',
+        component: RestaurantListComponent,
+      },
     ],
   },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  // Remove this line:
+  // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -158,7 +158,6 @@ input:checked + .slider:before {
     }
 
     &.hidden {
-      visibility: hidden;
       display: none;
       opacity: 0;
     }

@@ -58,10 +58,15 @@
             {{ restaurant.status }}
           </td>
           <td>
-            <button id="toolbar-container" class="rounded-3 position-relative">
+            <button
+              id="toolbar-container"
+              class="rounded-3 position-relative"
+              (click)="toggleVisibility(restaurant.id)"
+            >
               <i class="ri-more-2-fill"></i>
               <ul
                 class="toolbar shadow"
+                [class.hidden]="restaurant.isToolbarOpen"
                 [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
               >
                 <li>

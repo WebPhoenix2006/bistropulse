@@ -9,9 +9,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent],
+  declarations: [LayoutComponent, DashboardComponent, RestaurantListComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

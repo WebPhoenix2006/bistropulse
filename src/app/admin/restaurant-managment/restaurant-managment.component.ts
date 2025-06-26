@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -75,6 +75,16 @@ export class RestaurantListComponent {
       isToolbarOpen: false,
     },
   ];
+
+  @HostListener('window:click')
+  closeToolbars() {
+    this.restaurants = this.restaurants.map((restaurant) => {
+      return {
+        ...restaurant,
+        isToolbarOpen: false
+      }
+    })
+  }
 
   toggleChecked(id: number): void {
     this.restaurants = this.restaurants.map((restaurant) => {

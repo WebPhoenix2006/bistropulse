@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -19,8 +19,8 @@ import { RestaurantListComponent } from './restaurant-managment/restaurant-manag
     RouterModule,
     SharedModule,
     NgxChartsModule,
+    NgIf,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
 })
 export class AdminModule {}

@@ -72,7 +72,7 @@ export class RestaurantListComponent {
       rating: 4.8,
       status: 'Closed',
       checked: false,
-      isToolbarOpen: false,
+      isToolbarOpen: true,
     },
   ];
 

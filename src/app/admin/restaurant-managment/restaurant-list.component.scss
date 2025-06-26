@@ -154,12 +154,12 @@ input:checked + .slider:before {
     z-index: 100;
 
     &.visible {
-      display: block;
+      display: block !important;
       opacity: 1;
     }
 
     &.hidden {
-      display: none;
+      display: none !important;
       opacity: 0;
     }
 

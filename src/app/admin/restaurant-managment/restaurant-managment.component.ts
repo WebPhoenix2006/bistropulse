@@ -72,7 +72,7 @@ export class RestaurantListComponent {
       rating: 4.8,
       status: 'Closed',
       checked: false,
-      isToolbarOpen: true,
+      isToolbarOpen: false,
     },
   ];
 
@@ -81,9 +81,9 @@ export class RestaurantListComponent {
     this.restaurants = this.restaurants.map((restaurant) => {
       return {
         ...restaurant,
-        isToolbarOpen: false
-      }
-    })
+        isToolbarOpen: false,
+      };
+    });
   }
 
   toggleChecked(id: number): void {
@@ -108,6 +108,7 @@ export class RestaurantListComponent {
   }
 
   toggleVisibility(id: number): void {
+    this.closeToolbars();
     this.restaurants = this.restaurants.map((restaurant) => {
       if (restaurant.id === id) {
         return {
@@ -117,6 +118,14 @@ export class RestaurantListComponent {
       } else {
         return restaurant;
       }
+    });
+  }
+  closeAll(): void {
+    this.restaurants = this.restaurants.map((restaurant) => {
+      return {
+        ...restaurant,
+        isToolbarOpen: false,
+      };
     });
   }
 }

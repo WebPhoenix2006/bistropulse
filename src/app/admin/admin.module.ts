@@ -20,5 +20,6 @@ import { HttpClientModule } from '@angular/common/http';
     NgxChartsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
 })
 export class AdminModule {}

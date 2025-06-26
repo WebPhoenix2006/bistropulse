@@ -1,12 +1,98 @@
 <div id="container" class="container-fluid">
   <header>
     <h1>Resturants</h1>
-  </header>
 
-  <div class="btn-container">
-    <app-search-field />
-    <app-filter-button />
-    <app-button />
-    <app-button />
+    <div class="btn-container">
+      <app-search-field />
+      <app-filter-button />
+      <app-button buttonText="Add Resturant" />
+      <select class="btn rounder-2">
+        <option value="1" selected disabled>
+          <i class="ri-file-download-line"></i> <span>Export</span>
+        </option>
+      </select>
+    </div>
+  </header>
+  <!-- BREAKPOINT -->
+  <div class="body">
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <td>
+            <input
+              type="checkbox"
+              style="cursor: pointer"
+              (click)="checkAll()"
+            />
+            Name <span><i class="ri-arrow-up-down-line"></i></span>
+          </td>
+          <td>Representative</td>
+          <td>Location</td>
+          <td>Phone Number</td>
+          <td>Ratings</td>
+          <td>Status</td>
+          <td>Action</td>
+        </tr>
+      </thead>
+      <!-- BREAKPOINT -->
+      <tbody>
+        @for (restaurant of restaurants; track restaurant.id) {
+        <tr class="mb-3" [class.checked]="restaurant.checked">
+          <td>
+            <input
+              type="checkbox"
+              style="cursor: pointer"
+              [checked]="restaurant.checked"
+              (click)="toggleChecked(restaurant.id)"
+            />
+            {{ restaurant.name }}
+          </td>
+          <td>{{ restaurant.representative }}</td>
+          <td>{{ restaurant.location }}</td>
+          <td>{{ restaurant.phone }}</td>
+          <td class="img-con">
+            <span><img src="assets/images/Vector.png" /></span
+            >{{ restaurant.rating }}
+          </td>
+          <td [style.color]="restaurant.status === 'Open' ? 'green' : 'red'">
+            {{ restaurant.status }}
+          </td>
+          <td>
+            <button
+              id="toolbar-container"
+              class="rounded-3 position-relative"
+              (click)="toggleVisibility(restaurant.id)"
+            >
+              <i class="ri-more-2-fill"></i>
+              <ul
+                class="toolbar shadow"
+                [class.hidden]="restaurant.isToolbarOpen"
+                [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
+              >
+                <li>
+                  <span><i class="ri-eye-line"></i></span> View
+                </li>
+                <li>
+                  <span><i class="ri-pencil-line"></i></span> Delete
+                </li>
+                <li class="toggle-container">
+                  <label class="switch">
+                    <input
+                      type="checkbox"
+                      [checked]="restaurant.checked"
+                      (change)="toggleChecked(restaurant.id)"
+                    />
+                    <span class="slider round"></span>
+                  </label>
+                  Deactivate
+                </li>
+                <li>isToolbarOpen: {{ restaurant.isToolbarOpen }}</li>
+              </ul>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </div>

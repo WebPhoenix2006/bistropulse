@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private BASE_URL = 'http://localhost:8000/api/auth';
+  private BASE_URL = 'https://bistropulse-backend.onrender.com/api/auth';
 
   constructor(
     private http: HttpClient,

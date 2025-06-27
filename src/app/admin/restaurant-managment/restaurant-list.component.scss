@@ -74,6 +74,10 @@
               &:active {
                 background: rgba($color: rgb(205, 204, 204), $alpha: 0.7);
               }
+
+              &.active {
+                background: rgba($color: rgb(205, 204, 204), $alpha: 0.7);
+              }
             }
           }
 
@@ -152,14 +156,15 @@ input:checked + .slider:before {
     border-radius: 8px;
     list-style: none;
     z-index: 100;
+    transition: 0.2s ease-in-out;
 
     &.visible {
-      display: block;
+      visibility: visible;
       opacity: 1;
     }
 
     &.hidden {
-      display: none;
+      visibility: hidden;
       opacity: 0;
     }
 

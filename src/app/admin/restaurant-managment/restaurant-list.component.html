@@ -61,11 +61,14 @@
             <button
               id="toolbar-container"
               class="rounded-3 position-relative"
-              (click)="toggleVisibility(restaurant.id)"
+              [class.active]="restaurant.isToolbarOpen"
+              (click)="
+                toggleVisibility(restaurant.id); $event.stopPropagation()
+              "
             >
               <i class="ri-more-2-fill"></i>
               <ul
-                class="toolbar shadow visible"   
+                class="toolbar shadow visible"
                 [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
               >
                 <li>
@@ -84,6 +87,10 @@
                     <span class="slider round"></span>
                   </label>
                   Deactivate
+                </li>
+                <li>
+                  Toolbar Class:
+                  {{ restaurant.isToolbarOpen ? "visible" : "hidden" }}
                 </li>
               </ul>
             </button>

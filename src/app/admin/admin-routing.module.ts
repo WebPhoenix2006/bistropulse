@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
 import { authGuard } from '../auth/auth.guard';
 import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
+import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'restaurant-list',
         component: RestaurantListComponent,
+      },
+      {
+        path: 'add-restaurant',
+        component: AddRestaurantComponent,
       },
     ],
   },

@@ -52,7 +52,8 @@
               <span>{{ formData[input.name]?.name || "Choose file" }}</span>
               <app-button
                 buttonText="Choose File"
-                (click)="fileInput?.click()"
+                (click)="fileInput?.click(); $event.stopPropagation()"
+                style="z-index: 100"
               />
             </div>
           </div>

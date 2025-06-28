@@ -189,3 +189,16 @@ input:checked + .slider:before {
     }
   }
 }
+
+button {
+  color: #9a9fa5;
+  border: 1px solid $gray;
+  font-size: 15px;
+  padding: 8px;
+  font-weight: 600;
+  transition: 0.3s ease-in-out;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

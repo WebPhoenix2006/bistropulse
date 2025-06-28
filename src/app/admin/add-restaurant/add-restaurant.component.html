@@ -58,7 +58,10 @@
             </div>
           </div>
           } @else if (input.type === 'select') {
-          <select [name]="input.formControlName">
+          <select
+            [(ngModel)]="formData[input.name]"
+            [name]="input.formControlName"
+          >
             @for (option of input.options; track $index) {
             <option [value]="option">{{ option }}</option>
             }
@@ -67,6 +70,7 @@
           <textarea
             name="{{ input.formControlName }}"
             class="form-control mb-3"
+            [(ngModel)]="formData[input.name]"
           ></textarea>
           }
         </div>

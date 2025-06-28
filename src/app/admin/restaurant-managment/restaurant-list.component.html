@@ -4,8 +4,12 @@
 
     <div class="btn-container">
       <app-search-field />
+
       <app-filter-button />
-      <app-button buttonText="Add Resturant" />
+
+      <span routerLink="/admin/add-restaurant">
+        <app-button buttonText="Add Resturant" />
+      </span>
       <select class="btn rounder-2">
         <option value="1" selected disabled>
           <i class="ri-file-download-line"></i> <span>Export</span>
@@ -87,10 +91,6 @@
                     <span class="slider round"></span>
                   </label>
                   Deactivate
-                </li>
-                <li>
-                  Toolbar Class:
-                  {{ restaurant.isToolbarOpen ? "visible" : "hidden" }}
                 </li>
               </ul>
             </button>

@@ -11,8 +11,8 @@
     justify-content: center;
     justify-content: space-between;
 
-    h1 {
-      font-size: 16px;
+    .special-h1 {
+      font-size: 20px;
       font-weight: 600px;
       color: #1a1d1f;
       position: relative;
@@ -190,15 +190,57 @@ input:checked + .slider:before {
   }
 }
 
-button {
+#filter-modal-button {
   color: #9a9fa5;
   border: 1px solid $gray;
   font-size: 15px;
   padding: 8px;
   font-weight: 600;
   transition: 0.3s ease-in-out;
+  position: relative;
+  display: flex;
+  gap: 5px;
+  border-radius: 1.5px;
+
+  i {
+    width: 14.5px;
+  }
 
   &:active {
     transform: scale(0.95);
+  }
+}
+
+#filter-modal {
+  position: absolute;
+  bottom: -550px;
+  left: -100%;
+  background: white;
+  width: 320px;
+  padding: 25px;
+  z-index: 500;
+  transition: 0.3s ease-in-out;
+
+  h1 {
+    margin-bottom: 10px !important;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .modal-input-wrapper {
+    font-size: 14px;
+    margin-block: 24px;
+
+    select,
+    button {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 4px;
+      color: #6f767e;
+      border: 1px solid #6f767e;
+    }
+
+    select {
+      padding-inline-end: 40px;
+    }
   }
 }

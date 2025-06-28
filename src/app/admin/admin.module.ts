@@ -8,9 +8,10 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
+import { CustomersComponent } from './customers/customers.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, RestaurantListComponent],
+  declarations: [LayoutComponent, DashboardComponent, RestaurantListComponent, CustomersComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

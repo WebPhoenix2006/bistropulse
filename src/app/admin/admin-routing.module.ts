@@ -24,6 +24,10 @@ const routes: Routes = [
         path: 'restaurant-list',
         component: RestaurantListComponent,
       },
+      {
+        path: 'customers',
+        component: RestaurantListComponent,
+      },
     ],
   },
   // Remove this line:

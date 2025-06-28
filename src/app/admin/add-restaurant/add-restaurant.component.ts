@@ -42,10 +42,12 @@ export class AddRestaurantComponent {
         form.append(key, this.formData[key]);
       }
     }
+    const formDataObject = Object.fromEntries(Object.entries(this.formData));
+    console.log(formDataObject);
 
     this.restaurantService.uploadRestaurant(form).subscribe({
       next: (res) => console.log('Uploaded!', res),
-      error: (err) => console.error('Upload failed', err),
+      error: (err) => console.warn('Upload failed', err),
     });
   }
 

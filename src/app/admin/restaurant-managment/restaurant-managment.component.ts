@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -7,6 +7,12 @@ import { Component, HostListener } from '@angular/core';
   styleUrl: './restaurant-list.component.scss',
 })
 export class RestaurantListComponent {
+  isFilterModalOpen = signal<boolean>(false);
+
+  toggleFilterModal(): void {
+    this.isFilterModalOpen.set(!this.isFilterModalOpen);
+  }
+
   restaurants = [
     {
       id: 1,

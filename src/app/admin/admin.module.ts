@@ -10,6 +10,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
 import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
 import { FormsModule } from '@angular/forms';
+import { CustomersComponent } from './customers/customers.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     RestaurantListComponent,
     AddRestaurantComponent,
+    CustomersComponent
   ],
+
   imports: [
     CommonModule,
     AdminRoutingModule,

@@ -27,6 +27,10 @@ const routes: Routes = [
         component: RestaurantListComponent,
       },
       {
+        path: 'add-restaurant',
+        component: AddRestaurantComponent,
+      },
+      {
         path: 'customers',
         component: CustomersComponent,
       },

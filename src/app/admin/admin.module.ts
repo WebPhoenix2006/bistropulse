@@ -8,10 +8,19 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
+import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
+import { FormsModule } from '@angular/forms';
 import { CustomersComponent } from './customers/customers.component';
 
 @NgModule({
-  declarations: [LayoutComponent, DashboardComponent, RestaurantListComponent, CustomersComponent],
+  declarations: [
+    LayoutComponent,
+    DashboardComponent,
+    RestaurantListComponent,
+    AddRestaurantComponent,
+    CustomersComponent
+  ],
+
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -19,6 +28,7 @@ import { CustomersComponent } from './customers/customers.component';
     SharedModule,
     NgxChartsModule,
     NgIf,
+    FormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

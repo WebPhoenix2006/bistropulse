@@ -110,6 +110,10 @@ main {
           color: #333;
         }
       }
+
+      button {
+        z-index: 100;
+      }
     }
   }
 }

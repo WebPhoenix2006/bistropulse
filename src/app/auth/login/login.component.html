@@ -8,7 +8,11 @@
       <h2 class="my-3">Sign in with username and password</h2>
 
       <!-- ✅ Connect form to FormGroup -->
-      <form class="form-wrapper" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form
+        class="form-wrapper"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+      >
         <!-- Username field -->
         <div class="input-wrapper form-control position-relative">
           <p class="label position-absolute">
@@ -46,6 +50,8 @@
           <span class="required" style="color: red; font-weight: bold">*</span>
           Indicates Required Fields
         </p>
+
+        <p>Not created an account? <a routerLink="/auth/signup">Signup</a></p>
 
         <!-- ✅ Submit button triggers form submit -->
         <div class="submit">

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { RestaurantService } from '../../shared/services/restaurant.service';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -9,6 +10,7 @@ import { Component } from '@angular/core';
 export class AddRestaurantComponent {
   imagePreview: string | ArrayBuffer | null = null;
   formData: { [key: string]: any } = {};
+  restaurantService = inject(RestaurantService);
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -21,6 +23,7 @@ export class AddRestaurantComponent {
       };
 
       reader.readAsDataURL(file);
+      this.formData['restaurantImage'] = file;
     }
   }
 
@@ -32,7 +35,18 @@ export class AddRestaurantComponent {
   }
 
   onSubmit(): void {
-    console.log(this.formData);
+    const form = new FormData();
+
+    for (const key in this.formData) {
+      if (this.formData.hasOwnProperty(key)) {
+        form.append(key, this.formData[key]);
+      }
+    }
+
+    this.restaurantService.uploadRestaurant(form).subscribe({
+      next: (res) => console.log('Uploaded!', res),
+      error: (err) => console.error('Upload failed', err),
+    });
   }
 
   removeImage(): void {

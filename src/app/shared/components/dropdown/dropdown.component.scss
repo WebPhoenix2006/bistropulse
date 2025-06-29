@@ -1,0 +1,60 @@
+@use '../../../../styles.scss' as *;
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+
+  &.ellipsis .dropdown {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    padding: 6px 12px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .arrow {
+      font-size: 12px;
+    }
+
+    .dots {
+      font-size: 20px;
+    }
+  }
+
+  .dropdownmenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 5px;
+    list-style-type: none;
+    padding: 8px ;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 150px;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+    li {
+      padding: 8px 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      &:hover {
+        background-color: $gray;
+      }
+    }
+  }
+}

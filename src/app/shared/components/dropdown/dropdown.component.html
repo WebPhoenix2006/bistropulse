@@ -1,0 +1,35 @@
+<div class="dropdown-container" [class.ellipsis]="ellipsis">
+  <div class="dropdown" (click)="toggleDropdown()">
+    <ng-container *ngIf="ellipsis; else normalToggle">
+      <span class="dots">⋮</span>
+    </ng-container>
+
+    <ng-template #normalToggle>
+      <span>{{ placeholder }}</span>
+    </ng-template>
+  </div>
+
+  <ul class="dropdownmenu" *ngIf="isOpen">
+    <li *ngFor="let option of options" (click)="selectOption(option)">
+      <ng-container [ngSwitch]="option.iconPosition || 'left'">
+        <!-- Icon on the left -->
+        <ng-container *ngSwitchCase="'left'">
+          <svg-icons *ngIf="option.icon" [name]="option.icon" class="icon-left"></svg-icons>
+          <span>{{ option.label }}</span>
+        </ng-container>
+
+        <!-- Icon on the right -->
+        <ng-container *ngSwitchCase="'right'">
+          <span>{{ option.label }}</span>
+          <svg-icons *ngIf="option.icon" [name]="option.icon" class="icon-right"></svg-icons>
+        </ng-container>
+
+        <!-- No position specified (default to left) -->
+        <ng-container *ngSwitchDefault>
+          <svg-icons *ngIf="option.icon" [name]="option.icon" class="icon-left"></svg-icons>
+          <span>{{ option.label }}</span>
+        </ng-container>
+      </ng-container>
+    </li>
+  </ul>
+</div>

@@ -14,14 +14,14 @@
 
       <!-- Buttons -->
       <app-button
-        [buttonText]="'Restaurant Image'"
+        [buttonText]="'+ Upload new picture'"
         (click)="fileInput?.click()"
       />
       <app-button buttonText="Remove" color="success" (click)="removeImage()" />
     </div>
 
     <form
-      class="update-restaurant container"
+      class="update-Customer container"
       (submit)="onSubmit(); $event.stopPropagation()"
     >
       <div class="row">
@@ -77,7 +77,7 @@
         }
       </div>
 
-      <app-button buttonText="Add Restaurant" />
+      <app-button buttonText="Add Customer" />
     </form>
   </div>
 </main>

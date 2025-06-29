@@ -5,28 +5,27 @@ import { RestaurantService } from '../../shared/services/restaurant.service';
   selector: 'app-add-customer',
   standalone: false,
   templateUrl: './add-customer.component.html',
-  styleUrl: './add-customer.component.scss'
+  styleUrl: './add-customer.component.scss',
 })
 export class AddCustomerComponent {
-imagePreview: string | ArrayBuffer | null = null;
-  formData: { [key: string]: any } = {};
+  imagePreview: string | ArrayBuffer | null = null;
+  formData: { [key: string]: any } = {
+    gender: 'Male',
+    isStudent: false,
+  };
   restaurantService = inject(RestaurantService);
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
-
     if (file) {
       const reader = new FileReader();
-
       reader.onload = () => {
         this.imagePreview = reader.result;
       };
-
       reader.readAsDataURL(file);
-      this.formData['restaurantImage'] = file;
+      this.formData['profileImage'] = file;
     }
   }
-
   onFileChange(event: Event, name: string) {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {
@@ -38,103 +37,75 @@ imagePreview: string | ArrayBuffer | null = null;
     const form = new FormData();
 
     const fieldMap: Record<string, string> = {
-      restaurantName: 'name',
-      representativeName: 'representative',
+      fullName: 'name',
+      emailAddress: 'email',
       phoneNumber: 'phone',
-      businessLicense: 'business_license',
-      ownerNID: 'owner_nid',
-      establishedDate: 'established_date',
-      workingPeriod: 'working_period',
-      largeOption: 'large_option',
+      profileImage: 'photo',
+      isStudent: 'is_student',
+      gender: 'gender',
       location: 'location',
-      restaurantImage: 'restaurant_image',
     };
 
     for (const key in this.formData) {
       if (this.formData.hasOwnProperty(key)) {
         const mappedKey = fieldMap[key] || key;
-        form.append(mappedKey, this.formData[key]);
+
+        // Boolean conversion for checkbox
+        if (typeof this.formData[key] === 'boolean') {
+          form.append(mappedKey, this.formData[key] ? 'true' : 'false');
+        } else {
+          form.append(mappedKey, this.formData[key]);
+        }
       }
     }
 
-    const formDataObject = Object.fromEntries(Object.entries(this.formData));
-    console.log(formDataObject);
-
     this.restaurantService.uploadRestaurant(form).subscribe({
-      next: (res) => console.log('Uploaded!', res),
+      next: (res) => console.log('Customer added!', res),
       error: (err) => console.warn('Upload failed', err),
     });
   }
 
   removeImage(): void {
     this.imagePreview = null;
+    this.formData['profileImage'] = null;
   }
 
   inputs = [
     {
-      label: 'Restaurant Name',
+      label: 'Name',
       type: 'text',
-      formControlName: 'restaurantName',
-      name: 'restaurantName',
+      formControlName: 'fullName',
+      name: 'fullName',
       class: 'col-md-12',
     },
     {
-      label: 'Representative Name',
-      type: 'text',
-      formControlName: 'representativeName',
-      name: 'representativeName',
+      label: 'University student',
+      type: 'checkbox',
+      formControlName: 'isStudent',
+      name: 'isStudent',
       class: 'col-md-12',
+    },
+    {
+      label: 'Email',
+      type: 'text',
+      formControlName: 'emailAddress',
+      name: 'emailAddress',
+      class: 'col-md-6',
     },
     {
       label: 'Phone Number',
-      type: 'number',
+      type: 'text',
       formControlName: 'phoneNumber',
       name: 'phoneNumber',
-      class: 'col-md-12',
+      class: 'col-md-6',
     },
     {
-      label: 'Business License',
-      type: 'file',
-      formControlName: 'businessLicense',
-      name: 'businessLicense',
-      class: 'col-md-12',
-    },
-    {
-      label: 'Owner NID',
-      type: 'file',
-      formControlName: 'ownerNID',
-      name: 'ownerNID',
-      class: 'col-md-12',
-    },
-    {
-      label: 'Established',
-      type: 'date',
-      formControlName: 'establishedDate',
-      name: 'establishedDate',
-      class: 'col-md-4',
-    },
-    {
-      label: 'Working Period',
+      label: 'Gender',
       type: 'select',
-      formControlName: 'workingPeriod',
-      name: 'workingPeriod',
-      class: 'col-md-4',
-      options: [
-        '6:00 AM – 2:00 PM',
-        '9:00 AM – 5:00 PM',
-        '10:00 AM – 6:00 PM',
-        '12:00 PM – 8:00 PM',
-        '4:00 PM – 12:00 AM',
-        '24 Hours',
-      ],
-    },
-    {
-      label: 'Large',
-      type: 'select',
-      formControlName: 'largeOption',
-      name: 'largeOption',
-      class: 'col-md-4',
-      options: ['Cash in hand', 'Online only', 'Mixed'],
+      formControlName: 'gender',
+      name: 'gender',
+      class: 'col-md-12',
+      options: ['Male', 'Female'],
     },
     {
       label: 'Location',

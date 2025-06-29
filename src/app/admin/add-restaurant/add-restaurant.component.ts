@@ -37,11 +37,26 @@ export class AddRestaurantComponent {
   onSubmit(): void {
     const form = new FormData();
 
+    const fieldMap: Record<string, string> = {
+      restaurantName: 'name',
+      representativeName: 'representative',
+      phoneNumber: 'phone',
+      businessLicense: 'business_license',
+      ownerNID: 'owner_nid',
+      establishedDate: 'established_date',
+      workingPeriod: 'working_period',
+      largeOption: 'large_option',
+      location: 'location',
+      restaurantImage: 'restaurant_image',
+    };
+
     for (const key in this.formData) {
       if (this.formData.hasOwnProperty(key)) {
-        form.append(key, this.formData[key]);
+        const mappedKey = fieldMap[key] || key;
+        form.append(mappedKey, this.formData[key]);
       }
     }
+
     const formDataObject = Object.fromEntries(Object.entries(this.formData));
     console.log(formDataObject);
 

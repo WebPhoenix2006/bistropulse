@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Router } from 'express';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +11,6 @@ export class RestaurantService {
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('auth_token');
     return new HttpHeaders({
-      'Content-Type': 'application/json',
       Authorization: `Token ${token}`,
     });
   }
@@ -24,6 +22,8 @@ export class RestaurantService {
   }
 
   getRestaurants() {
-    return this.http.get(`${this.BASE_URL}/restaurants`);
+    return this.http.get(`${this.BASE_URL}/restaurants/`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 }

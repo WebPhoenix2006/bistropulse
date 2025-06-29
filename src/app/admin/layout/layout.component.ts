@@ -1,6 +1,5 @@
-import { Component, HostListener, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 
 @Component({
   selector: 'app-layout',

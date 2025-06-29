@@ -39,18 +39,51 @@
             <span *ngIf="!isLeftSidebarCollapsed()">Dashboard</span>
           </a>
         </li>
-        <li>
+      
+        <li class="nav-item">
           <a
-            routerLink="/admin/customers"
+            class="nav-link d-flex justify-content-between align-items-center"
             [attr.data-bs-toggle]="
-              isLeftSidebarCollapsed() ? 'tooltip' : 'null'
+              isLeftSidebarCollapsed() ? 'tooltip' : 'collapse'
             "
-            [attr.title]="isLeftSidebarCollapsed() ? 'Customer Management' : ''"
-            placement="right"
+            (click)="openSidebar()"
+            [attr.title]="
+              isLeftSidebarCollapsed() ? 'Customers Management' : null
+            "
+            [attr.data-bs-target]="
+              isLeftSidebarCollapsed() ? null : '#customersNav'
+            "
+            [attr.href]="isLeftSidebarCollapsed() ? null : '#customersNav'"
+            role="button"
+            aria-expanded="false"
+            aria-controls="customersNav"
           >
-            <span><svg-icons name="people"></svg-icons></span>
-            <span *ngIf="!isLeftSidebarCollapsed()">Customer Management</span>
+            <span>
+              <svg-icons name="shop"></svg-icons>
+              <span *ngIf="!isLeftSidebarCollapsed()"
+                >Customers Management</span
+              >
+            </span>
+            <i *ngIf="!isLeftSidebarCollapsed()" class="fa fa-chevron-down"></i>
           </a>
+
+          <div class="collapse" id="customersNav">
+            <ul class="nav flex-column" style="width: 100%">
+              <li class="nav-item" routerLink="/admin/customers">
+                <a *ngIf="!isLeftSidebarCollapsed()" class="nav-link"
+                  >Customers List</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  *ngIf="!isLeftSidebarCollapsed()"
+                  routerLink="/admin/customers/add-customer"
+                  >New Customer Request</a
+                >
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
           <a
@@ -81,7 +114,7 @@
 
           <div class="collapse" id="restaurantNav">
             <ul class="nav flex-column" style="width: 100%">
-              <li class="nav-item" routerLink="/admin/restaurant-list">
+              <li class="nav-item" routerLink="/admin/restaurants">
                 <a *ngIf="!isLeftSidebarCollapsed()" class="nav-link"
                   >Restaurant List</a
                 >
@@ -90,7 +123,7 @@
                 <a
                   class="nav-link"
                   *ngIf="!isLeftSidebarCollapsed()"
-                  routerLink="/"
+                  routerLink="/admin/restaurants/add-restaurant"
                   >New Restaurant Request</a
                 >
               </li>

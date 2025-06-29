@@ -11,6 +11,7 @@ import { RestaurantListComponent } from './restaurant-managment/restaurant-manag
 import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
 import { FormsModule } from '@angular/forms';
 import { CustomersComponent } from './customers/customers.component';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CustomersComponent } from './customers/customers.component';
     DashboardComponent,
     RestaurantListComponent,
     AddRestaurantComponent,
-    CustomersComponent
+    CustomersComponent,
+    AddCustomerComponent,
   ],
 
   imports: [
@@ -27,8 +29,8 @@ import { CustomersComponent } from './customers/customers.component';
     RouterModule,
     SharedModule,
     NgxChartsModule,
-    NgIf,
     FormsModule,
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

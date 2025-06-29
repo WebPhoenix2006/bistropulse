@@ -1,7 +1,7 @@
 @use "../../../../styles.scss" as *;
 
 // 🎨 Variables
-$sidebar-width: 270px;
+$sidebar-width: 275px;
 $sidebar-bg: #ffffff;
 $sidebar-text: #333;
 $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
@@ -103,7 +103,7 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
 
       #restaurantNav,
       #ordernav,
-      #advertnav {
+      #advertnav, #customersNav {
         padding-left: 30px;
       }
 

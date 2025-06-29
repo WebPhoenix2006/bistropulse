@@ -5,7 +5,8 @@
     <div class="btn-container">
       <app-search-field />
       <app-filter-button />
-      <app-button buttonText="Add Resturant" />
+        
+      <app-button buttonText="Add Customer" routerLink="/admin/customers/add-customer"  />
       <select class="btn rounder-2">
         <option value="1" selected disabled>
           <i class="ri-file-download-line"></i> <span>Export</span>
@@ -84,13 +85,13 @@
                     {
                       label: 'View',
                       value: 'view',
-                      icon: 'pencil',
+                      icon: 'view-eye',
                       iconPosition: 'left'
                     },
                     {
                       label: 'Edit',
                       value: 'edit',
-                      icon: 'view-eye',
+                      icon: 'pencil',
                       iconPosition: 'left'
                     },
                     {

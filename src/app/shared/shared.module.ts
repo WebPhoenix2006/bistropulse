@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TabComponent } from './components/tab/tab.component';
 import { TabsComponent } from './components/tabs/tabs.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -20,9 +21,8 @@ import { TabsComponent } from './components/tabs/tabs.component';
     SearchFieldComponent,
     TooltipComponent,
     TabComponent,
-    TabsComponent
-
-
+    TabsComponent,
+    DropdownComponent,
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -33,8 +33,8 @@ import { TabsComponent } from './components/tabs/tabs.component';
     NavbarComponent,
     TooltipComponent,
     TabComponent,
-    TabsComponent
-
+    TabsComponent,
+    DropdownComponent,
   ],
 })
 export class SharedModule {}

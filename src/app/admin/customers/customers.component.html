@@ -15,89 +15,124 @@
   </header>
   <!-- BREAKPOINT -->
   <div class="body">
-    <table class="table mt-3">
-      <thead>
-        <tr>
-          <td>
-            <input
-              type="checkbox"
-              style="cursor: pointer"
-              (click)="checkAll()"
-            />
-            Name <span><i class="ri-arrow-up-down-line"></i></span>
-          </td>
-          <td>Representative</td>
-          <td>Location</td>
-          <td>Phone Number</td>
-          <td>Ratings</td>
-          <td>Status</td>
-          <td>Action</td>
-        </tr>
-      </thead>
-      <!-- BREAKPOINT -->
-      <tbody>
-        @for (restaurant of restaurants; track restaurant.id) {
-        <tr class="mb-3" [class.checked]="restaurant.checked">
-          <td>
-            <input
-              type="checkbox"
-              style="cursor: pointer"
-              [checked]="restaurant.checked"
-              (click)="toggleChecked(restaurant.id)"
-            />
-            {{ restaurant.name }}
-          </td>
-          <td>{{ restaurant.representative }}</td>
-          <td>{{ restaurant.location }}</td>
-          <td>{{ restaurant.phone }}</td>
-          <td class="img-con">
-            <span><img src="assets/images/Vector.png" /></span
-            >{{ restaurant.rating }}
-          </td>
-          <td [style.color]="restaurant.status === 'Open' ? 'green' : 'red'">
-            {{ restaurant.status }}
-          </td>
-          <td>
-            <button
-              id="toolbar-container"
-              class="rounded-3 position-relative"
-              [class.active]="restaurant.isToolbarOpen"
-              (click)="
-                toggleVisibility(restaurant.id); $event.stopPropagation()
-              "
-            >
-              <i class="ri-more-2-fill"></i>
-              <ul
-                class="toolbar shadow visible"
-                [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
-              >
-                <li>
-                  <span><i class="ri-eye-line"></i></span> View
+    <div class="table-parent">
+      <table class="table">
+        <thead class="thead">
+          <tr>
+            <td>
+              <input type="checkbox" />
+            </td>
+            <td>
+              <strong class="d-flex align-items-center"
+                >Name <span><svg-icons name="reorder"></svg-icons></span
+              ></strong>
+            </td>
+            <td>
+              <strong>Phone</strong>
+            </td>
+            <td>
+              <strong>Email</strong>
+            </td>
+            <td>
+              <strong>Location</strong>
+            </td>
+            <td>
+              <strong class="d-flex align-items-center"
+                >Created <span><svg-icons name="reorder"></svg-icons></span
+              ></strong>
+            </td>
+            <td>
+              <strong>Action</strong>
+            </td>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr>
+            <td>
+              <input type="checkbox" class="" />
+            </td>
+            <td>
+              <div class="customer d-flex align-items-center" style="gap: 8px">
+                <div class="profile">
+                  <img
+                    src="assets/images/profile-img.png"
+                    alt="profile-img"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="name">Dianne Russell</div>
+              </div>
+            </td>
+            <td>
+              <span>email&#64; example.com</span>
+            </td>
+            <td>
+              <span>880160000770</span>
+            </td>
+            <td>
+              <span> Corner Street 5th London.. </span>
+            </td>
+            <td>
+              <span> 23, Feb 2026 </span>
+            </td>
+
+            <td>
+              <div class="actions">
+                <app-dropdown
+                  [ellipsis]="true"
+                  [options]="[
+                    {
+                      label: 'View',
+                      value: 'view',
+                      icon: 'pencil',
+                      iconPosition: 'left'
+                    },
+                    {
+                      label: 'Edit',
+                      value: 'edit',
+                      icon: 'view-eye',
+                      iconPosition: 'left'
+                    },
+                    {
+                      label: 'Disable',
+                      value: 'disable',
+                      icon: 'times',
+                      iconPosition: 'left'
+                    }
+                  ]"
+                ></app-dropdown>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <div class="pages">
+          <div class="count">
+            <span>1 of 2</span>
+          </div>
+          <div class="pagination">
+            <div class="left">
+              <i class="fa fa-angle-left"></i>
+            </div>
+            <div class="nav-pages">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a routerLink="/" class="active"><span>1</span></a>
                 </li>
-                <li>
-                  <span><i class="ri-pencil-line"></i></span> Delete
+                <li class="nav-item">
+                  <a routerLink="/" class=""><span>2</span></a>
                 </li>
-                <li class="toggle-container">
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      [checked]="restaurant.checked"
-                      (change)="toggleChecked(restaurant.id)"
-                    />
-                    <span class="slider round"></span>
-                  </label>
-                  Deactivate
-                </li>
-                <li>
-                  Toolbar Class:
-                  {{ restaurant.isToolbarOpen ? "visible" : "hidden" }}
+                <li class="nav-item">
+                  <a routerLink="/" class=""><span>3</span></a>
                 </li>
               </ul>
-            </button>
-          </td>
-        </tr>
-        }
-      </tbody>
-    </table>
+            </div>
+            <div class="right">
+              <i class="fa fa-angle-right"></i>
+            </div>
+          </div>
+        </div>  
+      </table>
+    </div>
   </div>
 </div>

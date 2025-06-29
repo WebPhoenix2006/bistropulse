@@ -132,6 +132,7 @@ input[type="checkbox"] {
   left: 2px;
   bottom: 2px;
   background-color: white;
+  box-shadow: 0 0 15px rgba($color: black, $alpha: 0.4);
   transition: 0.4s;
   border-radius: 50%;
 }
@@ -144,27 +145,28 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
+// STYLES FOR THE TOOLBAR
 #toolbar-container {
   .toolbar {
     background: white;
     width: 150px;
     height: 150px;
     position: absolute;
-    top: 25px;
-    right: -60px;
+    top: 38px;
+    right: 30px;
     padding: 8px;
     border-radius: 8px;
     list-style: none;
-    z-index: 100;
+    z-index: 1000 !important;
     transition: 0.2s ease-in-out;
 
     &.visible {
-      visibility: visible;
+      display: block;
       opacity: 1;
     }
 
     &.hidden {
-      visibility: hidden;
+      display: none;
       opacity: 0;
     }
 
@@ -182,6 +184,7 @@ input:checked + .slider:before {
       height: 36px;
       gap: 15px;
       padding: 11px;
+      cursor: pointer;
 
       &:hover {
         background: #efefef;
@@ -190,6 +193,7 @@ input:checked + .slider:before {
   }
 }
 
+// STYLES FOR THE FILTER MODAL
 #filter-modal-button {
   color: #9a9fa5;
   border: 1px solid $gray;

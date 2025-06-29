@@ -14,7 +14,6 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
 @NgModule({
   declarations: [
     ButtonComponent,
-    SearchFieldComponent,
     SvgIconsComponent,
     SidebarComponent,
     NavbarComponent,

@@ -1,3 +1,4 @@
+import { Component, HostListener, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 
@@ -20,6 +21,16 @@ export class LayoutComponent implements OnInit {
       // Do DOM-related logic here
     }
   }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth.set(window.innerWidth);
+    if (this.screenWidth() > 768) {
+      this.isLeftSidebarCollapsed.set(true);
+    }
+  }
+
+  
 
   changeSidebarState(state: boolean): void {
     this.isLeftSidebarCollapsed.set(state);

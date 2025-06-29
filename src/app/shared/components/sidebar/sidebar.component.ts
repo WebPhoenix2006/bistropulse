@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,15 +9,21 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  @ViewChild('sidebar') sidebar: ElementRef;
+  isLeftSidebarCollapsed = input.required<boolean>();
+  sidebarCollapse = output<boolean>();
+
   constructor(private authService: AuthService, private router: Router) {}
 
   logout() {
-  this.authService.logout();
-  this.router.navigate(['/auth/login']);
-}
-  closeSidebar() {
-    this.sidebar.nativeElement.classList.toggle('hide-sidebar');
-    console.log(this.sidebar)
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
+
+  openSidebar() {
+    this.sidebarCollapse.emit(false);
+  }
+
+  collapseSidebar(): void {
+    this.sidebarCollapse.emit(true);
   }
 }

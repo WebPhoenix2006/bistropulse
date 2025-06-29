@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RestaurantService } from '../../shared/services/restaurant.service';
+import { CustomersService } from '../../shared/services/customers.service';
 
 @Component({
   selector: 'app-add-customer',
@@ -13,7 +13,7 @@ export class AddCustomerComponent {
     gender: 'Male',
     isStudent: false,
   };
-  restaurantService = inject(RestaurantService);
+  customerService = inject(CustomersService);
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -59,7 +59,7 @@ export class AddCustomerComponent {
       }
     }
 
-    this.restaurantService.uploadRestaurant(form).subscribe({
+    this.customerService.uploadCustomer(form).subscribe({
       next: (res) => console.log('Customer added!', res),
       error: (err) => console.warn('Upload failed', err),
     });

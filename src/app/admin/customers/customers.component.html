@@ -5,8 +5,11 @@
     <div class="btn-container">
       <app-search-field />
       <app-filter-button />
-        
-      <app-button buttonText="Add Customer" routerLink="/admin/customers/add-customer"  />
+
+      <app-button
+        buttonText="Add Customer"
+        routerLink="/admin/customers/add-customer"
+      />
       <select class="btn rounder-2">
         <option value="1" selected disabled>
           <i class="ri-file-download-line"></i> <span>Export</span>
@@ -48,37 +51,46 @@
           </tr>
         </thead>
         <tbody class="tbody">
-          <tr>
+          <tr *ngFor="let customer of customers">
             <td>
-              <input type="checkbox" class="" />
+              <input
+                type="checkbox"
+                [checked]="customer.checked"
+                (click)="toggleChecked(customer.id); $event.stopPropagation()"
+              />
             </td>
+
             <td>
               <div class="customer d-flex align-items-center" style="gap: 8px">
                 <div class="profile">
                   <img
-                    src="assets/images/profile-img.png"
+                    [src]="customer.photo || 'assets/images/profile-img.png'"
                     alt="profile-img"
                     class="img-fluid"
                   />
                 </div>
-                <div class="name">Dianne Russell</div>
+                <div class="name">{{ customer.name }}</div>
               </div>
-            </td>
-            <td>
-              <span>email&#64; example.com</span>
-            </td>
-            <td>
-              <span>880160000770</span>
-            </td>
-            <td>
-              <span> Corner Street 5th London.. </span>
-            </td>
-            <td>
-              <span> 23, Feb 2026 </span>
             </td>
 
             <td>
-              <div class="actions">
+              <span>{{ customer.phone }}</span>
+            </td>
+
+            <td>
+              <span>{{ customer.email }}</span>
+            </td>
+
+            <td>
+              <span>{{ customer.location }}</span>
+            </td>
+
+            <td>
+              <span>{{ customer.created_at | date : "dd, MMM yyyy" }}</span>
+            </td>
+
+            <td>
+              <div class="actions" (click)="$event.stopPropagation()">
                 <app-dropdown
                   [ellipsis]="true"
                   [options]="[
@@ -101,6 +113,7 @@
                       iconPosition: 'left'
                     }
                   ]"
+                  (selected)="handleAction($event, customer)"
                 ></app-dropdown>
               </div>
             </td>
@@ -132,7 +145,7 @@
               <i class="fa fa-angle-right"></i>
             </div>
           </div>
-        </div>  
+        </div>
       </table>
     </div>
   </div>

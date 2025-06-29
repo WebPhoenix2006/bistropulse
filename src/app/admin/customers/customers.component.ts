@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
+import { CustomersService } from '../../shared/services/customers.service';
 
 @Component({
   selector: 'app-customers',
@@ -7,126 +8,97 @@ import { Component, HostListener } from '@angular/core';
   styleUrl: './customers.component.scss',
 })
 export class CustomersComponent {
-  customers = [
-    // {
-    //   id: 1,
-    //   name: 'Sun valley restaurant',
-    //   representative: 'Darrell Steward',
-    //   location: 'Aueduase',
-    //   phone: '(408) 555-0120',
-    //   rating: 4.8,
-    //   status: 'Open',
-    //   checked: false,
-    //   isToolbarOpen: false,
-    // },
-    // {
-    //   id: 2,
-    //   name: 'Moon valley restaurant',
-    //   representative: 'Darrell Steward',
-    //   location: 'Asafoatse Nettey Road, Accra',
-    //   phone: '(480) 555-0103',
-    //   rating: 5.0,
-    //   status: 'Closed',
-    //   checked: false,
-    //   isToolbarOpen: false,
-    // },
-    // {
-    //   id: 3,
-    //   name: 'Sun valley restaurant',
-    //   representative: 'Darrell Steward',
-    //   location: 'Aueduase',
-    //   phone: '(603) 555-0123',
-    //   rating: 4.5,
-    //   status: 'Open',
-    //   checked: false,
-    //   isToolbarOpen: false,
-    // },
-    // {
-    //   id: 4,
-    //   name: 'Moon valley restaurant',
-    //   representative: 'Darrell Steward',
-    //   location: 'Nettey Road, Accra',
-    //   phone: '(704) 555-0127',
-    //   rating: 4.9,
-    //   status: 'Closed',
-    //   checked: false,
-    //   isToolbarOpen: false,
-    // },
-    // {
-    //   id: 5,
-    //   name: 'Sun valley restaurant',
-    //   representative: 'Darrell Steward',
-    //   location: 'Asafoatse',
-    //   phone: '(239) 555-0108',
-    //   rating: 4.2,
-    //   status: 'Open',
-    //   checked: false,
-    //   isToolbarOpen: false,
-    // },
-    // {
-    //   id: 6,
-    //   name: 'Star valley restaurant',
-    //   representative: 'Darrell Steward',
-    //   location: 'Asafoatse Nettey Road, Accra',
-    //   phone: '(239) 555-0108',
-    //   rating: 4.8,
-    //   status: 'Closed',
-    //   checked: false,
-    //   isToolbarOpen: false,
-    // },
-  ];
+  customerService = inject(CustomersService);
+
+  customers: any[] = [];
+  isLoading = false;
+
+  ngOnInit(): void {
+    this.loadCustomers();
+  }
+
+  loadCustomers() {
+    this.isLoading = true;
+    this.customerService.getCustomers().subscribe({
+      next: (data: any) => {
+        this.customers = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to fetch customers', err);
+        this.isLoading = false;
+      },
+    });
+  }
+
   @HostListener('window:click')
   closeToolbars() {
-    this.customers = this.customers.map((restaurant) => {
+    this.customers = this.customers.map((customer) => {
       return {
-        ...restaurant,
+        ...customer,
         isToolbarOpen: false,
       };
     });
   }
 
   toggleChecked(id: number): void {
-    this.customers = this.customers.map((restaurant) => {
-      if (restaurant.id === id) {
+    this.customers = this.customers.map((customer) => {
+      if (customer.id === id) {
         return {
-          ...restaurant,
-          checked: !restaurant.checked,
+          ...customer,
+          checked: !customer.checked,
         };
       }
-      return restaurant;
+      return customer;
     });
   }
 
   checkAll(): void {
-    this.customers = this.customers.map((restaurant) => {
+    this.customers = this.customers.map((customer) => {
       return {
-        ...restaurant,
-        checked: !restaurant.checked,
+        ...customer,
+        checked: !customer.checked,
       };
     });
   }
 
   toggleVisibility(id: number): void {
     this.closeToolbars();
-    this.customers = this.customers.map((restaurant) => {
-      if (restaurant.id === id) {
+    this.customers = this.customers.map((customer) => {
+      if (customer.id === id) {
         return {
-          ...restaurant,
-          isToolbarOpen: !restaurant.isToolbarOpen,
+          ...customer,
+          isToolbarOpen: !customer.isToolbarOpen,
         };
       } else {
-        return restaurant;
+        return customer;
       }
     });
   }
   closeAll(): void {
-    this.customers = this.customers.map((restaurant) => {
+    this.customers = this.customers.map((customer) => {
       return {
-        ...restaurant,
+        ...customer,
         isToolbarOpen: false,
       };
     });
   }
+  handleAction(event: any, customer: any) {
+    switch (event.value) {
+      case 'view':
+        console.log('Viewing customer', customer);
+        break;
+      case 'edit':
+        console.log('Editing customer', customer);
+        // Navigate or open modal
+        break;
+      case 'disable':
+        console.log('Disabling customer', customer);
+        // Maybe set customer.active = false and update on backend
+        break;
+    }
+  }
+
   // handleAction(event: any, customerId: string) {
   //   if (event.value === 'edit') {
   //     console.log('Editing customer', customerId);

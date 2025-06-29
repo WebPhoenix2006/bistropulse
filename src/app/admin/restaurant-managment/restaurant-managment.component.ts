@@ -11,6 +11,7 @@ export class RestaurantListComponent {
 
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
+    this.closeAll();
   }
 
   restaurants = [
@@ -82,14 +83,23 @@ export class RestaurantListComponent {
     },
   ];
 
-  @HostListener('window:click')
-  closeToolbars() {
-    this.restaurants = this.restaurants.map((restaurant) => {
-      return {
-        ...restaurant,
-        isToolbarOpen: false,
-      };
-    });
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    const isInsideToolbar = clickedElement.closest('.toolbar') !== null;
+    const isToolbarToggle = clickedElement.closest('.toolbar-toggle') !== null;
+    const isInsideFilter = clickedElement.closest('#filter-modal') !== null;
+    const isFilterButton =
+      clickedElement.closest('#filter-modal-button') !== null;
+
+    if (!isInsideToolbar && !isToolbarToggle) {
+      this.closeAll();
+    }
+
+    if (!isInsideFilter && !isFilterButton) {
+      this.isFilterModalOpen.set(false);
+    }
   }
 
   toggleChecked(id: number): void {
@@ -114,7 +124,6 @@ export class RestaurantListComponent {
   }
 
   toggleVisibility(id: number): void {
-    this.closeToolbars();
     this.restaurants = this.restaurants.map((restaurant) => {
       if (restaurant.id === id) {
         return {

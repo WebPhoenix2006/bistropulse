@@ -10,6 +10,9 @@ import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TabComponent } from './components/tab/tab.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { PopUpComponent } from './components/pop-up/pop-up.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,10 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     TabComponent,
     TabsComponent,
     DropdownComponent,
+    LoadingSpinnerComponent,
+    PopUpComponent,
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   exports: [
     ButtonComponent,
     SearchFieldComponent,
@@ -34,6 +39,8 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     TabComponent,
     TabsComponent,
     DropdownComponent,
+    LoadingSpinnerComponent,
+    PopUpComponent,
   ],
 })
 export class SharedModule {}

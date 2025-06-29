@@ -4,14 +4,20 @@
       <div class="signup-parent">
         <div class="signup shadow-sm">
           <div class="logo">
-            <img src="assets/images/logo-full.png" alt="logo" class="img-fluid" />
+            <img
+              src="assets/images/logo-full.png"
+              alt="logo"
+              class="img-fluid"
+            />
           </div>
 
           <div class="form">
             <!-- ✨ Form is reactive now -->
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
               <div class="form-group">
-                <label for="fullname">Fullname <span class="text-danger">*</span></label>
+                <label for="fullname"
+                  >Fullname <span class="text-danger">*</span></label
+                >
                 <div class="with-icon">
                   <input
                     type="text"
@@ -25,7 +31,9 @@
               </div>
 
               <div class="form-group">
-                <label for="username">Username <span class="text-danger">*</span></label>
+                <label for="username"
+                  >Username <span class="text-danger">*</span></label
+                >
                 <div class="with-icon">
                   <input
                     type="text"
@@ -39,7 +47,9 @@
               </div>
 
               <div class="form-group">
-                <label for="email">Email <span class="text-danger">*</span></label>
+                <label for="email"
+                  >Email <span class="text-danger">*</span></label
+                >
                 <div class="with-icon">
                   <input
                     type="email"
@@ -53,7 +63,9 @@
               </div>
 
               <div class="form-group">
-                <label for="phone">Phone <span class="text-danger">*</span></label>
+                <label for="phone"
+                  >Phone <span class="text-danger">*</span></label
+                >
                 <div class="with-icon">
                   <input
                     type="text"
@@ -67,7 +79,9 @@
               </div>
 
               <div class="form-group">
-                <label for="password">Password <span class="text-danger">*</span></label>
+                <label for="password"
+                  >Password <span class="text-danger">*</span></label
+                >
                 <div class="with-icon">
                   <input
                     type="password"
@@ -80,14 +94,23 @@
                   <span><i class="fa fa-lock"></i></span>
                 </div>
 
-                <div class="show-pass d-flex align-items-center" style="gap: 10px">
-                  <input type="checkbox" id="show-password" (change)="showPass($event)" />
+                <div
+                  class="show-pass d-flex align-items-center"
+                  style="gap: 10px"
+                >
+                  <input
+                    type="checkbox"
+                    id="show-password"
+                    (change)="showPass($event)"
+                  />
                   <label for="show-password">Show password</label>
                 </div>
               </div>
 
               <p class="text-danger">The "*" indicates required field.</p>
-              <p>Already have an account? <a routerLink="/auth/login">Login</a></p>
+              <p>
+                Already have an account? <a routerLink="/auth/login">Login</a>
+              </p>
 
               <div class="submit">
                 <app-button buttonText="Submit" color="primary"></app-button>
@@ -99,3 +122,4 @@
     </div>
   </div>
 </div>
+<app-loading-spinner *ngIf="isLoading()" />

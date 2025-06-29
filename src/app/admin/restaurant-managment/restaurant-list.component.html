@@ -1,25 +1,78 @@
 <div id="container" class="container-fluid">
   <header>
-    <h1>Resturants</h1>
+    <h1 class="special-h1">Resturants</h1>
 
     <div class="btn-container">
       <app-search-field />
 
-      <button (click)="toggleFilterModal()">
-        <span><i class="ri-filter-3-fill"></i></span>
-        <span>Filter</span>
-
-        <div id="filter-modal" class="container">
-          <h1>Filter</h1>
+      <div class="position-relative">
+        <button id="filter-modal-button" (click)="toggleFilterModal()">
+          <span *ngIf="!isFilterModalOpen()"
+            ><i class="ri-filter-3-fill"></i
+          ></span>
+          <span *ngIf="isFilterModalOpen()"
+            ><i class="fa-solid fa-xmark"></i
+          ></span>
+          <span>Filter</span>
+        </button>
+        <div
+          *ngIf="isFilterModalOpen()"
+          id="filter-modal"
+          class="container shadow-lg rounder-3"
+        >
+          <h1 class="special-h1">Filter</h1>
           <div class="row">
-            <div class="modal-input-wrapper col-md-12"></div>
-            <div class="modal-input-wrapper col-md-12"></div>
-            <div class="modal-input-wrapper col-md-12"></div>
-            <div class="modal-input-wrapper col-md-6"></div>
-            <div class="modal-input-wrapper col-md-6"></div>
+            <!-- Location -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Location</h1>
+              <select name="location">
+                <option value="">Select Category</option>
+                <option value="lagos">Lagos</option>
+                <option value="abuja">Abuja</option>
+                <option value="portharcourt">Port Harcourt</option>
+                <option value="ibadan">Ibadan</option>
+              </select>
+            </div>
+            <!-- Rating -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Rating</h1>
+              <select name="rating">
+                <option value="">Select Category</option>
+                <option value="5">5 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="2">2 Stars</option>
+                <option value="1">1 Star</option>
+              </select>
+            </div>
+            <!-- Status -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Status</h1>
+              <select name="status">
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="closed">Closed</option>
+                <option value="banned">Banned</option>
+              </select>
+            </div>
+            <!-- Buttons -->
+            <div class="modal-input-wrapper col-md-6">
+              <app-button
+                color="secondary"
+                buttonText="Clear Filter"
+                style="width: 100%"
+              ></app-button>
+            </div>
+            <div class="modal-input-wrapper col-md-6">
+              <app-button
+                buttonText="Apply Filter"
+                style="width: 100%"
+              ></app-button>
+            </div>
           </div>
         </div>
-      </button>
+      </div>
 
       <app-button
         buttonText="Add Resturant"

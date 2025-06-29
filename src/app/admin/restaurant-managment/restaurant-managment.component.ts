@@ -10,7 +10,7 @@ export class RestaurantListComponent {
   isFilterModalOpen = signal<boolean>(false);
 
   toggleFilterModal(): void {
-    this.isFilterModalOpen.set(!this.isFilterModalOpen);
+    this.isFilterModalOpen.set(!this.isFilterModalOpen());
   }
 
   restaurants = [

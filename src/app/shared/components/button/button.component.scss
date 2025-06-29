@@ -29,9 +29,9 @@ button {
   }
 
   &.secondary {
-    background: $primary;
-    color: $gray;
-    border: 1px solid gray;
+    background: white;
+    color: black;
+    border: 1px solid #11131580;
   }
 
   &.danger {

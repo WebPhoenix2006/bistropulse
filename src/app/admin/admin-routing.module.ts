@@ -6,6 +6,7 @@ import { authGuard } from '../auth/auth.guard';
 import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
 import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
 import { CustomersComponent } from './customers/customers.component';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
 
 const routes: Routes = [
   {
@@ -27,8 +28,12 @@ const routes: Routes = [
         component: RestaurantListComponent,
       },
       {
-        path: 'add-restaurant',
+        path: 'restaurants/add-restaurant',
         component: AddRestaurantComponent,
+      },
+      {
+        path: 'customers/add-customer',
+        component: AddCustomerComponent,
       },
       {
         path: 'customers',

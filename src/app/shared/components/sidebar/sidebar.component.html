@@ -12,6 +12,9 @@
         id="logo-small"
         src="assets/images/logo-small.png"
         (click)="openSidebar()"
+        [attr.data-bs-toggle]="isLeftSidebarCollapsed() ? 'tooltip' : 'null'"
+        [attr.title]="isLeftSidebarCollapsed() ? 'Open Sidebar' : ''"
+        placement="right"
       />
       <button
         *ngIf="!isLeftSidebarCollapsed()"

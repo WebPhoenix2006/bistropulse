@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -9,6 +9,18 @@ import { Component, signal } from '@angular/core';
 export class LayoutComponent {
   isLeftSidebarCollapsed = signal<boolean>(false);
   screenWidth = signal<number>(window.innerWidth);
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth.set(window.innerWidth);
+    if (this.screenWidth() > 768) {
+      this.isLeftSidebarCollapsed.set(true);
+    }
+  }
+
+  ngOnInit(): void {
+    this.isLeftSidebarCollapsed.set(this.screenWidth() > 768);
+  }
 
   changeSidebarState(state: boolean): void {
     this.isLeftSidebarCollapsed.set(state);

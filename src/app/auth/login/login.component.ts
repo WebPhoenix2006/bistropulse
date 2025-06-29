@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   passwordVisible = signal<boolean>(false); // ✅ reactive signal for show/hide password
+  isLoading = signal<boolean>(false);
 
   constructor(
     private fb: FormBuilder,
@@ -40,15 +41,18 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.isLoading.set(true);
     const loginData = this.loginForm.value;
 
     this.auth.login(loginData).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
+        this.isLoading.set(false);
         this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
         console.error('Login error:', err);
+        this.isLoading.set(false);
       },
     });
   }

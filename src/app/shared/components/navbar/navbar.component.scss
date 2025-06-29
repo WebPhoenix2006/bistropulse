@@ -1,39 +1,39 @@
 @use "../../../../styles.scss" as *;
 .navbar {
-    background-color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-    .nav {
-        padding: 16px 40px !important;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        .leftside {
-            .pagination {
-                .current-module {
-                    border-left: 10px solid $primary;
-                    border-radius: 3px;
-                    font-size: 14px;
-                    font-weight: 500;
-                    line-height: 32px;
-                    letter-spacing: -2%;
-                    display: flex;
-                    align-items: center;
-                    h5 {
-                        margin-bottom: 0 !important;
-                        margin-left: 8px;
-                    }
-                }
-            }
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  .nav {
+    padding: 16px 40px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .leftside {
+      .pagination {
+        .current-module {
+          border-left: 10px solid $primary;
+          border-radius: 3px;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 32px;
+          letter-spacing: -2%;
+          display: flex;
+          align-items: center;
+          h5 {
+            margin-bottom: 0 !important;
+            margin-left: 8px;
+          }
         }
-        .rightside {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
+      }
     }
+    .rightside {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+  }
 }

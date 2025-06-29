@@ -3,9 +3,11 @@
   height: 100vh;
   overflow-y: auto;
   transition: 0.5s ease-in-out;
+  width: calc(100% - 16.5625rem);
 
   &.main-md-screen {
     margin-left: 4.5rem;
+    width: calc(100% - 4.5rem);
   }
 
   main {

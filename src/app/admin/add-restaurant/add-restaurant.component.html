@@ -81,3 +81,10 @@
     </form>
   </div>
 </main>
+@if (isLoading()) {
+<app-loading-spinner />
+}
+<app-popup-message
+  [visible]="isSuccessfull()"
+  [messageText]="'Restaurant Added Successfully ✅'"
+></app-popup-message>

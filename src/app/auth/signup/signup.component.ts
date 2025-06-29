@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
@@ -11,6 +17,7 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
+  isLoading = signal<boolean>(false);
 
   @ViewChild('passwordInput', { static: false }) passwordInput!: ElementRef;
 
@@ -46,6 +53,7 @@ export class SignupComponent implements OnInit {
       return;
     }
 
+    this.isLoading.set(true);
     const formData = this.signupForm.value;
 
     this.auth.signup(formData).subscribe({
@@ -53,10 +61,12 @@ export class SignupComponent implements OnInit {
         // Optional: save token if returned
         // this.auth.saveToken(res.token);
         alert('Sign up successful');
+        this.isLoading.set(false);
         this.router.navigate(['/auth/login']);
       },
       error: (err) => {
         console.error('Signup error:', err);
+        this.isLoading.set(false);
       },
     });
 

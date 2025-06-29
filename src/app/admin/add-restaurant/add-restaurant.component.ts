@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RestaurantService } from '../../shared/services/restaurant.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -11,6 +12,8 @@ export class AddRestaurantComponent {
   imagePreview: string | ArrayBuffer | null = null;
   formData: { [key: string]: any } = {};
   restaurantService = inject(RestaurantService);
+  isLoading = signal<boolean>(false);
+  isSuccessfull = signal<boolean>(false);
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -34,7 +37,10 @@ export class AddRestaurantComponent {
     }
   }
 
+  constructor(private router: Router) {}
+
   onSubmit(): void {
+    this.isLoading.set(true);
     const form = new FormData();
 
     const fieldMap: Record<string, string> = {
@@ -61,8 +67,18 @@ export class AddRestaurantComponent {
     console.log(formDataObject);
 
     this.restaurantService.uploadRestaurant(form).subscribe({
-      next: (res) => console.log('Uploaded!', res),
-      error: (err) => console.warn('Upload failed', err),
+      next: (res) => {
+        console.log('Uploaded!', res);
+        this.isLoading.set(false);
+        this.isSuccessfull.set(true);
+        setTimeout(() => {
+          this.router.navigateByUrl('/admin/restaurants');
+        }, 2000);
+      },
+      error: (err) => {
+        console.warn('Upload failed', err);
+        this.isLoading.set(false);
+      },
     });
   }
 

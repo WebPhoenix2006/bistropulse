@@ -1,9 +1,9 @@
-<div class="container">
-  <div class="row">
+<div class="container rounded-3">
+  <div class="row g-5">
     <!-- Left Column -->
-    <div class="col-md-8" id="first-column">
+    <div class="col-md-7" id="first-column">
       <div class="header d-flex justify-content-between align-items-center">
-        <h2>Restaurant Overview</h2>
+        <h2 class="title-h2">Restaurant Overview</h2>
         <div class="btn-container d-flex align-items-center gap-3">
           <span class="d-flex align-items-center gap-2">
             Open
@@ -17,7 +17,9 @@
             </label>
           </span>
           <app-button buttonText="Edit">
-            <svg-icons name="pencil"></svg-icons>
+            <span class="me-2">
+              <svg-icons name="pencil"></svg-icons>
+            </span>
           </app-button>
         </div>
       </div>
@@ -29,9 +31,9 @@
         />
       </div>
 
-      <h3>Star Valley Restaurant</h3>
+      <h3 class="restaurant-name">Star Valley Restaurant</h3>
       <p>
-        <span>
+        <span class="restaurant-reviews">
           <img src="assets/images/Vector.png" alt="ratings" />
           5.0 (23 Reviews)
         </span>
@@ -39,33 +41,46 @@
       </p>
 
       <div class="info-group">
-        <h4>Established</h4>
-        <p>Since 01 January 2025</p>
+        <span>
+          <h4>Established</h4>
+          <p>Since 01 January 2025</p>
+        </span>
 
-        <h4>Payment Method</h4>
-        <p>Visa Card</p>
+        <span>
+          <h4>Payment Method</h4>
+          <p>Visa Card</p>
+        </span>
 
-        <h4>Working Period</h4>
-        <p>9:00 AM - 10:00 PM</p>
+        <span>
+          <h4>Working Period</h4>
+          <p>9:00 AM - 10:00 PM</p>
+        </span>
 
-        <h4>Location</h4>
-        <p>G. P. O., Asafoatse Nettey Road, Accra...</p>
+        <span>
+          <h4>Location</h4>
+          <p>G. P. O., Asafoatse Nettey Road, Accra...</p>
+        </span>
       </div>
     </div>
 
     <!-- Right Column -->
-    <div class="col-md-4">
+    <div id="second-column" class="col-md-5">
       <div class="representative-info">
         <h2>Representative Info</h2>
         <div class="img-con">
           <img src="assets/images/profile-img.png" alt="Profile" />
           <h3>Chelsie Jhonson</h3>
         </div>
-        <h4>Phone Number</h4>
-        <p>(480) 555-0103</p>
-
-        <h4>Location</h4>
-        <p>Asafoatse Nettey Road, Accra...</p>
+        <div class="info-con">
+          <span class="first-span">
+            <h4>Phone Number</h4>
+            <p>(480) 555-0103</p>
+          </span>
+          <span>
+            <h4>Location</h4>
+            <p>Asafoatse Nettey Road, Accra...</p>
+          </span>
+        </div>
       </div>
 
       <div class="documents">

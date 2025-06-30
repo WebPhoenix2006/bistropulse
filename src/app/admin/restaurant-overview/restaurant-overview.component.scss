@@ -1,6 +1,10 @@
+@use "../../../styles.scss" as *;
+
 .container {
   margin-top: 2rem;
   font-family: "Segoe UI", sans-serif;
+  border-radius: 9px !important;
+  overflow: hidden;
 }
 
 .header {
@@ -19,9 +23,30 @@
   gap: 0.5rem;
 }
 
-.info-group h4 {
-  margin-top: 1rem;
-  font-weight: 600;
+.info-group {
+  width: 100%;
+  margin-top: 20px;
+
+  span {
+    width: 100%;
+    border-bottom: 2px dashed #11131580;
+    display: block;
+  }
+
+  h4,
+  p {
+    margin-bottom: 9px !important;
+  }
+
+  h4 {
+    margin-top: 1rem;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 14px;
+  }
 }
 
 .representative-info,
@@ -35,14 +60,43 @@
 .img-con {
   display: flex;
   align-items: center;
+  flex-direction: column;
   gap: 1rem;
   margin: 1rem 0;
+
+  h3 {
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
 }
 
-.img-con img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+.info-con {
+  span {
+    display: block;
+    padding-block: 14px;
+
+    &.first-span {
+      border-bottom: 1px solid #efefef;
+    }
+
+    h4 {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 16px;
+      color: $secondary;
+      font-weight: 400;
+    }
+  }
 }
 
 .pdf-container {
@@ -59,6 +113,7 @@
   border-radius: 10px;
   padding: 0.8rem;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #d7e6f9;
 }
 
 .pdf-img img {
@@ -124,4 +179,60 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(20px);
+}
+
+#first-column,
+#second-column {
+  background: white !important;
+  padding: 24px !important;
+}
+
+.title-h2 {
+  position: relative;
+  margin-bottom: 18px !important;
+  font-size: 20px;
+  font-weight: 600;
+
+  &::before {
+    background: $primary;
+    width: 8px;
+    border-radius: 1.5px;
+    content: "";
+    left: -10px;
+    top: 0;
+    height: 100%;
+    position: absolute;
+  }
+}
+
+.restaurant-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-block: 15px;
+}
+
+p {
+  color: $secondary;
+}
+
+#second-column {
+  .representative-info {
+    h2 {
+      position: relative;
+      font-size: 20px;
+      font-weight: 600;
+      text-transform: capitalize;
+
+      &::before {
+        background: $primary;
+        width: 8px;
+        border-radius: 1.5px;
+        content: "";
+        left: -10px;
+        top: 0;
+        height: 100%;
+        position: absolute;
+      }
+    }
+  }
 }

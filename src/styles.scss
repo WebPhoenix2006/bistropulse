@@ -9,6 +9,10 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+* {
+  box-sizing: border-box;
+}
 strong {
   font-family: "Kanit", sans-serif;
   font-weight: 700;
@@ -23,7 +27,7 @@ app-dynamic-tooltip {
     border-radius: 8px !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
     font-size: 13px !important;
-    font-family: 'Inter', sans-serif !important;
+    font-family: "Inter", sans-serif !important;
     position: relative !important;
     max-width: 240px !important;
   }
@@ -53,6 +57,12 @@ app-dynamic-tooltip {
   }
 }
 
-p, h1, h2, h3, h4, h5, h6{
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-bottom: 0 !important;
 }

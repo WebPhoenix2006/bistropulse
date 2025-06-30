@@ -1,0 +1,30 @@
+.img-con {
+  overflow: hidden;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  animation: pulse 1.5s linear infinite;
+}
+
+.logo-spinner {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0px 0 rgba(#03abff, 0.7);
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+    box-shadow: 0 0 15px 5px rgba(#03abff, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0px 0 rgba(#03abff, 0.7);
+  }
+}

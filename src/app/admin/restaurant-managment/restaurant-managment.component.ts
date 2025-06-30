@@ -1,4 +1,6 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { RestaurantService } from '../../shared/services/restaurant.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -6,82 +8,42 @@ import { Component, HostListener, signal } from '@angular/core';
   templateUrl: './restaurant-list.component.html',
   styleUrl: './restaurant-list.component.scss',
 })
-export class RestaurantListComponent {
+export class RestaurantListComponent implements OnInit {
   isFilterModalOpen = signal<boolean>(false);
+  restaurantService = inject(RestaurantService);
+
+  constructor(private router: Router) {}
+
+  goToOverview() {
+    this.router.navigateByUrl('/admin/restaurant-overview');
+  }
 
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
     this.closeAll();
   }
 
-  restaurants = [
-    {
-      id: 1,
-      name: 'Sun valley restaurant',
-      representative: 'Darrell Steward',
-      location: 'Aueduase',
-      phone: '(408) 555-0120',
-      rating: 4.8,
-      status: 'Open',
-      checked: false,
-      isToolbarOpen: false,
-    },
-    {
-      id: 2,
-      name: 'Moon valley restaurant',
-      representative: 'Darrell Steward',
-      location: 'Asafoatse Nettey Road, Accra',
-      phone: '(480) 555-0103',
-      rating: 5.0,
-      status: 'Closed',
-      checked: false,
-      isToolbarOpen: false,
-    },
-    {
-      id: 3,
-      name: 'Sun valley restaurant',
-      representative: 'Darrell Steward',
-      location: 'Aueduase',
-      phone: '(603) 555-0123',
-      rating: 4.5,
-      status: 'Open',
-      checked: false,
-      isToolbarOpen: false,
-    },
-    {
-      id: 4,
-      name: 'Moon valley restaurant',
-      representative: 'Darrell Steward',
-      location: 'Nettey Road, Accra',
-      phone: '(704) 555-0127',
-      rating: 4.9,
-      status: 'Closed',
-      checked: false,
-      isToolbarOpen: false,
-    },
-    {
-      id: 5,
-      name: 'Sun valley restaurant',
-      representative: 'Darrell Steward',
-      location: 'Asafoatse',
-      phone: '(239) 555-0108',
-      rating: 4.2,
-      status: 'Open',
-      checked: false,
-      isToolbarOpen: false,
-    },
-    {
-      id: 6,
-      name: 'Star valley restaurant',
-      representative: 'Darrell Steward',
-      location: 'Asafoatse Nettey Road, Accra',
-      phone: '(239) 555-0108',
-      rating: 4.8,
-      status: 'Closed',
-      checked: false,
-      isToolbarOpen: false,
-    },
-  ];
+  restaurants: Array<any> = [];
+
+  getRestaurants(): void {
+    this.restaurantService.getRestaurants().subscribe({
+      next: (data: any) => {
+        this.restaurants = data.map((dataObject: any) => ({
+          ...dataObject,
+          checked: false,
+          isToolbarOpen: false,
+        }));
+        console.log(this.restaurants);
+      },
+      error: (err) => {
+        console.warn('fecth failed: ' + err);
+      },
+    });
+  }
+
+  ngOnInit(): void {
+    this.getRestaurants();
+  }
 
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent) {
@@ -124,17 +86,31 @@ export class RestaurantListComponent {
   }
 
   toggleVisibility(id: number): void {
+    const currentOpenState = this.restaurants.find(
+      (r) => r.id === id
+    )?.isToolbarOpen;
+
     this.restaurants = this.restaurants.map((restaurant) => {
-      if (restaurant.id === id) {
-        return {
-          ...restaurant,
-          isToolbarOpen: !restaurant.isToolbarOpen,
-        };
-      } else {
-        return restaurant;
-      }
+      return {
+        ...restaurant,
+        isToolbarOpen: false, // close all first
+      };
     });
+
+    // If it was closed before, open it now (after all are closed)
+    if (!currentOpenState) {
+      this.restaurants = this.restaurants.map((restaurant) => {
+        if (restaurant.id === id) {
+          return {
+            ...restaurant,
+            isToolbarOpen: true,
+          };
+        }
+        return restaurant;
+      });
+    }
   }
+
   closeAll(): void {
     this.restaurants = this.restaurants.map((restaurant) => {
       return {

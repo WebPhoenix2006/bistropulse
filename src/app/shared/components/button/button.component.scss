@@ -7,6 +7,7 @@ button {
   border-radius: 6px;
   cursor: pointer !important;
   transition: all 0.2s ease;
+  display: flex;
 
   &.sm {
     font-size: 0.75rem;

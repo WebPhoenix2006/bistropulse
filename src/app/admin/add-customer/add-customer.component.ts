@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CustomersService } from '../../shared/services/customers.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-customer',
@@ -9,11 +10,17 @@ import { CustomersService } from '../../shared/services/customers.service';
 })
 export class AddCustomerComponent {
   imagePreview: string | ArrayBuffer | null = null;
+  isLoading = signal<boolean>(false);
+  isSuccessfull = signal<boolean>(false);
   formData: { [key: string]: any } = {
     gender: 'Male',
     isStudent: false,
   };
-  customerService = inject(CustomersService);
+
+  constructor(
+    private router: Router,
+    private customerService: CustomersService
+  ) {}
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -26,6 +33,7 @@ export class AddCustomerComponent {
       this.formData['profileImage'] = file;
     }
   }
+
   onFileChange(event: Event, name: string) {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {
@@ -34,6 +42,7 @@ export class AddCustomerComponent {
   }
 
   onSubmit(): void {
+    this.isLoading.set(true);
     const form = new FormData();
 
     const fieldMap: Record<string, string> = {
@@ -49,19 +58,35 @@ export class AddCustomerComponent {
     for (const key in this.formData) {
       if (this.formData.hasOwnProperty(key)) {
         const mappedKey = fieldMap[key] || key;
+        const value = this.formData[key];
 
-        // Boolean conversion for checkbox
-        if (typeof this.formData[key] === 'boolean') {
-          form.append(mappedKey, this.formData[key] ? 'true' : 'false');
-        } else {
-          form.append(mappedKey, this.formData[key]);
+        if (value instanceof File) {
+          form.append(mappedKey, value);
+        } else if (typeof value === 'boolean') {
+          form.append(mappedKey, value ? 'true' : 'false');
+        } else if (value !== null && value !== undefined) {
+          form.append(mappedKey, value);
         }
       }
     }
+    console.log('Sending FormData:');
+    for (const pair of form.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
 
     this.customerService.uploadCustomer(form).subscribe({
-      next: (res) => console.log('Customer added!', res),
-      error: (err) => console.warn('Upload failed', err),
+      next: (res) => {
+        console.log('Uploaded!', res);
+        this.isLoading.set(false);
+        this.isSuccessfull.set(true);
+        setTimeout(() => {
+          this.router.navigateByUrl('/admin/customers');
+        }, 2000);
+      },
+      error: (err) => {
+        console.warn('Upload failed', err);
+        this.isLoading.set(false);
+      },
     });
   }
 

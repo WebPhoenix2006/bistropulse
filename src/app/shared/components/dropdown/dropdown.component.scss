@@ -1,4 +1,4 @@
-@use '../../../../styles.scss' as *;
+@use "../../../../styles.scss" as *;
 .dropdown-container {
   position: relative;
   display: inline-block;
@@ -31,11 +31,11 @@
 
   .dropdownmenu {
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 30px;
+    right: 5px;
     margin-top: 5px;
     list-style-type: none;
-    padding: 8px ;
+    padding: 8px;
     background: white;
     border: 1px solid #ddd;
     border-radius: 4px;

@@ -1,9 +1,10 @@
-<div class="admin-layout">
+<div class="layout-wrapper" [class.sidebar-collapsed]="isSidebarCollapsed">
   <app-sidebar
-    [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
-    (sidebarCollapse)="changeSidebarState($event)"
+    [isSidebarCollapsed]="isSidebarCollapsed"
+    (sidebarCollapse)="isSidebarCollapsed = $event"
   ></app-sidebar>
-  <div class="main-content" [class.main-md-screen]="isLeftSidebarCollapsed()">
+
+  <div class="main-content">
     <app-navbar></app-navbar>
     <main>
       <router-outlet></router-outlet>

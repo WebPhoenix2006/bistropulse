@@ -1,230 +1,93 @@
-<div class="sidebar-parent">
-  <div class="sidebar" [class.sidebar-small]="isLeftSidebarCollapsed()">
-    <div class="logo d-flex align-items-center">
-      <img
-        *ngIf="!isLeftSidebarCollapsed()"
-        src="assets/images/logo.png"
-        alt="logo"
-        class="img-fluid"
-      />
-      <img
-        *ngIf="isLeftSidebarCollapsed()"
-        id="logo-small"
-        src="assets/images/logo-small.png"
-        (click)="openSidebar()"
-        [attr.data-bs-toggle]="isLeftSidebarCollapsed() ? 'tooltip' : 'null'"
-        [attr.title]="isLeftSidebarCollapsed() ? 'Open Sidebar' : ''"
-        placement="right"
-      />
-      <button
-        *ngIf="!isLeftSidebarCollapsed()"
-        class="icon"
-        (click)="collapseSidebar()"
-      >
-        <span><i class="fa fa-caret-left"></i></span>
-      </button>
+<div class="admin-layout">
+  <div class="sidebar-parent">
+    <div class="sidebar" [class.sidebar-small]="isSidebarCollapsed">
+      <div class="logo d-flex align-items-center">
+        <img
+          *ngIf="!isSidebarCollapsed"
+          src="assets/images/logo.png"
+          alt="logo"
+          class="img-fluid"
+        />
+        <img
+          *ngIf="isSidebarCollapsed"
+          id="logo-small"
+          src="assets/images/logo-small.png"
+          (click)="openSidebar()"
+          [attr.data-bs-toggle]="isSidebarCollapsed ? 'tooltip' : null"
+          [attr.title]="isSidebarCollapsed ? 'Open Sidebar' : ''"
+          placement="right"
+        />
+        <button
+          *ngIf="!isSidebarCollapsed"
+          class="icon"
+          (click)="collapseSidebar()"
+        >
+          <span><i class="fa fa-caret-left"></i></span>
+        </button>
+      </div>
+
+      <nav class="nav-parent">
+        <ul class="nav">
+          <li *ngFor="let item of sidebarItems">
+            <!-- Flat link -->
+            <a
+              *ngIf="!item.children"
+              [routerLink]="item.route"
+              [attr.title]="isSidebarCollapsed ? item.label : null"
+              [attr.data-bs-toggle]="isSidebarCollapsed ? 'tooltip' : null"
+            >
+              <span><svg-icons [name]="item.icon"></svg-icons></span>
+              <span *ngIf="!isSidebarCollapsed">{{ item.label }}</span>
+            </a>
+
+            <!-- Dropdown -->
+            <div *ngIf="item.children">
+              <a
+                class="nav-link d-flex justify-content-between align-items-center"
+                [attr.data-bs-toggle]="isSidebarCollapsed ? 'tooltip' : 'collapse'"
+                [attr.title]="isSidebarCollapsed ? item.label : null"
+                [attr.data-bs-target]="isSidebarCollapsed ? null : '#' + item.collapseId"
+                [attr.href]="isSidebarCollapsed ? null : '#' + item.collapseId"
+                role="button"
+                aria-expanded="false"
+                [attr.aria-controls]="item.collapseId"
+                (click)="isSidebarCollapsed && openSidebar()"
+              >
+                <span>
+                  <svg-icons [name]="item.icon"></svg-icons>
+                  <span *ngIf="!isSidebarCollapsed">{{ item.label }}</span>
+                </span>
+                <i *ngIf="!isSidebarCollapsed" class="fa fa-chevron-down"></i>
+              </a>
+
+              <div class="collapse" [id]="item.collapseId">
+                <ul class="nav flex-column" style="width: 100%">
+                  <li
+                    *ngFor="let child of item.children"
+                    class="nav-item"
+                  >
+                    <a
+                      class="nav-link"
+                      *ngIf="!isSidebarCollapsed"
+                      [routerLink]="child.route"
+                    >
+                      {{ child.label }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <!-- Logout -->
+          <li>
+            <a (click)="logout()">
+              <span><i class="fa fa-sign-out"></i></span>
+              <span *ngIf="!isSidebarCollapsed">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <nav class="nav-parent">
-      <ul class="nav">
-        <li>
-          <a
-            routerLink="/"
-            [attr.data-bs-toggle]="
-              isLeftSidebarCollapsed() ? 'tooltip' : 'null'
-            "
-            [attr.title]="isLeftSidebarCollapsed() ? 'Dashboard' : ''"
-            placement="right"
-          >
-            <span><svg-icons name="dashboard"></svg-icons></span>
-            <span *ngIf="!isLeftSidebarCollapsed()">Dashboard</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a
-            class="nav-link d-flex justify-content-between align-items-center"
-            [attr.data-bs-toggle]="
-              isLeftSidebarCollapsed() ? 'tooltip' : 'collapse'
-            "
-            (click)="openSidebar()"
-            [attr.title]="
-              isLeftSidebarCollapsed() ? 'Customers Management' : null
-            "
-            [attr.data-bs-target]="
-              isLeftSidebarCollapsed() ? null : '#customersNav'
-            "
-            [attr.href]="isLeftSidebarCollapsed() ? null : '#customersNav'"
-            role="button"
-            aria-expanded="false"
-            aria-controls="customersNav"
-          >
-            <span>
-              <svg-icons name="shop"></svg-icons>
-              <span *ngIf="!isLeftSidebarCollapsed()"
-                >Customers Management</span
-              >
-            </span>
-            <i *ngIf="!isLeftSidebarCollapsed()" class="fa fa-chevron-down"></i>
-          </a>
-
-          <div class="collapse" id="customersNav">
-            <ul class="nav flex-column" style="width: 100%">
-              <li class="nav-item" routerLink="/admin/customers">
-                <a *ngIf="!isLeftSidebarCollapsed()" class="nav-link"
-                  >Customers List</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  *ngIf="!isLeftSidebarCollapsed()"
-                  routerLink="/admin/customers/add-customer"
-                  >New Customer Request</a
-                >
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link d-flex justify-content-between align-items-center"
-            [attr.data-bs-toggle]="
-              isLeftSidebarCollapsed() ? 'tooltip' : 'collapse'
-            "
-            (click)="openSidebar()"
-            [attr.title]="
-              isLeftSidebarCollapsed() ? 'Restaurant Management' : null
-            "
-            [attr.data-bs-target]="
-              isLeftSidebarCollapsed() ? null : '#restaurantNav'
-            "
-            [attr.href]="isLeftSidebarCollapsed() ? null : '#restaurantNav'"
-            role="button"
-            aria-expanded="false"
-            aria-controls="restaurantNav"
-          >
-            <span>
-              <svg-icons name="shop"></svg-icons>
-              <span *ngIf="!isLeftSidebarCollapsed()"
-                >Restaurant Management</span
-              >
-            </span>
-            <i *ngIf="!isLeftSidebarCollapsed()" class="fa fa-chevron-down"></i>
-          </a>
-
-          <div class="collapse" id="restaurantNav">
-            <ul class="nav flex-column" style="width: 100%">
-              <li class="nav-item" routerLink="/admin/restaurants">
-                <a *ngIf="!isLeftSidebarCollapsed()" class="nav-link"
-                  >Restaurant List</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  *ngIf="!isLeftSidebarCollapsed()"
-                  routerLink="/admin/restaurants/add-restaurant"
-                  >New Restaurant Request</a
-                >
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          <a routerLink="/">
-            <span><svg-icons name="bike"></svg-icons></span>
-            <span *ngIf="!isLeftSidebarCollapsed()">Rider Management</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link d-flex justify-content-between align-items-center"
-            [attr.data-bs-toggle]="
-              isLeftSidebarCollapsed() ? 'tooltip' : 'collapse'
-            "
-            [attr.title]="isLeftSidebarCollapsed() ? 'Order Management' : null"
-            [attr.data-bs-target]="
-              isLeftSidebarCollapsed() ? null : '#ordernav'
-            "
-            [attr.href]="isLeftSidebarCollapsed() ? null : '#ordernav'"
-            role="button"
-            aria-expanded="false"
-            aria-controls="ordernav"
-            (click)="isLeftSidebarCollapsed() && openSidebar()"
-          >
-            <span>
-              <svg-icons name="books"></svg-icons>
-              <span *ngIf="!isLeftSidebarCollapsed()">Order Management</span>
-            </span>
-            <i *ngIf="!isLeftSidebarCollapsed()" class="fa fa-chevron-down"></i>
-          </a>
-
-          <div class="collapse" id="ordernav">
-            <ul class="nav flex-column">
-              <li class="nav-item" routerLink="/">
-                <a class="nav-link" *ngIf="!isLeftSidebarCollapsed()"
-                  >Restaurant List</a
-                >
-              </li>
-              <li class="nav-item" routerLink="/">
-                <a class="nav-link" *ngIf="!isLeftSidebarCollapsed()"
-                  >New Restaurant Request</a
-                >
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link d-flex justify-content-between align-items-center"
-            [attr.data-bs-toggle]="
-              isLeftSidebarCollapsed() ? 'tooltip' : 'collapse'
-            "
-            [attr.title]="isLeftSidebarCollapsed() ? 'Advertisement' : null"
-            [attr.data-bs-target]="
-              isLeftSidebarCollapsed() ? null : '#advertnav'
-            "
-            [attr.href]="isLeftSidebarCollapsed() ? null : '#advertnav'"
-            role="button"
-            aria-expanded="false"
-            aria-controls="advertnav"
-            (click)="isLeftSidebarCollapsed() && openSidebar()"
-          >
-            <span>
-              <svg-icons name="advertisement"></svg-icons>
-              <span *ngIf="!isLeftSidebarCollapsed()">Advertisement</span>
-            </span>
-            <i *ngIf="!isLeftSidebarCollapsed()" class="fa fa-chevron-down"></i>
-          </a>
-
-          <div class="collapse" id="advertnav">
-            <ul class="nav flex-column">
-              <li class="nav-item" routerLink="/">
-                <a class="nav-link" *ngIf="!isLeftSidebarCollapsed()"
-                  >Restaurant List</a
-                >
-              </li>
-              <li class="nav-item" routerLink="/">
-                <a class="nav-link" *ngIf="!isLeftSidebarCollapsed()"
-                  >New Restaurant Request</a
-                >
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li>
-          <a routerLink="/">
-            <span><svg-icons name="people"></svg-icons></span>
-            <span *ngIf="!isLeftSidebarCollapsed()">Employee Management</span>
-          </a>
-        </li>
-        <li>
-          <a (click)="logout()">
-            <span><i class="fa fa-sign-out"></i></span>
-            <span *ngIf="!isLeftSidebarCollapsed()">Logout</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </div>

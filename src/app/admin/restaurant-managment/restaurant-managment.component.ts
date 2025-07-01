@@ -28,7 +28,7 @@ export class RestaurantListComponent implements OnInit {
   getRestaurants(): void {
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        this.restaurants = data.map((dataObject: any) => ({
+        this.restaurants = data.results.map((dataObject: any) => ({
           ...dataObject,
           checked: false,
           isToolbarOpen: false,

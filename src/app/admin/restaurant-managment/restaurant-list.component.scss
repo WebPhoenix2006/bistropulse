@@ -194,26 +194,6 @@ input:checked + .slider:before {
 }
 
 // STYLES FOR THE FILTER MODAL
-#filter-modal-button {
-  color: #9a9fa5;
-  border: 1px solid $gray;
-  font-size: 15px;
-  padding: 8px;
-  font-weight: 600;
-  transition: 0.3s ease-in-out;
-  position: relative;
-  display: flex;
-  gap: 5px;
-  border-radius: 1.5px;
-
-  i {
-    width: 14.5px;
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
 
 #filter-modal {
   position: absolute;
@@ -246,5 +226,36 @@ input:checked + .slider:before {
     select {
       padding-inline-end: 40px;
     }
+  }
+}
+
+label {
+  display: flex;
+  color: $secondary;
+  font-size: 15px;
+  gap: 10px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $gray;
+  padding: 8px;
+  max-width: 600px;
+
+  span {
+    width: 10%;
+    display: flex;
+    text-align: center;
+
+    i {
+      width: 100%;
+    }
+  }
+
+  input {
+    width: 90%;
+    border: none;
+    background: transparent;
+    outline: none;
   }
 }

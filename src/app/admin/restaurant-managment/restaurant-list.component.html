@@ -3,21 +3,25 @@
     <h1 class="special-h1">Resturants</h1>
 
     <div class="btn-container">
-      <app-search-field />
+      <label title="Search By Restaurant Name">
+        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="text"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Search By Restaurant Name"
+        />
+      </label>
 
       <div class="position-relative">
-        <button
-          id="filter-modal-button"
-          (click)="toggleFilterModal(); $event.stopPropagation()"
-        >
+        <app-filter-button [text]="buttonText()" (click)="toggleFilterModal()">
           <span *ngIf="!isFilterModalOpen()"
             ><i class="ri-filter-3-fill"></i
           ></span>
           <span *ngIf="isFilterModalOpen()"
             ><i class="fa-solid fa-xmark"></i
           ></span>
-          <span>Filter</span>
-        </button>
+        </app-filter-button>
         <div
           *ngIf="isFilterModalOpen()"
           id="filter-modal"
@@ -88,6 +92,7 @@
       </select>
     </div>
   </header>
+  <!-- ======= BEGINNING OF SECOND HALF OF THE PAGE ====== -->
   <!-- BREAKPOINT -->
   <div class="body">
     <table class="table mt-3">
@@ -111,7 +116,8 @@
       </thead>
       <!-- BREAKPOINT -->
       <tbody>
-        @for (restaurant of restaurants; track restaurant.id) {
+        @for (restaurant of restaurants | filterRestaurants: searchTerm(); track
+        restaurant.id) {
         <tr
           class="mb-3"
           [class.checked]="restaurant.checked"

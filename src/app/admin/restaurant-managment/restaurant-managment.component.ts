@@ -1,6 +1,7 @@
 import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { RestaurantService } from '../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
+import { Restaurant } from '../../interfaces/restaurant.interface';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -11,6 +12,8 @@ import { Router } from '@angular/router';
 export class RestaurantListComponent implements OnInit {
   isFilterModalOpen = signal<boolean>(false);
   restaurantService = inject(RestaurantService);
+  buttonText = signal<string>('Filter');
+  searchTerm = signal<string>('');
 
   constructor(private router: Router) {}
 
@@ -23,7 +26,7 @@ export class RestaurantListComponent implements OnInit {
     this.closeAll();
   }
 
-  restaurants: Array<any> = [];
+  restaurants: Array<Restaurant> = [];
 
   getRestaurants(): void {
     this.restaurantService.getRestaurants().subscribe({
@@ -33,6 +36,7 @@ export class RestaurantListComponent implements OnInit {
           checked: false,
           isToolbarOpen: false,
         }));
+
         console.log(this.restaurants);
       },
       error: (err) => {
@@ -64,7 +68,7 @@ export class RestaurantListComponent implements OnInit {
     }
   }
 
-  toggleChecked(id: number): void {
+  toggleChecked(id: string): void {
     this.restaurants = this.restaurants.map((restaurant) => {
       if (restaurant.id === id) {
         return {
@@ -85,7 +89,7 @@ export class RestaurantListComponent implements OnInit {
     });
   }
 
-  toggleVisibility(id: number): void {
+  toggleVisibility(id: string): void {
     const currentOpenState = this.restaurants.find(
       (r) => r.id === id
     )?.isToolbarOpen;

@@ -3,13 +3,14 @@
     <h1>Customers</h1>
 
     <div class="btn-container">
-      <app-search-field />
-      <app-filter-button />
+      <app-search-field></app-search-field>
+      <app-filter-button></app-filter-button>
 
       <app-button
         buttonText="Add Customer"
         routerLink="/admin/customers/add-customer"
-      />
+      ></app-button>
+
       <select class="btn rounder-2">
         <option value="1" selected disabled>
           <i class="ri-file-download-line"></i> <span>Export</span>
@@ -17,46 +18,39 @@
       </select>
     </div>
   </header>
-  <!-- BREAKPOINT -->
+
   <div class="body">
-    <div class="table-parent">
+    <div class="table-parent" *ngIf="!isLoading && customers.length > 0; else loading">
       <table class="table">
         <thead class="thead">
           <tr>
-            <td>
-              <input type="checkbox" />
+            <td style="width: 30px">
+              <input type="checkbox" (change)="toggleSelectAll()" />
             </td>
             <td>
-              <strong class="d-flex align-items-center"
-                >Name <span><svg-icons name="reorder"></svg-icons></span
-              ></strong>
+              <strong class="d-flex align-items-center">
+                Name <span><svg-icons name="reorder"></svg-icons></span>
+              </strong>
             </td>
+            <td><strong>Phone</strong></td>
+            <td><strong>Email</strong></td>
+            <td><strong>Location</strong></td>
             <td>
-              <strong>Phone</strong>
+              <strong class="d-flex align-items-center">
+                Created <span><svg-icons name="reorder"></svg-icons></span>
+              </strong>
             </td>
-            <td>
-              <strong>Email</strong>
-            </td>
-            <td>
-              <strong>Location</strong>
-            </td>
-            <td>
-              <strong class="d-flex align-items-center"
-                >Created <span><svg-icons name="reorder"></svg-icons></span
-              ></strong>
-            </td>
-            <td>
-              <strong>Action</strong>
-            </td>
+            <td><strong>Action</strong></td>
           </tr>
         </thead>
+
         <tbody class="tbody">
           <tr *ngFor="let customer of customers">
             <td>
               <input
                 type="checkbox"
                 [checked]="customer.checked"
-                (click)="toggleChecked(customer.id); $event.stopPropagation()"
+                (change)="toggleChecked(customer.id)"
               />
             </td>
 
@@ -64,89 +58,55 @@
               <div class="customer d-flex align-items-center" style="gap: 8px">
                 <div class="profile">
                   <img
-                    [src]="customer.photo || 'assets/images/profile-img.png'"
+                    [src]="customer.photo_url || 'assets/images/profile-img.png'"
                     alt="profile-img"
                     class="img-fluid"
+                    style="width: 50px; height: 50px; border-radius: 100%"
                   />
                 </div>
                 <div class="name">{{ customer.name }}</div>
               </div>
             </td>
 
-            <td>
-              <span>{{ customer.phone }}</span>
-            </td>
-
-            <td>
-              <span>{{ customer.email }}</span>
-            </td>
-
-            <td>
-              <span>{{ customer.location }}</span>
-            </td>
-
-            <td>
-              <span>{{ customer.created_at | date : "dd, MMM yyyy" }}</span>
-            </td>
+            <td><span>{{ customer.phone }}</span></td>
+            <td><span>{{ customer.email }}</span></td>
+            <td><span>{{ customer.location }}</span></td>
+            <td><span>{{ customer.created_at | date: 'dd, MMM yyyy' }}</span></td>
 
             <td>
               <div class="actions" (click)="$event.stopPropagation()">
                 <app-dropdown
                   [ellipsis]="true"
                   [options]="[
-                    {
-                      label: 'View',
-                      value: 'view',
-                      icon: 'view-eye',
-                      iconPosition: 'left'
-                    },
-                    {
-                      label: 'Edit',
-                      value: 'edit',
-                      icon: 'pencil',
-                      iconPosition: 'left'
-                    },
-                    {
-                      label: 'Disable',
-                      value: 'disable',
-                      icon: 'times',
-                      iconPosition: 'left'
-                    }
+                    { label: 'View', value: 'view', icon: 'view-eye', iconPosition: 'left' },
+                    { label: 'Edit', value: 'edit', icon: 'pencil', iconPosition: 'left' },
+                    { label: 'Disable', value: 'disable', icon: 'times', iconPosition: 'left' }
                   ]"
-                  (selected)="handleAction($event, customer)"
                 ></app-dropdown>
               </div>
             </td>
           </tr>
         </tbody>
-
-        <div class="pages">
-          <div class="count">
-            <span>1 of 2</span>
-          </div>
-          <div class="pagination">
-            <div class="left">
-              <i class="fa fa-angle-left"></i>
-            </div>
-            <div class="nav-pages">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a routerLink="/" class="active"><span>1</span></a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="/" class=""><span>2</span></a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="/" class=""><span>3</span></a>
-                </li>
-              </ul>
-            </div>
-            <div class="right">
-              <i class="fa fa-angle-right"></i>
-            </div>
-          </div>
-        </div>
       </table>
+
+      <div class="pages">
+        <div class="count">
+          <span>{{ currentPage }} of {{ totalPages }}</span>
+        </div>
+
+        <app-pagination
+          [totalItems]="totalCount"
+          [itemsPerPage]="itemsPerPage"
+          [currentPage]="currentPage"
+          (pageChange)="onPageChange($event)"
+        ></app-pagination>
+      </div>
     </div>
   </div>
 </div>
+
+<ng-template #loading>
+  <div class="loading-table">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+</ng-template>

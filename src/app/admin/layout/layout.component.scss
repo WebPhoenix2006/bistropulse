@@ -1,17 +1,36 @@
-.main-content {
-  margin-left: 270px;
-  height: 100vh;
-  overflow-y: auto;
-  transition: 0.5s ease-in-out;
-  width: calc(100% - 16.5625rem);
+.layout-wrapper {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
 
-  &.main-md-screen {
-    margin-left: 4.5rem;
-    width: calc(100% - 4.5rem);
+  app-sidebar {
+    width: 265px;
+    flex-shrink: 0;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: width 0.3s ease;
   }
 
-  main {
-    padding: 24px;
-    width: 100%;
+  &.sidebar-collapsed {
+    app-sidebar {
+      width: 80px; // collapsed width
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+
+    main {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
   }
 }

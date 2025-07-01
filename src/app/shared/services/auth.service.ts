@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private BASE_URL = 'https://bistropulse-backend.onrender.com/api/auth';
@@ -54,4 +54,20 @@ export class AuthService {
     }
     return false;
   }
+  getUserRole(): string {
+  if (isPlatformBrowser(this.platformId)) {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        return user?.role || 'admin'; // default to 'admin'
+      } catch (error) {
+        console.error('Invalid user JSON in localStorage:', error);
+        return 'admin'; // fallback if parsing fails
+      }
+    }
+  }
+  return 'admin'; // fallback if not in browser or no user data
+}
+
 }

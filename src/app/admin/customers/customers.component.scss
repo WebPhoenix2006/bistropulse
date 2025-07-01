@@ -1,5 +1,10 @@
 @use "../../../styles.scss" as *;
-
+.loading-table {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #container {
   background: white;
   padding: 15px;
@@ -80,60 +85,59 @@
             }
           }
         }
-        .pages {
-          margin-top: 35px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .count {
-            padding: 5px 10px;
-            border: 2px solid $gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            span {
-              font-weight: bold;
-            }
-          }
-          .pagination {
-            padding: 5px 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            .nav-pages {
-              .nav {
-                display: flex;
-                gap: 13px;
-              }
-              a {
-                display: flex;
-                text-decoration: none;
-                padding: 5px 10px;
-                font-weight: bold;
-                color: $secondary;
-                &.active {
-                  color: #000;
-                  border: 2px solid #ccc;
-                  border-radius: 5px;
-                  background-color: #f4f4f4;
-                }
-              }
-            }
-            .left,
-            .right {
-              padding: 10px 15px;
-              i {
-                font-size: 24px;
-              }
-            }
-          }
-        }
       }
     }
   }
 }
-
+.pages {
+  margin-top: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .count {
+    padding: 5px 10px;
+    border: 2px solid $gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    span {
+      font-weight: bold;
+    }
+  }
+  .pagination {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .nav-pages {
+      .nav {
+        display: flex;
+        gap: 13px;
+      }
+      a {
+        display: flex;
+        text-decoration: none;
+        padding: 5px 10px;
+        font-weight: bold;
+        color: $secondary;
+        &.active {
+          color: #000;
+          border: 2px solid #ccc;
+          border-radius: 5px;
+          background-color: #f4f4f4;
+        }
+      }
+    }
+    .left,
+    .right {
+      padding: 10px 15px;
+      i {
+        font-size: 24px;
+      }
+    }
+  }
+}
 input[type="checkbox"] {
   margin-right: 8px;
   height: 20px;

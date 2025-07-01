@@ -9,6 +9,8 @@ import { Component, HostListener, Inject, OnInit, PLATFORM_ID, signal } from '@a
 })
 export class LayoutComponent implements OnInit {
   isLeftSidebarCollapsed = signal<boolean>(false);
+  isSidebarCollapsed = false;
+
   screenWidth = signal<number>(0); // Initialize with 0 or a safe default
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
@@ -20,6 +22,12 @@ export class LayoutComponent implements OnInit {
       // Do DOM-related logic here
     }
   }
+  get layoutClass() {
+  return {
+    'sidebar-collapsed': this.isSidebarCollapsed,
+  };
+}
+
 
   @HostListener('window:resize')
   onResize() {

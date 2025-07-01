@@ -7,6 +7,9 @@ button {
   border-radius: 6px;
   cursor: pointer !important;
   transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &.sm {
     font-size: 0.75rem;
@@ -25,7 +28,7 @@ button {
 
   &.primary {
     background: $primary;
-    color: $gray;
+    color: white;
   }
 
   &.secondary {

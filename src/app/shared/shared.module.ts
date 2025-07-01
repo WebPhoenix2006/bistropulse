@@ -13,6 +13,7 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { PopUpComponent } from './components/pop-up/pop-up.component';
 import { FormsModule } from '@angular/forms';
+import { MiniLoaderComponent } from './components/mini-loader/mini-loader.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     DropdownComponent,
     LoadingSpinnerComponent,
     PopUpComponent,
+    MiniLoaderComponent,
     PaginationComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule],
@@ -43,8 +45,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     DropdownComponent,
     LoadingSpinnerComponent,
     PopUpComponent,
+    MiniLoaderComponent,
     PaginationComponent,
-
   ],
 })
 export class SharedModule {}

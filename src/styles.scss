@@ -15,6 +15,10 @@ app-root {
   height: 100%;
   display: block;
 }
+
+* {
+  box-sizing: border-box;
+}
 strong {
   font-family: "Kanit", sans-serif;
   font-weight: 700;

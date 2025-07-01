@@ -112,7 +112,12 @@
       <!-- BREAKPOINT -->
       <tbody>
         @for (restaurant of restaurants; track restaurant.id) {
-        <tr class="mb-3" [class.checked]="restaurant.checked">
+        <tr
+          class="mb-3"
+          [class.checked]="restaurant.checked"
+          (click)="goToOverview()"
+          style="cursor: pointer"
+        >
           <td>
             <input
               type="checkbox"
@@ -172,3 +177,6 @@
     </table>
   </div>
 </div>
+@if (!restaurants.length) {
+<app-mini-loader />
+}

@@ -1,1 +1,4 @@
-<button class="rounded-2" [ngClass]="[size, color]">{{ buttonText }}</button>
+<button class="rounded-2" [ngClass]="[size, color]">
+  <ng-content></ng-content>
+  {{ buttonText }}
+</button>

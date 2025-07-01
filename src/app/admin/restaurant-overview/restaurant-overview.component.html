@@ -1,0 +1,111 @@
+<div class="container rounded-3">
+  <div class="row g-5">
+    <!-- Left Column -->
+    <div class="col-md-7" id="first-column">
+      <div class="header d-flex justify-content-between align-items-center">
+        <h2 class="title-h2">Restaurant Overview</h2>
+        <div class="btn-container d-flex align-items-center gap-3">
+          <span class="d-flex align-items-center gap-2">
+            Open
+            <label class="switch">
+              <input
+                type="checkbox"
+                checked
+                (click)="$event.stopPropagation()"
+              />
+              <span class="slider round"></span>
+            </label>
+          </span>
+          <app-button buttonText="Edit">
+            <span class="me-2">
+              <svg-icons name="pencil"></svg-icons>
+            </span>
+          </app-button>
+        </div>
+      </div>
+
+      <div class="img-container">
+        <img
+          src="assets/images/restaurant-picture.jpeg"
+          alt="Restaurant Image"
+        />
+      </div>
+
+      <h3 class="restaurant-name">Star Valley Restaurant</h3>
+      <p>
+        <span class="restaurant-reviews">
+          <img src="assets/images/Vector.png" alt="ratings" />
+          5.0 (23 Reviews)
+        </span>
+        <span>23 Orders</span>
+      </p>
+
+      <div class="info-group">
+        <span>
+          <h4>Established</h4>
+          <p>Since 01 January 2025</p>
+        </span>
+
+        <span>
+          <h4>Payment Method</h4>
+          <p>Visa Card</p>
+        </span>
+
+        <span>
+          <h4>Working Period</h4>
+          <p>9:00 AM - 10:00 PM</p>
+        </span>
+
+        <span>
+          <h4>Location</h4>
+          <p>G. P. O., Asafoatse Nettey Road, Accra...</p>
+        </span>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div id="second-column" class="col-md-5">
+      <div class="representative-info">
+        <h2>Representative Info</h2>
+        <div class="img-con">
+          <img src="assets/images/profile-img.png" alt="Profile" />
+          <h3>Chelsie Jhonson</h3>
+        </div>
+        <div class="info-con">
+          <span class="first-span">
+            <h4>Phone Number</h4>
+            <p>(480) 555-0103</p>
+          </span>
+          <span>
+            <h4>Location</h4>
+            <p>Asafoatse Nettey Road, Accra...</p>
+          </span>
+        </div>
+      </div>
+
+      <div class="documents">
+        <h2>Documents</h2>
+
+        <div class="pdf-container">
+          <div class="pdf-img">
+            <img src="assets/images/reward-points.png" alt="pdf icon" />
+            <div class="info">
+              <h4>License</h4>
+              <p>Businesslicense.pdf</p>
+            </div>
+            <svg-icons name="download-icon"></svg-icons>
+          </div>
+
+          <div class="pdf-img">
+            <img src="assets/images/reward-points.png" alt="pdf icon" />
+            <div class="info">
+              <h4>NID Card</h4>
+              <p>Nidcard.pdf</p>
+            </div>
+            <svg-icons name="download-icon"></svg-icons>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

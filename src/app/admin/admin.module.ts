@@ -12,6 +12,7 @@ import { AddRestaurantComponent } from './add-restaurant/add-restaurant.componen
 import { FormsModule } from '@angular/forms';
 import { CustomersComponent } from './customers/customers.component';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
+import { ViewCustomerComponent } from './view-customer/view-customer.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AddCustomerComponent } from './add-customer/add-customer.component';
     AddRestaurantComponent,
     CustomersComponent,
     AddCustomerComponent,
+    ViewCustomerComponent
   ],
 
   imports: [

@@ -8,6 +8,7 @@ import { AddRestaurantComponent } from './add-restaurant/add-restaurant.componen
 import { CustomersComponent } from './customers/customers.component';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { RestaurantOverviewComponent } from './restaurant-overview/restaurant-overview.component';
+import { ViewCustomerComponent } from './view-customer/view-customer.component';
 
 const routes: Routes = [
   {
@@ -33,12 +34,12 @@ const routes: Routes = [
         component: AddRestaurantComponent,
       },
       {
-        path: 'customers/add-customer',
-        component: AddCustomerComponent,
-      },
-      {
         path: 'customers',
-        component: CustomersComponent,
+        children: [
+          { path: '', component: CustomersComponent },
+          { path: 'add-customer', component: AddCustomerComponent },
+          { path: ':id', component: ViewCustomerComponent }, // 👈 dynamic detail route
+        ],
       },
       {
         path: 'restaurant-overview',

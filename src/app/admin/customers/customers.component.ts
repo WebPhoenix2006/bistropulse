@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CustomersService } from '../../shared/services/customers.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { CustomersService } from '../../shared/services/customers.service';
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss',
 })
-export class CustomersComponent {
+export class CustomersComponent implements OnInit {
   customerService = inject(CustomersService);
 
   customers: any[] = [];

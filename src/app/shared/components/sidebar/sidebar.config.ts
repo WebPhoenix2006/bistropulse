@@ -72,5 +72,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Overview',
     icon: 'dashboard',
+    roles: ['user']
   },
 ];

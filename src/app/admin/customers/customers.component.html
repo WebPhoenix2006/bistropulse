@@ -47,7 +47,11 @@
           </tr>
         </thead>
 
+<<<<<<< HEAD
         <tbody class="tbody" *ngIf="customers">
+=======
+        <tbody class="tbody">
+>>>>>>> fcecf4397587eb9e02aa1d23359c1e6838ce4d4c
           <tr
             *ngFor="let customer of customers"
             style="cursor: pointer"
@@ -58,6 +62,7 @@
                 type="checkbox"
                 [checked]="customer.checked"
                 (change)="toggleChecked(customer.id)"
+                (click)="$event.stopPropagation()"
               />
             </td>
 
@@ -127,7 +132,8 @@
         </div>
 
         <app-pagination
-          [totalItems]="totalCount"
+          *ngIf="totalPages >= 1"
+          [totalCount]="totalCount"
           [itemsPerPage]="itemsPerPage"
           [currentPage]="currentPage"
           (pageChange)="onPageChange($event)"

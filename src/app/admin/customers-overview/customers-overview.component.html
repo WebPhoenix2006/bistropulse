@@ -1,0 +1,52 @@
+<div class="customer-overview">
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12">
+      <div class="profiles">
+        <div class="heading">
+          <div class="title">
+            <h5>Customers</h5>
+          </div>
+        </div>
+
+        <div class="search">
+          <label title="Search By Restaurant Name">
+            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" placeholder="Search By Restaurant Name" />
+          </label>
+        </div>
+
+        <div class="customers-list">
+          <ul class="customers list-unstlyed">
+            <li class="customer" *ngFor="let customer of customers">
+              <a routerLink="/">
+                <div class="img">
+                  <img
+                    [src]="
+                      customer.photo_url || 'assets/images/profile-img.png'
+                    "
+                    alt="profile-img"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="details">
+                  <h5>{{ customer.name }}</h5>
+                  <p>{{ customer.phone }}</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+      <div class="tabs">
+        <cus-tabs>
+          <cus-tab label="Today"></cus-tab>
+          <cus-tab label="Yesterday"></cus-tab>
+          <cus-tab label="Last Week"></cus-tab>
+          <cus-tab label="Last Month"></cus-tab>
+        </cus-tabs>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<nav *ngIf="totalPages > 1" class="pagination">
+<nav *ngIf="totalPages >= 1" class="pagination">
   <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
 
   <button

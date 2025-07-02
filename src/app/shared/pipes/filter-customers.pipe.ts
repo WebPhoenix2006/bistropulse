@@ -1,20 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Restaurant } from '../../interfaces/restaurant.interface';
 import { Customer } from '../../interfaces/customer.interface';
 
 @Pipe({
-  name: 'filterRestaurants',
+  name: 'filterCustomers',
   standalone: false,
 })
-export class FilterRestaurantsPipe implements PipeTransform {
+export class FilterCustomersPipe implements PipeTransform {
   transform(customers: Customer[], searchTerm: string): Customer[] {
     if (!searchTerm) {
       return customers;
     }
 
     const text = searchTerm.toLowerCase();
-    return customers.filter((restaurant) => {
-      return restaurant.name.toLowerCase().includes(text);
+    return customers.filter((customer) => {
+      return customer.name.toLowerCase().includes(text);
     });
   }
 }

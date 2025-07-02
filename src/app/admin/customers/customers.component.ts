@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CustomersService } from '../../shared/services/customers.service';
 
 @Component({
@@ -9,6 +9,7 @@ import { CustomersService } from '../../shared/services/customers.service';
 })
 export class CustomersComponent implements OnInit {
   customerService = inject(CustomersService);
+  searchTerm: string = '';
 
   customers: any[] = [];
   isLoading = false;

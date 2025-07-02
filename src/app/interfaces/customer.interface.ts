@@ -8,5 +8,6 @@ export interface Customer {
   gender: 'Male' | 'Female' | string;
   location: string;
   photo_url: string;
-  created_at: string; // or Date if you convert it later
+  created_at: string;
+  checked: boolean;
 }

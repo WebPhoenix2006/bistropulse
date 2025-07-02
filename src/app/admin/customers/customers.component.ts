@@ -36,16 +36,20 @@ export class CustomersComponent {
 
     this.customerService.getCustomers(page).subscribe({
       next: (res: any) => {
-        this.customers = res.results.map((customer: any) => ({
-          ...customer,
-          checked: false,
-        }));
-        this.totalCount = res.count;
+        this.customers =
+          res.results?.map((customer: any) => ({
+            ...customer,
+            checked: false,
+          })) || [];
+
+        this.totalCount = res.count || 0;
         this.currentPage = page;
         this.isLoading = false;
       },
       error: (err) => {
         console.error('❌ Failed to fetch customers:', err);
+        this.customers = [];
+        this.totalCount = 0;
         this.isLoading = false;
       },
     });

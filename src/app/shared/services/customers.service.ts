@@ -1,29 +1,46 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomersService {
   private BASE_URL = 'https://bistropulse-backend.onrender.com/api';
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
 
   private getAuthHeaders(): HttpHeaders {
-    if (typeof window !== 'undefined' && localStorage.getItem('auth_token')) {
-      const token = localStorage.getItem('auth_token');
-      return new HttpHeaders({
-        Authorization: `Token ${token}`,
-      });
-    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
 
-    // Return empty headers if running on server
-    return new HttpHeaders();
+    const token = this.authService.getToken();
+    if (token) {
+      return headers.set('Authorization', `Token ${token.trim()}`);
+    }
+    return headers;
+  }
+
+  private handleError(error: any) {
+    if (error.status === 401) {
+      this.authService.logout();
+      return throwError(
+        () => new Error('Session expired. Please login again.')
+      );
+    }
+    return throwError(() => new Error(error.message || 'Server error'));
   }
 
   uploadCustomer(data: FormData) {
-    return this.http.post(`${this.BASE_URL}/customers/`, data, {
-      headers: this.getAuthHeaders(),
-    });
+    const headers = this.getAuthHeaders()
+      .delete('Content-Type') // Remove for FormData
+      .set('Accept', '*/*');
+
+    return this.http.post(`${this.BASE_URL}/customers/`, data, { headers });
   }
 
   getCustomers(page: number = 1, pageSize: number = 10) {
@@ -33,5 +50,11 @@ export class CustomersService {
         headers: this.getAuthHeaders(),
       }
     );
+  }
+
+  getCustomerById(id: string) {
+    return this.http.get(`${this.BASE_URL}/customers/${id}/`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 }

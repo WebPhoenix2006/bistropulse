@@ -20,8 +20,10 @@
   </header>
 
   <div class="body">
-
-    <div class="table-parent" *ngIf="!isLoading && customers.length > 0; else loading">
+    <div
+      class="table-parent"
+      *ngIf="!isLoading && customers.length > 0; else loading"
+    >
       <table class="table table-striped table-hover">
         <thead class="thead">
           <tr>
@@ -45,13 +47,18 @@
           </tr>
         </thead>
 
-        <tbody class="tbody" *ngIf="customers">
-          <tr  *ngFor="let customer of customers" style="cursor: pointer;" [routerLink]="['/admin/customers', customer.customer_id]">
+        <tbody class="tbody">
+          <tr
+            *ngFor="let customer of customers"
+            style="cursor: pointer"
+            [routerLink]="['/admin/customers', customer.customer_id]"
+          >
             <td>
               <input
                 type="checkbox"
                 [checked]="customer.checked"
                 (change)="toggleChecked(customer.id)"
+                (click)="$event.stopPropagation()"
               />
             </td>
 
@@ -121,7 +128,8 @@
         </div>
 
         <app-pagination
-          [totalItems]="totalCount"
+          *ngIf="totalPages >= 1"
+          [totalCount]="totalCount"
           [itemsPerPage]="itemsPerPage"
           [currentPage]="currentPage"
           (pageChange)="onPageChange($event)"
@@ -135,5 +143,4 @@
   <div class="loading-table">
     <app-mini-loader></app-mini-loader>
   </div>
-
 </ng-template>

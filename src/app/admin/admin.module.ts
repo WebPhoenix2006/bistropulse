@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { CustomersComponent } from './customers/customers.component';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
+import { CustomersOverviewComponent } from './customers-overview/customers-overview.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ViewCustomerComponent } from './view-customer/view-customer.component';
     AddRestaurantComponent,
     CustomersComponent,
     AddCustomerComponent,
-    ViewCustomerComponent
+    ViewCustomerComponent,
+    CustomersOverviewComponent
   ],
 
   imports: [

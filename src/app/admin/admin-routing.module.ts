@@ -9,6 +9,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { RestaurantOverviewComponent } from './restaurant-overview/restaurant-overview.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
+import { CustomersOverviewComponent } from './customers-overview/customers-overview.component';
 
 const routes: Routes = [
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
         children: [
           { path: '', component: CustomersComponent },
           { path: 'add-customer', component: AddCustomerComponent },
-          { path: ':id', component: ViewCustomerComponent }, // 👈 dynamic detail route
+          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic detail route
         ],
       },
       {

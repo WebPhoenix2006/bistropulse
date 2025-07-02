@@ -69,4 +69,8 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     route: '/admin/employees',
     roles: ['admin'],
   },
+  {
+    label: 'Overview',
+    icon: 'dashboard',
+  },
 ];

@@ -6,7 +6,7 @@ import { SearchFieldComponent } from './components/search-field/search-field.com
 import { SvgIconsComponent } from './components/svg-icons/svg-icons.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TabComponent } from './components/tab/tab.component';
 import { TabsComponent } from './components/tabs/tabs.component';
@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { MiniLoaderComponent } from './components/mini-loader/mini-loader.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
+import { EmptyListComponent } from './components/empty-list/empty-list.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,9 @@ import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
     PaginationComponent,
     FilterButtonComponent,
     FilterRestaurantsPipe,
+    EmptyListComponent,
   ],
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
     ButtonComponent,
     SearchFieldComponent,
@@ -53,6 +55,7 @@ import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
     PaginationComponent,
     FilterButtonComponent,
     FilterRestaurantsPipe,
+    EmptyListComponent,
   ],
 })
 export class SharedModule {}

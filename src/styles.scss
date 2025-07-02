@@ -62,3 +62,7 @@ app-dynamic-tooltip {
     color: #fff;
   }
 }
+
+span.active {
+  color: $primary !important;
+}

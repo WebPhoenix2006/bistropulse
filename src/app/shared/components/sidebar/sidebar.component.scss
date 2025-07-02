@@ -83,6 +83,10 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         font-weight: 500;
         cursor: pointer;
 
+        &.active {
+          color: $primary !important;
+        }
+
         span {
           display: flex;
           align-items: center;
@@ -103,7 +107,8 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
 
       #restaurantNav,
       #ordernav,
-      #advertnav, #customersNav {
+      #advertnav,
+      #customersNav {
         padding-left: 30px;
       }
 
@@ -117,4 +122,9 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
       }
     }
   }
+}
+
+.sidebar .nav a.active {
+  color: $primary !important;
+  background-color: rgba(0, 0, 0, 0.04); // Optional highlight
 }

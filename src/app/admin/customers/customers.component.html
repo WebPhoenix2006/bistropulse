@@ -20,6 +20,7 @@
   </header>
 
   <div class="body">
+
     <div class="table-parent" *ngIf="!isLoading && customers.length > 0; else loading">
       <table class="table table-striped table-hover">
         <thead class="thead">
@@ -58,7 +59,9 @@
               <div class="customer d-flex align-items-center" style="gap: 8px">
                 <div class="profile">
                   <img
-                    [src]="customer.photo_url || 'assets/images/profile-img.png'"
+                    [src]="
+                      customer.photo_url || 'assets/images/profile-img.png'
+                    "
                     alt="profile-img"
                     class="img-fluid"
                     style="width: 50px; height: 50px; border-radius: 100%"
@@ -68,19 +71,42 @@
               </div>
             </td>
 
-            <td><span>{{ customer.phone }}</span></td>
-            <td><span>{{ customer.email }}</span></td>
-            <td><span>{{ customer.location }}</span></td>
-            <td><span>{{ customer.created_at | date: 'dd, MMM yyyy' }}</span></td>
+            <td>
+              <span>{{ customer.phone }}</span>
+            </td>
+            <td>
+              <span>{{ customer.email }}</span>
+            </td>
+            <td>
+              <span>{{ customer.location }}</span>
+            </td>
+            <td>
+              <span>{{ customer.created_at | date : "dd, MMM yyyy" }}</span>
+            </td>
 
             <td>
               <div class="actions" (click)="$event.stopPropagation()">
                 <app-dropdown
                   [ellipsis]="true"
                   [options]="[
-                    { label: 'View', value: 'view', icon: 'view-eye', iconPosition: 'left' },
-                    { label: 'Edit', value: 'edit', icon: 'pencil', iconPosition: 'left' },
-                    { label: 'Disable', value: 'disable', icon: 'times', iconPosition: 'left' }
+                    {
+                      label: 'View',
+                      value: 'view',
+                      icon: 'view-eye',
+                      iconPosition: 'left'
+                    },
+                    {
+                      label: 'Edit',
+                      value: 'edit',
+                      icon: 'pencil',
+                      iconPosition: 'left'
+                    },
+                    {
+                      label: 'Disable',
+                      value: 'disable',
+                      icon: 'times',
+                      iconPosition: 'left'
+                    }
                   ]"
                 ></app-dropdown>
               </div>
@@ -106,7 +132,8 @@
 </div>
 
 <ng-template #loading>
-  <!-- <div class="loading-table">
-    <app-loading-spinner></app-loading-spinner>
-  </div> -->
+  <div class="loading-table">
+    <app-mini-loader></app-mini-loader>
+  </div>
+
 </ng-template>

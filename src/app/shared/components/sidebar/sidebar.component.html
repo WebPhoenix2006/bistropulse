@@ -33,6 +33,9 @@
             <a
               *ngIf="!item.children"
               [routerLink]="item.route"
+              class="active"
+              [routerLinkActive]="'active'"
+              [routerLinkActiveOptions]="{ exact: true }"
               [attr.title]="isSidebarCollapsed ? item.label : null"
               [attr.data-bs-toggle]="isSidebarCollapsed ? 'tooltip' : null"
             >
@@ -44,9 +47,13 @@
             <div *ngIf="item.children">
               <a
                 class="nav-link d-flex justify-content-between align-items-center"
-                [attr.data-bs-toggle]="isSidebarCollapsed ? 'tooltip' : 'collapse'"
+                [attr.data-bs-toggle]="
+                  isSidebarCollapsed ? 'tooltip' : 'collapse'
+                "
                 [attr.title]="isSidebarCollapsed ? item.label : null"
-                [attr.data-bs-target]="isSidebarCollapsed ? null : '#' + item.collapseId"
+                [attr.data-bs-target]="
+                  isSidebarCollapsed ? null : '#' + item.collapseId
+                "
                 [attr.href]="isSidebarCollapsed ? null : '#' + item.collapseId"
                 role="button"
                 aria-expanded="false"
@@ -62,10 +69,7 @@
 
               <div class="collapse" [id]="item.collapseId">
                 <ul class="nav flex-column" style="width: 100%">
-                  <li
-                    *ngFor="let child of item.children"
-                    class="nav-item"
-                  >
+                  <li *ngFor="let child of item.children" class="nav-item">
                     <a
                       class="nav-link"
                       *ngIf="!isSidebarCollapsed"

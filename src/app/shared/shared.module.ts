@@ -1,3 +1,4 @@
+import { FilterButtonComponent } from './components/filter-button/filter-button.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './components/button/button.component';
@@ -15,6 +16,7 @@ import { PopUpComponent } from './components/pop-up/pop-up.component';
 import { FormsModule } from '@angular/forms';
 import { MiniLoaderComponent } from './components/mini-loader/mini-loader.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     PopUpComponent,
     MiniLoaderComponent,
     PaginationComponent,
+    FilterButtonComponent,
+    FilterRestaurantsPipe,
   ],
   imports: [CommonModule, FormsModule, RouterModule],
   exports: [
@@ -47,6 +51,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     PopUpComponent,
     MiniLoaderComponent,
     PaginationComponent,
+    FilterButtonComponent,
+    FilterRestaurantsPipe,
   ],
 })
 export class SharedModule {}

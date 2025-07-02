@@ -1,12 +1,20 @@
 @use "../../../../styles.scss" as *;
 
-button {
+#filter-modal-button {
   color: #9a9fa5;
   border: 1px solid $gray;
   font-size: 15px;
   padding: 8px;
   font-weight: 600;
   transition: 0.3s ease-in-out;
+  position: relative;
+  display: flex;
+  gap: 9px;
+  border-radius: 1.5px;
+
+  i {
+    width: 14.5px;
+  }
 
   &:active {
     transform: scale(0.95);

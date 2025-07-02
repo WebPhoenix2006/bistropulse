@@ -1,4 +1,3 @@
-
 export interface SidebarItem {
   label: string;
   icon?: string; // ✅ made optional for child items
@@ -32,7 +31,10 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     roles: ['admin', 'manager'],
     children: [
       { label: 'Restaurant List', route: '/admin/restaurants' },
-      { label: 'New Restaurant Request', route: '/admin/restaurants/add-restaurant' },
+      {
+        label: 'New Restaurant Request',
+        route: '/admin/restaurants/add-restaurant',
+      },
     ],
   },
   {

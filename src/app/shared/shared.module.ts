@@ -18,6 +18,7 @@ import { MiniLoaderComponent } from './components/mini-loader/mini-loader.compon
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
+import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { EmptyListComponent } from './components/empty-list/empty-list.component
     FilterButtonComponent,
     FilterRestaurantsPipe,
     EmptyListComponent,
+    ToggleSliderComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -56,6 +58,8 @@ import { EmptyListComponent } from './components/empty-list/empty-list.component
     FilterButtonComponent,
     FilterRestaurantsPipe,
     EmptyListComponent,
+    ToggleSliderComponent
+
   ],
 })
 export class SharedModule {}

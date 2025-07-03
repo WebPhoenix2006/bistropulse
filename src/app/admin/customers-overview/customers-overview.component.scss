@@ -49,8 +49,65 @@ label {
     .profiles {
         padding: 28px 24px;
         background-color: #fff;
-        margin-top: 16px;
         border-radius: 5px;
+    }
+    .profile-overview {
+        padding: 28px 24px;
+        background-color: #fff;
+        border-radius: 5px;
+        margin-top: 16px;
+        .active {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .alert {
+                padding: 3px 8px;
+                background-color: #27ae60;
+                border: 5px;
+                color: #fff;
+                text-align: center;
+                margin-bottom: 0 !important;
+            }
+        }
+        .profile-info {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 24px;
+            gap: 12px;
+            .img {
+                display: flex;
+                justify-content: center;
+            }
+            .details {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                h4,
+                p {
+                    text-align: center;
+                }
+                p {
+                    color: $secondary;
+                }
+            }
+            .more-details {
+                & > div {
+                    padding: 15px 0;
+                    border-bottom: 1px solid $gray;
+                    p{
+                        margin-bottom: 8px;
+                        color: $secondary;
+                    }
+                    &:last-of-type {
+                        border-bottom: none !important;
+                    }
+                }
+            }
+        }
     }
     .customers-list {
         .customers {
@@ -69,17 +126,32 @@ label {
                     color: #000;
                     border-radius: 5px;
                     padding: 10px 12px;
-                    p{
-                        color: $secondary ;
+                    p {
+                        color: $secondary;
                         margin-bottom: 0;
                     }
-                    img{
+                    img {
                         width: 60px;
                         height: 60px;
                         border-radius: 100%;
                     }
-                    &:hover{
+                    &:hover {
                         background-color: $gray;
+                    }
+                }
+            }
+        }
+    }
+    .tabs {
+        ::ng-deep .tabs-wrapper {
+            .tab-list {
+                li {
+                    border: none !important;
+                    padding: 10px;
+                    border-radius: 0 !important;
+                    border-bottom: 2px transparent solid !important;
+                    &.active {
+                        border-color: $primary !important;
                     }
                 }
             }

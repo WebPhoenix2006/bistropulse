@@ -66,57 +66,61 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
       }
     }
   }
-  .nav {
+  .nav-parent {
     overflow-y: auto;
-    li {
-      width: 100%;
+    padding: 0 12px;
+    .nav {
+      overflow-y: auto;
+      li {
+        width: 100%;
 
-      a {
-        text-decoration: none;
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        padding: 14px 0px;
-        color: $secondary !important;
-        font-size: 14px;
-        line-height: 24px;
-        font-weight: 500;
-        cursor: pointer;
-
-        &.active {
-          color: $primary !important;
-        }
-
-        span {
+        a {
+          text-decoration: none;
           display: flex;
+          gap: 15px;
           align-items: center;
-          gap: 12px;
-        }
-
-        svg-icons {
-          font-size: 16px;
-        }
-
-        i.fa-chevron-down {
-          font-size: 12px;
-        }
-        &:hover {
-          color: $primary !important;
-        }
-      }
-
-      #restaurantNav,
-      #ordernav,
-      #advertnav,
-      #customersNav {
-        padding-left: 30px;
-      }
-
-      .collapse {
-        .nav-link {
+          padding: 14px 0px;
           color: $secondary !important;
+          font-size: 14px;
+          line-height: 24px;
+          font-weight: 500;
+          cursor: pointer;
+
+          &.active {
+            color: $primary !important;
+          }
+
+          span {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          }
+
+          svg-icons {
+            font-size: 16px;
+          }
+
+          i.fa-chevron-down {
+            font-size: 12px;
+          }
           &:hover {
             color: $primary !important;
+          }
+        }
+
+        #restaurantNav,
+        #ordernav,
+        #advertnav,
+        #customersNav {
+          padding-left: 30px;
+        }
+
+        .collapse {
+          .nav-link {
+            color: $secondary !important;
+            &:hover {
+              color: $primary !important;
+            }
           }
         }
       }

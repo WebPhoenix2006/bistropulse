@@ -144,11 +144,17 @@
         ></app-pagination>
       </div>
     </div>
+
+    <ng-template #emptyList>
+      <app-empty-list />
+    </ng-template>
+    <ng-template #loading>
+      <div class="loading-table">
+        <app-mini-loader *ngIf="isLoading"></app-mini-loader>
+        <app-empty-list
+          *ngIf="!isLoading && customers.length === 0"
+        ></app-empty-list>
+      </div>
+    </ng-template>
   </div>
 </div>
-
-<ng-template #loading>
-  <div class="loading-table">
-    <app-mini-loader></app-mini-loader>
-  </div>
-</ng-template>

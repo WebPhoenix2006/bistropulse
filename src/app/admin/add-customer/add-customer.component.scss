@@ -59,13 +59,25 @@ main {
   form {
     max-width: 700px;
 
-    .input-wrapper {
-      margin-block-end: 16px;
-
+    .university {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       h2 {
         font-size: 14px;
         font-weight: 600;
-        margin-bottom: 10px !important;
+        margin-bottom: 0 !important;
+      }
+      input[type="checkbox"] {
+        width: auto;
+        margin-top: 3px;
+      }
+    }
+    .input-wrapper {
+      margin-block-end: 16px;
+      h2 {
+        font-size: 14px;
+        font-weight: 600;
       }
 
       input,

@@ -57,4 +57,10 @@ export class CustomersService {
       headers: this.getAuthHeaders(),
     });
   }
+  updateCustomer(customerId: string, data: any) {
+    const encodedId = encodeURIComponent(customerId); // ⬅️ THIS IS IMPORTANT
+    return this.http.put(`${this.BASE_URL}/customers/${encodedId}/`, data, {
+      headers: this.getAuthHeaders(),
+    });
+  }
 }

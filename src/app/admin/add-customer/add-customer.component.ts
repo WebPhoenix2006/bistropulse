@@ -104,13 +104,6 @@ export class AddCustomerComponent {
       class: 'col-md-12',
     },
     {
-      label: 'University student',
-      type: 'checkbox',
-      formControlName: 'isStudent',
-      name: 'isStudent',
-      class: 'col-md-12',
-    },
-    {
       label: 'Email',
       type: 'text',
       formControlName: 'emailAddress',

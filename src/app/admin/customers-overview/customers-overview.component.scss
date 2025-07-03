@@ -50,6 +50,7 @@ label {
         padding: 28px 24px;
         background-color: #fff;
         border-radius: 5px;
+        
     }
     .profile-overview {
         padding: 28px 24px;
@@ -80,12 +81,18 @@ label {
             .img {
                 display: flex;
                 justify-content: center;
+                img{
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 100%;
+                }
             }
             .details {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                margin-top: 10px;
                 h4,
                 p {
                     text-align: center;
@@ -98,7 +105,7 @@ label {
                 & > div {
                     padding: 15px 0;
                     border-bottom: 1px solid $gray;
-                    p{
+                    p {
                         margin-bottom: 8px;
                         color: $secondary;
                     }
@@ -116,32 +123,50 @@ label {
             flex-direction: column;
             padding-left: 0 !important;
             margin-top: 16px;
+
             .customer {
                 width: 100%;
-                a {
+                cursor: pointer;
+
+
+                .customer-content {
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 12px;
                     text-decoration: none;
                     color: #000;
-                    border-radius: 5px;
-                    padding: 10px 12px;
+                    border-radius: 6px;
+                    padding: 12px 14px;
+                    transition: background-color 0.2s ease;
+                    margin-bottom: 12px;
+
                     p {
                         color: $secondary;
                         margin-bottom: 0;
                     }
-                    img {
-                        width: 60px;
-                        height: 60px;
+
+                    .img img {
+                        width: 56px;
+                        height: 56px;
                         border-radius: 100%;
+                        object-fit: cover;
                     }
+
                     &:hover {
                         background-color: $gray;
+                    }
+                }
+
+                &.selected {
+                    .customer-content {
+                        background-color: lighten($gray, 5%);
+                        font-weight: 600;
                     }
                 }
             }
         }
     }
+
     .tabs {
         ::ng-deep .tabs-wrapper {
             .tab-list {

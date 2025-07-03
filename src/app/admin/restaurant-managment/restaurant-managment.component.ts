@@ -14,6 +14,7 @@ export class RestaurantListComponent implements OnInit {
   restaurantService = inject(RestaurantService);
   buttonText = signal<string>('Filter');
   searchTerm = signal<string>('');
+  isLoading = signal<boolean>(false);
 
   constructor(private router: Router) {}
 
@@ -29,24 +30,42 @@ export class RestaurantListComponent implements OnInit {
   restaurants: Array<Restaurant> = [];
 
   getRestaurants(): void {
+    this.isLoading.set(true);
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        this.restaurants = data.results.map((dataObject: any) => ({
+        console.log(data);
+        this.restaurants = data.map((dataObject: any) => ({
           ...dataObject,
           checked: false,
           isToolbarOpen: false,
         }));
-
+        this.isLoading.set(false);
         console.log(this.restaurants);
       },
       error: (err) => {
         console.warn('fecth failed: ' + err);
+        this.isLoading.set(false);
       },
     });
   }
 
-  ngOnInit(): void {
-    this.getRestaurants();
+  ngOnInit() {
+    this.isLoading.set(true);
+
+    this.restaurantService.getRestaurants().subscribe({
+      next: (data: any) => {
+        this.restaurants = data.map((dataObject: any) => ({
+          ...dataObject,
+          checked: false,
+          isToolbarOpen: false,
+        }));
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading.set(false);
+      },
+    });
   }
 
   @HostListener('document:click', ['$event'])

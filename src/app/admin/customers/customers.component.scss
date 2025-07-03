@@ -235,3 +235,32 @@ input:checked + .slider:before {
     }
   }
 }
+
+label {
+  display: flex;
+  color: $secondary;
+  font-size: 15px;
+  gap: 10px;
+  overflow: hidden;
+  align-items: center;
+  background: transparent;
+  border: 1px solid $gray;
+  padding: 8px;
+  max-width: 600px;
+
+  span {
+    display: flex;
+    text-align: center;
+
+    i {
+      width: 100%;
+    }
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+}

@@ -18,6 +18,7 @@ import { MiniLoaderComponent } from './components/mini-loader/mini-loader.compon
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
+import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
 import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
 
 @NgModule({
@@ -38,6 +39,8 @@ import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.
     FilterButtonComponent,
     FilterRestaurantsPipe,
     EmptyListComponent,
+    FilterCustomersPipe,
+
     ToggleSliderComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
@@ -58,6 +61,7 @@ import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.
     FilterButtonComponent,
     FilterRestaurantsPipe,
     EmptyListComponent,
+    FilterCustomersPipe,
     ToggleSliderComponent
 
   ],

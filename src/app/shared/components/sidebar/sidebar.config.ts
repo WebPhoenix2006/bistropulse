@@ -40,7 +40,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Rider Management',
     icon: 'bike',
-    route: '/admin/riders',
+    route: '/',
     roles: ['admin'],
   },
   {
@@ -66,7 +66,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Employee Management',
     icon: 'people',
-    route: '/admin/employees',
+    route: '/',
     roles: ['admin'],
   },
   {

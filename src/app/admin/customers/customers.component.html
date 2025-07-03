@@ -3,7 +3,15 @@
     <h1>Customers</h1>
 
     <div class="btn-container">
-      <app-search-field></app-search-field>
+      <label title="Search By Restaurant Name">
+        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="text"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Search By Restaurant Name"
+        />
+      </label>
       <app-filter-button></app-filter-button>
 
       <app-button
@@ -49,7 +57,7 @@
 
         <tbody class="tbody">
           <tr
-            *ngFor="let customer of customers"
+            *ngFor="let customer of customers | filterCustomers : searchTerm"
             style="cursor: pointer"
             [routerLink]="['/admin/customers', customer.customer_id]"
           >

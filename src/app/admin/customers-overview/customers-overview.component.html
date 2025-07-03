@@ -41,10 +41,57 @@
     <div class="col-lg-8 col-md-8 col-sm-12">
       <div class="tabs">
         <cus-tabs>
-          <cus-tab label="Today"></cus-tab>
-          <cus-tab label="Yesterday"></cus-tab>
-          <cus-tab label="Last Week"></cus-tab>
-          <cus-tab label="Last Month"></cus-tab>
+          <cus-tab label="Overview">
+            <div class="col-6">
+              <div class="profile-overview">
+                <div class="active">
+                  <div class="alert">Active</div>
+                  <div class="switch">
+                    <toggle-switch
+                      [checked]="isActive"
+                      (toggled)="isActive = $event"
+                    ></toggle-switch>
+                  </div>
+                </div>
+                <div class="profile-info">
+                  <div class="img">
+                    <img
+                      src="assets/images/profile-img-alt.png"
+                      alt="profile-img"
+                      class="img-fluid"
+                    />
+                  </div>
+                  <div class="details">
+                    <h4>Chelsie Jhonson</h4>
+                    <p>chelsiejhonson&#64;bindirigu.com</p>
+                    <app-button [buttonText]="'Edit profile'">
+                      <span class="me-2"
+                        ><svg-icons name="pencil-alt"></svg-icons
+                      ></span>
+                    </app-button>
+                  </div>
+                  <div class="more-details">
+                    <div>
+                      <p>Phone Number</p>
+                      <strong>+88 01600-009770</strong>
+                    </div>
+                    <div>
+                      <p>University</p>
+                      <strong>University of Ghana</strong>
+                    </div>
+                    <div>
+                      <p>Location</p>
+                      <strong>Asafoatse Nettey Road, Accra...</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </cus-tab>
+          <cus-tab label="Orders"></cus-tab>
+          <cus-tab label="Fav Restaurants"></cus-tab>
+          <cus-tab label="Review & Rating"></cus-tab>
+          <cus-tab label="Reward Point"></cus-tab>
         </cus-tabs>
       </div>
     </div>

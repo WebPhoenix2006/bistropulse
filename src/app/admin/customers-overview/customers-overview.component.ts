@@ -11,6 +11,13 @@ export class CustomersOverviewComponent {
   customerService = inject(CustomersService);
   customers: any[] = [];
   isLoading = false;
+  isEnabled = false;
+  isActive = true;
+
+  onToggle(state: boolean) {
+    this.isEnabled = state;
+    console.log('Switch is now:', state ? 'ON' : 'OFF');
+  }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {

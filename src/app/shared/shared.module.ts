@@ -19,6 +19,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
+import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,8 @@ import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
     FilterRestaurantsPipe,
     EmptyListComponent,
     FilterCustomersPipe,
+
+    ToggleSliderComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -59,6 +62,8 @@ import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
     FilterRestaurantsPipe,
     EmptyListComponent,
     FilterCustomersPipe,
+    ToggleSliderComponent
+
   ],
 })
 export class SharedModule {}

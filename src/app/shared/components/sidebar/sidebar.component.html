@@ -33,8 +33,7 @@
             <a
               *ngIf="!item.children"
               [routerLink]="item.route"
-              class="active"
-              [routerLinkActive]="'active'"
+              routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
               [attr.title]="isSidebarCollapsed ? item.label : null"
               [attr.data-bs-toggle]="isSidebarCollapsed ? 'tooltip' : null"
@@ -44,43 +43,62 @@
             </a>
 
             <!-- Dropdown -->
-            <div *ngIf="item.children">
-              <a
-                class="nav-link d-flex justify-content-between align-items-center"
-                [attr.data-bs-toggle]="
-                  isSidebarCollapsed ? 'tooltip' : 'collapse'
-                "
-                [attr.title]="isSidebarCollapsed ? item.label : null"
-                [attr.data-bs-target]="
-                  isSidebarCollapsed ? null : '#' + item.collapseId
-                "
-                [attr.href]="isSidebarCollapsed ? null : '#' + item.collapseId"
-                role="button"
-                aria-expanded="false"
-                [attr.aria-controls]="item.collapseId"
-                (click)="isSidebarCollapsed && openSidebar()"
+            <ng-container *ngIf="item.children">
+              <div
+                routerLinkActive="active"
+                #rla="routerLinkActive"
+                class="nav-item"
               >
-                <span>
-                  <svg-icons [name]="item.icon"></svg-icons>
-                  <span *ngIf="!isSidebarCollapsed">{{ item.label }}</span>
-                </span>
-                <i *ngIf="!isSidebarCollapsed" class="fa fa-chevron-down"></i>
-              </a>
+                <a
+                  class="nav-link d-flex justify-content-between align-items-center"
+                  [class.active]="rla.isActive"
+                  [attr.data-bs-toggle]="
+                    isSidebarCollapsed ? 'tooltip' : 'collapse'
+                  "
+                  [attr.title]="isSidebarCollapsed ? item.label : null"
+                  [attr.data-bs-target]="
+                    isSidebarCollapsed ? null : '#' + item.collapseId
+                  "
+                  [attr.href]="
+                    isSidebarCollapsed ? null : '#' + item.collapseId
+                  "
+                  role="button"
+                  aria-expanded="false"
+                  [attr.aria-controls]="item.collapseId"
+                  (click)="isSidebarCollapsed && openSidebar()"
+                >
+                  <span>
+                    <svg-icons [name]="item.icon"></svg-icons>
+                    <span *ngIf="!isSidebarCollapsed">{{ item.label }}</span>
+                  </span>
+                  <i *ngIf="!isSidebarCollapsed" class="fa fa-chevron-down"></i>
+                </a>
 
-              <div class="collapse" [id]="item.collapseId">
-                <ul class="nav flex-column" style="width: 100%">
-                  <li *ngFor="let child of item.children" class="nav-item">
-                    <a
-                      class="nav-link"
-                      *ngIf="!isSidebarCollapsed"
-                      [routerLink]="child.route"
+                <div
+                  class="collapse"
+                  [class.show]="rla.isActive"
+                  [id]="item.collapseId"
+                >
+                  <ul class="nav flex-column" style="width: 100%">
+                    <li
+                      *ngFor="let child of item.children"
+                      class="nav-item"
+                      routerLinkActive="active"
                     >
-                      {{ child.label }}
-                    </a>
-                  </li>
-                </ul>
+                      <a
+                        class="nav-link"
+                        *ngIf="!isSidebarCollapsed"
+                        [routerLink]="child.route"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                      >
+                        {{ child.label }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
+            </ng-container>
           </li>
 
           <!-- Logout -->
@@ -95,3 +113,4 @@
     </div>
   </div>
 </div>
+i

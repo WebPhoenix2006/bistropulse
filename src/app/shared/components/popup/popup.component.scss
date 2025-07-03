@@ -1,0 +1,11 @@
+.popup-message-con {
+  width: 100px;
+  height: 30px;
+  background: transparent;
+  border-radius: 20px;
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 600;
+}

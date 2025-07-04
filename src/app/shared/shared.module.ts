@@ -12,7 +12,6 @@ import { TabComponent } from './components/tab/tab.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
-import { PopUpComponent } from './components/pop-up/pop-up.component';
 import { FormsModule } from '@angular/forms';
 import { MiniLoaderComponent } from './components/mini-loader/mini-loader.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
@@ -20,6 +19,7 @@ import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
 import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
+import { PopupComponent } from './components/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -33,15 +33,14 @@ import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.
     TabsComponent,
     DropdownComponent,
     LoadingSpinnerComponent,
-    PopUpComponent,
     MiniLoaderComponent,
     PaginationComponent,
     FilterButtonComponent,
     FilterRestaurantsPipe,
     EmptyListComponent,
     FilterCustomersPipe,
-
-    ToggleSliderComponent
+    PopupComponent,
+    ToggleSliderComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -55,15 +54,14 @@ import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.
     TabsComponent,
     DropdownComponent,
     LoadingSpinnerComponent,
-    PopUpComponent,
     MiniLoaderComponent,
     PaginationComponent,
     FilterButtonComponent,
     FilterRestaurantsPipe,
     EmptyListComponent,
     FilterCustomersPipe,
-    ToggleSliderComponent
-
+    ToggleSliderComponent,
+    PopupComponent,
   ],
 })
 export class SharedModule {}

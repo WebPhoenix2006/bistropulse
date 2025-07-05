@@ -2,6 +2,7 @@ import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { RestaurantService } from '../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 import { Restaurant } from '../../interfaces/restaurant.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -16,7 +17,7 @@ export class RestaurantListComponent implements OnInit {
   searchTerm = signal<string>('');
   isLoading = signal<boolean>(false);
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
 
   goToOverview() {
     this.router.navigateByUrl('/admin/restaurant-overview');
@@ -31,41 +32,27 @@ export class RestaurantListComponent implements OnInit {
 
   getRestaurants(): void {
     this.isLoading.set(true);
+
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        console.log(data);
         this.restaurants = data.map((dataObject: any) => ({
           ...dataObject,
           checked: false,
           isToolbarOpen: false,
         }));
         this.isLoading.set(false);
-        console.log(this.restaurants);
+        this.toastr.success('Success, Loaded successfully');
       },
       error: (err) => {
-        console.warn('fecth failed: ' + err);
+        console.error(err);
         this.isLoading.set(false);
+        this.toastr.success('Saved!', 'Success');
       },
     });
   }
 
   ngOnInit() {
-    this.isLoading.set(true);
-
-    this.restaurantService.getRestaurants().subscribe({
-      next: (data: any) => {
-        this.restaurants = data.map((dataObject: any) => ({
-          ...dataObject,
-          checked: false,
-          isToolbarOpen: false,
-        }));
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading.set(false);
-      },
-    });
+    this.getRestaurants();
   }
 
   @HostListener('document:click', ['$event'])

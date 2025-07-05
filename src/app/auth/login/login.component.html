@@ -55,7 +55,13 @@
 
         <!-- ✅ Submit button triggers form submit -->
         <div class="submit">
-          <button type="submit" class="btn btn-primary w-100">Sign in</button>
+          <button
+            [disabled]="isLoading()"
+            type="submit"
+            class="btn btn-primary w-100"
+          >
+            Sign in
+          </button>
         </div>
       </form>
     </div>

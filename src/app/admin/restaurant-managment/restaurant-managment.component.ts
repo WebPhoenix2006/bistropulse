@@ -19,10 +19,6 @@ export class RestaurantListComponent implements OnInit {
 
   constructor(private router: Router, private toastr: ToastrService) {}
 
-  goToOverview() {
-    this.router.navigateByUrl('/admin/restaurant-overview');
-  }
-
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
     this.closeAll();
@@ -41,12 +37,13 @@ export class RestaurantListComponent implements OnInit {
           isToolbarOpen: false,
         }));
         this.isLoading.set(false);
-        this.toastr.success('Success, Loaded successfully');
+        this.toastr.success('Loaded successfully', 'Success', {
+          timeOut: 1200,
+        });
       },
       error: (err) => {
-        console.error(err);
+        console.error('FETCH ERROR:', err);
         this.isLoading.set(false);
-        this.toastr.success('Saved!', 'Success');
       },
     });
   }

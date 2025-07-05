@@ -8,6 +8,8 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { SlowNetworkService } from '../../shared/services/slow-nerwork.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -24,7 +26,9 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private slowNetwork: SlowNetworkService,
+    public toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +59,14 @@ export class SignupComponent implements OnInit {
 
     this.isLoading.set(true);
     const formData = this.signupForm.value;
+    this.slowNetwork.start(() => {
+      if (this.isLoading) {
+        this.toastr.warning(
+          'Hmm... this is taking longer than usual. Please check your connection.',
+          'Slow Network'
+        );
+      }
+    });
 
     this.auth.signup(formData).subscribe({
       next: (res) => {
@@ -62,10 +74,12 @@ export class SignupComponent implements OnInit {
         // this.auth.saveToken(res.token);
         alert('Sign up successful');
         this.isLoading.set(false);
+        this.slowNetwork.clear();
         this.router.navigate(['/auth/login']);
       },
       error: (err) => {
         console.error('Signup error:', err);
+        this.slowNetwork.clear();
         this.isLoading.set(false);
       },
     });

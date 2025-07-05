@@ -19,7 +19,6 @@ import { FilterRestaurantsPipe } from './pipes/filter-restaurants.pipe';
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { FilterCustomersPipe } from './pipes/filter-customers.pipe';
 import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
-import { PopupComponent } from './components/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +38,6 @@ import { PopupComponent } from './components/popup/popup.component';
     FilterRestaurantsPipe,
     EmptyListComponent,
     FilterCustomersPipe,
-    PopupComponent,
     ToggleSliderComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
@@ -61,7 +59,6 @@ import { PopupComponent } from './components/popup/popup.component';
     EmptyListComponent,
     FilterCustomersPipe,
     ToggleSliderComponent,
-    PopupComponent,
   ],
 })
 export class SharedModule {}

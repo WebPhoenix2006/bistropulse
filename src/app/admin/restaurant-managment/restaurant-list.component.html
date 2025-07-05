@@ -98,7 +98,7 @@
     <div class="body">
       <ng-container *ngIf="!isLoading(); else loading">
         <ng-container *ngIf="restaurants.length > 0; else emptyList">
-          <table class="table mt-3">
+          <table class="table mt-3 table-hover">
             <thead>
               <tr>
                 <td>
@@ -124,8 +124,10 @@
               <tr
                 class="mb-3"
                 [class.checked]="restaurant.checked"
-                (click)="goToOverview()"
                 style="cursor: pointer"
+                tabindex="0"
+                [routerLink]="['/admin/restaurants', restaurant.id]"
+                role="button"
               >
                 <td>
                   <input

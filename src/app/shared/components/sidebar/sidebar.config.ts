@@ -72,6 +72,16 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Overview',
     icon: 'dashboard',
-    roles: ['user']
+    roles: ['user'],
+  },
+  {
+    label: 'Food Menu',
+    icon: 'pizza', // use your preferred icon name
+    collapseId: 'menuNav',
+    roles: ['admin', 'manager'], // whoever should see it
+    children: [
+      { label: 'Menu List', route: '/admin/food-menu' },
+      { label: 'Add New Menu', route: '/admin/food-menu/add' },
+    ],
   },
 ];

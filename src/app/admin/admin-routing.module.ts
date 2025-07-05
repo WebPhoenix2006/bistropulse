@@ -28,23 +28,19 @@ const routes: Routes = [
       },
       {
         path: 'restaurants',
-        component: RestaurantListComponent,
-      },
-      {
-        path: 'restaurants/add-restaurant',
-        component: AddRestaurantComponent,
+        children: [
+          { path: '', component: RestaurantListComponent },
+          { path: 'add-restaurant', component: AddRestaurantComponent },
+          { path: ':id', component: RestaurantOverviewComponent },
+        ],
       },
       {
         path: 'customers',
         children: [
           { path: '', component: CustomersComponent },
           { path: 'add-customer', component: AddCustomerComponent },
-          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic detail route
+          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
         ],
-      },
-      {
-        path: 'restaurant-overview',
-        component: RestaurantOverviewComponent,
       },
     ],
   },

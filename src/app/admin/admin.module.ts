@@ -14,6 +14,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
 import { CustomersOverviewComponent } from './customers-overview/customers-overview.component';
+import { FoodListComponent } from './food-related/food-list/food-menu.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CustomersOverviewComponent } from './customers-overview/customers-overv
     CustomersComponent,
     AddCustomerComponent,
     ViewCustomerComponent,
-    CustomersOverviewComponent
+    CustomersOverviewComponent,
+    FoodListComponent,
   ],
 
   imports: [
@@ -34,7 +36,6 @@ import { CustomersOverviewComponent } from './customers-overview/customers-overv
     SharedModule,
     NgxChartsModule,
     FormsModule,
-
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

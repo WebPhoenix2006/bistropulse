@@ -76,12 +76,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     label: 'Food Menu',
-    icon: 'pizza', // use your preferred icon name
+    icon: 'pizza',
     collapseId: 'menuNav',
-    roles: ['admin', 'manager'], // whoever should see it
+    roles: ['admin', 'manager'],
     children: [
       { label: 'Menu List', route: '/admin/food-menu' },
-      { label: 'Add New Menu', route: '/admin/food-menu/add' },
+      { label: 'Add New Menu', route: '/admin/food-menu/add-food' },
     ],
   },
 ];

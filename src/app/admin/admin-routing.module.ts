@@ -10,6 +10,8 @@ import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { RestaurantOverviewComponent } from './restaurant-overview/restaurant-overview.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
 import { CustomersOverviewComponent } from './customers-overview/customers-overview.component';
+import { FoodListComponent } from './food-related/food-list/food-menu.component';
+import { AddFoodComponent } from './food-related/add-food/add-food.component';
 
 const routes: Routes = [
   {
@@ -39,6 +41,14 @@ const routes: Routes = [
         children: [
           { path: '', component: CustomersComponent },
           { path: 'add-customer', component: AddCustomerComponent },
+          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
+        ],
+      },
+      {
+        path: 'food-menu',
+        children: [
+          { path: '', component: FoodListComponent },
+          { path: 'add-food', component: AddFoodComponent },
           { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
         ],
       },

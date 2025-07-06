@@ -94,110 +94,109 @@
   </header>
   <!-- ======= BEGINNING OF SECOND HALF OF THE PAGE ====== -->
   <!-- BREAKPOINT -->
+
   <div class="body">
-    <div class="body">
-      <ng-container *ngIf="!isLoading(); else loading">
-        <ng-container *ngIf="restaurants.length > 0; else emptyList">
-          <table class="table mt-3 table-hover">
-            <thead>
-              <tr>
-                <td>
-                  <input
-                    type="checkbox"
-                    style="cursor: pointer"
-                    (click)="checkAll()"
-                  />
-                  Name <span><i class="ri-arrow-up-down-line"></i></span>
-                </td>
-                <td>Representative</td>
-                <td>Location</td>
-                <td>Phone Number</td>
-                <td>Ratings</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-            </thead>
-            <!-- BREAKPOINT -->
-            <tbody>
-              @for (restaurant of restaurants | filterRestaurants: searchTerm();
-              track restaurant.id) {
-              <tr
-                class="mb-3"
-                [class.checked]="restaurant.checked"
-                style="cursor: pointer"
-                tabindex="0"
-                [routerLink]="['/admin/restaurants', restaurant.id]"
-                role="button"
+    <ng-container *ngIf="!isLoading(); else loading">
+      <ng-container *ngIf="restaurants.length > 0; else emptyList">
+        <table class="table mt-3 table-hover">
+          <thead>
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  style="cursor: pointer"
+                  (click)="checkAll()"
+                />
+                Name <span><i class="ri-arrow-up-down-line"></i></span>
+              </td>
+              <td>Representative</td>
+              <td>Location</td>
+              <td>Phone Number</td>
+              <td>Ratings</td>
+              <td>Status</td>
+              <td>Action</td>
+            </tr>
+          </thead>
+          <!-- BREAKPOINT -->
+          <tbody>
+            @for (restaurant of restaurants | filterRestaurants: searchTerm();
+            track restaurant.id) {
+            <tr
+              class="mb-3"
+              [class.checked]="restaurant.checked"
+              style="cursor: pointer"
+              tabindex="0"
+              [routerLink]="['/admin/restaurants', restaurant.id]"
+              role="button"
+            >
+              <td>
+                <input
+                  type="checkbox"
+                  style="cursor: pointer"
+                  [checked]="restaurant.checked"
+                  (click)="toggleChecked(restaurant.id)"
+                />
+                {{ restaurant.name }}
+              </td>
+              <td>{{ restaurant.representative }}</td>
+              <td>{{ restaurant.location }}</td>
+              <td>{{ restaurant.phone }}</td>
+              <td class="img-con">
+                <span><img src="assets/images/Vector.png" /></span
+                >{{ restaurant.rating }}
+              </td>
+              <td
+                [style.color]="restaurant.status === 'Open' ? 'green' : 'red'"
               >
-                <td>
-                  <input
-                    type="checkbox"
-                    style="cursor: pointer"
-                    [checked]="restaurant.checked"
-                    (click)="toggleChecked(restaurant.id)"
-                  />
-                  {{ restaurant.name }}
-                </td>
-                <td>{{ restaurant.representative }}</td>
-                <td>{{ restaurant.location }}</td>
-                <td>{{ restaurant.phone }}</td>
-                <td class="img-con">
-                  <span><img src="assets/images/Vector.png" /></span
-                  >{{ restaurant.rating }}
-                </td>
-                <td
-                  [style.color]="restaurant.status === 'Open' ? 'green' : 'red'"
+                {{ restaurant.status }}
+              </td>
+              <td class="position-relative" id="toolbar-container">
+                <button
+                  class="toolbar-toggle rounded-3"
+                  [class.active]="restaurant.isToolbarOpen"
+                  (click)="
+                    toggleVisibility(restaurant.id); $event.stopPropagation()
+                  "
                 >
-                  {{ restaurant.status }}
-                </td>
-                <td class="position-relative" id="toolbar-container">
-                  <button
-                    class="toolbar-toggle rounded-3"
-                    [class.active]="restaurant.isToolbarOpen"
-                    (click)="
-                      toggleVisibility(restaurant.id); $event.stopPropagation()
-                    "
-                  >
-                    <i class="ri-more-2-fill"></i>
-                  </button>
-                  <ul
-                    class="toolbar shadow visible"
-                    [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
-                  >
-                    <li>
-                      <span><i class="ri-eye-line"></i></span> View
-                    </li>
-                    <li>
-                      <span><i class="ri-pencil-line"></i></span> Delete
-                    </li>
-                    <li class="toggle-container">
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          [checked]="restaurant.checked"
-                          (change)="toggleChecked(restaurant.id)"
-                          (click)="$event.stopPropagation()"
-                        />
-                        <span class="slider round"></span>
-                      </label>
-                      Deactivate
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </ng-container>
+                  <i class="ri-more-2-fill"></i>
+                </button>
+                <ul
+                  class="toolbar shadow visible"
+                  [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
+                >
+                  <li>
+                    <span><i class="ri-eye-line"></i></span> View
+                  </li>
+                  <li>
+                    <span><i class="ri-pencil-line"></i></span> Delete
+                  </li>
+                  <li class="toggle-container">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        [checked]="restaurant.checked"
+                        (change)="toggleChecked(restaurant.id)"
+                        (click)="$event.stopPropagation()"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                    Deactivate
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
       </ng-container>
+    </ng-container>
 
-      <ng-template #loading>
-        <app-mini-loader />
-      </ng-template>
+    <ng-template #loading>
+      <app-mini-loader />
+    </ng-template>
 
-      <ng-template #emptyList>
-        <app-empty-list />
-      </ng-template>
-    </div>
+    <ng-template #emptyList>
+      <app-empty-list />
+    </ng-template>
   </div>
 </div>

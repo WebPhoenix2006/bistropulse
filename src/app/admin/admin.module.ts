@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -15,6 +15,7 @@ import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
 import { CustomersOverviewComponent } from './customers-overview/customers-overview.component';
 import { FoodListComponent } from './food-related/food-list/food-menu.component';
+import { AddFoodComponent } from './food-related/add-food/add-food.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { FoodListComponent } from './food-related/food-list/food-menu.component'
     ViewCustomerComponent,
     CustomersOverviewComponent,
     FoodListComponent,
+    AddFoodComponent,
   ],
 
   imports: [

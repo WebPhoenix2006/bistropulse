@@ -9,6 +9,16 @@
 
 .header {
   margin-bottom: 1rem;
+  width: 100%;
+  padding: 0 24px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: nowrap;
+  flex-shrink: 1;
 }
 
 .img-container img {
@@ -29,6 +39,7 @@
 
   span {
     width: 100%;
+    padding-block-end: 15px;
     border-bottom: 2px dashed #11131580;
     display: block;
   }
@@ -51,10 +62,15 @@
 
 .representative-info,
 .documents {
-  background-color: #f9f9f9;
   padding: 1rem;
   border-radius: 10px;
   margin-bottom: 1rem;
+  background: white !important;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
 }
 
 .img-con {
@@ -86,15 +102,16 @@
     }
 
     h4 {
-      font-weight: 700;
-      font-size: 18px;
+      font-weight: 400;
+      font-size: 14px;
       margin-bottom: 8px;
+      color: $secondary;
     }
 
     p {
       font-size: 16px;
-      color: $secondary;
-      font-weight: 400;
+      color: black;
+      font-weight: 600;
     }
   }
 }
@@ -113,7 +130,9 @@
   border-radius: 10px;
   padding: 0.8rem;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid #d7e6f9;
+  border: 1px solid $gray;
+  transition: 0.2s ease-in-out;
+  overflow: hidden;
 }
 
 .pdf-img img {
@@ -129,6 +148,10 @@
 .pdf-img svg-icons {
   cursor: pointer;
   transition: 0.3s;
+}
+
+.pdf-img:hover {
+  border: 1px solid $secondary;
 }
 
 .pdf-img:hover svg-icons {
@@ -185,6 +208,7 @@ input:checked + .slider:before {
 #second-column {
   background: white !important;
   padding: 24px !important;
+  border-radius: 8px !important;
 }
 
 .title-h2 {
@@ -216,23 +240,58 @@ p {
 }
 
 #second-column {
+  background: transparent !important;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 0 !important;
+  gap: 1rem;
+
   .representative-info {
+    background: white;
+    padding: 24px;
+
     h2 {
       position: relative;
       font-size: 20px;
       font-weight: 600;
       text-transform: capitalize;
+      margin-left: 5px;
 
       &::before {
         background: $primary;
         width: 8px;
         border-radius: 1.5px;
         content: "";
-        left: -10px;
+        left: -14px;
         top: 0;
         height: 100%;
         position: absolute;
       }
     }
+  }
+}
+
+.reviews-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+
+  .divider {
+    display: inline-block;
+    width: 2px;
+    height: 20px;
+    background: #888;
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 }

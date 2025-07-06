@@ -3,6 +3,7 @@ import { RestaurantService } from '../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 import { Restaurant } from '../../interfaces/restaurant.interface';
 import { ToastrService } from 'ngx-toastr';
+import { SlowNetworkService } from '../../shared/services/slow-nerwork.service';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -17,7 +18,11 @@ export class RestaurantListComponent implements OnInit {
   searchTerm = signal<string>('');
   isLoading = signal<boolean>(false);
 
-  constructor(private router: Router, private toastr: ToastrService) {}
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+    public slowNetwork: SlowNetworkService
+  ) {}
 
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
@@ -28,6 +33,14 @@ export class RestaurantListComponent implements OnInit {
 
   getRestaurants(): void {
     this.isLoading.set(true);
+    this.slowNetwork.start(() => {
+      if (this.isLoading) {
+        this.toastr.warning(
+          'Hmm... this is taking longer than usual. Please check your connection.',
+          'Slow Network'
+        );
+      }
+    });
 
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
@@ -40,10 +53,12 @@ export class RestaurantListComponent implements OnInit {
         this.toastr.success('Loaded successfully', 'Success', {
           timeOut: 1200,
         });
+        this.slowNetwork.clear();
       },
       error: (err) => {
         console.error('FETCH ERROR:', err);
         this.isLoading.set(false);
+        this.slowNetwork.clear();
       },
     });
   }

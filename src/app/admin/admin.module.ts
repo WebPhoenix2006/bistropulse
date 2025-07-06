@@ -7,7 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { RestaurantListComponent } from './restarants/add-restaurant/restaurant-managment/restaurant-managment.component';
+import { RestaurantListComponent } from './restarants/restaurant-managment/restaurant-managment.component';
 import { AddRestaurantComponent } from './restarants/add-restaurant/add-restaurant.component';
 import { FormsModule } from '@angular/forms';
 import { CustomersComponent } from './customer-related/customers/customers.component';

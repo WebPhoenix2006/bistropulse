@@ -1,9 +1,9 @@
 import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
-import { RestaurantService } from '../../../../shared/services/restaurant.service';
+import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
-import { Restaurant } from '../../../../interfaces/restaurant.interface';
+import { Restaurant } from '../../../interfaces/restaurant.interface';
 import { ToastrService } from 'ngx-toastr';
-import { SlowNetworkService } from '../../../../shared/services/slow-nerwork.service';
+import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 
 @Component({
   selector: 'app-restaurant-list',

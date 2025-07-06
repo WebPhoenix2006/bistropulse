@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
 import { authGuard } from '../auth/auth.guard';
-import { RestaurantListComponent } from './restarants/add-restaurant/restaurant-managment/restaurant-managment.component';
+import { RestaurantListComponent } from './restarants/restaurant-managment/restaurant-managment.component';
 import { AddRestaurantComponent } from './restarants/add-restaurant/add-restaurant.component';
 import { CustomersComponent } from './customer-related/customers/customers.component';
 import { AddCustomerComponent } from './customer-related/add-customer/add-customer.component';

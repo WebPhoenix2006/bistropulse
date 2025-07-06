@@ -77,7 +77,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Food Menu',
     icon: 'pizza',
-    collapseId: 'menuNav',
+    collapseId: 'foodMenu',
     roles: ['admin', 'manager'],
     children: [
       { label: 'Menu List', route: '/admin/food-menu' },

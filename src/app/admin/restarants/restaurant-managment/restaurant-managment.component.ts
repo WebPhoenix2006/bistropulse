@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
+import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -21,8 +22,14 @@ export class RestaurantListComponent implements OnInit {
   constructor(
     private router: Router,
     private toastr: ToastrService,
-    public slowNetwork: SlowNetworkService
+    public slowNetwork: SlowNetworkService,
+    private restaurantContext: RestaurantContextService
   ) {}
+
+  selectRestaurant(id: string): void {
+    this.restaurantContext.setRestaurantId(id);
+    this.router.navigate(['/admin/restaurants', id]);
+  }
 
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
@@ -44,7 +51,7 @@ export class RestaurantListComponent implements OnInit {
 
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        this.restaurants = data.map((dataObject: any) => ({
+        this.restaurants = data.results.map((dataObject: any) => ({
           ...dataObject,
           checked: false,
           isToolbarOpen: false,

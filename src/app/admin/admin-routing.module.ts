@@ -38,7 +38,7 @@ const routes: Routes = [
             children: [
               { path: '', component: RestaurantOverviewComponent },
               { path: 'food-list', component: FoodListComponent },
-              { path: 'add-food', component: AddFoodComponent },
+              { path: 'food-list/add-food', component: AddFoodComponent },
             ],
           },
         ],
@@ -48,14 +48,6 @@ const routes: Routes = [
         children: [
           { path: '', component: CustomersComponent },
           { path: 'add-customer', component: AddCustomerComponent },
-          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
-        ],
-      },
-      {
-        path: 'food-menu',
-        children: [
-          { path: '', component: FoodListComponent },
-          { path: 'add-food', component: AddFoodComponent },
           { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
         ],
       },

@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { RestaurantService } from '../../shared/services/restaurant.service';
+import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 
 @Component({

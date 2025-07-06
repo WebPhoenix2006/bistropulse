@@ -1,1 +1,95 @@
-<p>add-food works!</p>
+<main>
+  <h1 class="title ms-2">Add Restaurant</h1>
+
+  <div class="container">
+    <div class="file-upload-con my-5">
+      <!-- Hidden actual file input -->
+      <input type="file" (change)="onFileSelected($event)" #fileInput hidden />
+
+      <!-- Clickable preview area -->
+      <div class="preview-box" (click)="fileInput.click()">
+        <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" />
+        <span *ngIf="!imagePreview">+ Add Photo</span>
+      </div>
+
+      <!-- Buttons -->
+      <app-button [buttonText]="'+ Food Image'" (click)="fileInput?.click()" />
+      <app-button buttonText="Remove" color="success" (click)="removeImage()" />
+    </div>
+
+    <form
+      class="update-restaurant container"
+      (submit)="onSubmit(); $event.stopPropagation()"
+    >
+      <div class="row">
+        @for (input of inputs; track $index) {
+        <div [class]="'input-wrapper ' + input.class">
+          <h2>{{ input.label }}</h2>
+
+          @if (input.type === 'text' || input.type === 'number' || input.type
+          === 'date') {
+          <input
+            [type]="input.type"
+            [name]="input.name"
+            required
+            [(ngModel)]="formData[input.name]"
+            placeholder="{{ input.placeholder }}"
+            class="form-control"
+          />
+          } @else if (input.type === 'file') {
+          <div class="file-input-block">
+            <input
+              type="file"
+              [name]="input.name"
+              #fileInput
+              (change)="onFileChange($event, input.name)"
+              hidden
+              accept=".pdf"
+            />
+            <div class="file-ui" (click)="fileInput.click()">
+              <span>{{ formData[input.name]?.name || "Choose file" }}</span>
+              <app-button
+                buttonText="Choose File"
+                (click)="fileInput?.click(); $event.stopPropagation()"
+                style="z-index: 100"
+              />
+            </div>
+          </div>
+          } @else if (input.type === 'select') {
+          <select [(ngModel)]="formData[input.name]" [name]="input.name">
+            @for (option of input.options; track $index) {
+            <option [value]="option">
+              {{ option }}
+            </option>
+            }
+          </select>
+          } @else if (input.type === 'message') {
+          <textarea
+            name="{{ input.name }}"
+            class="form-control mb-3"
+            [(ngModel)]="formData[input.name]"
+            placeholder="Write ingredients. Separate by comma (,)"
+          ></textarea>
+          <!-- Optional Size Checkbox -->
+          <div id="checkbox-container">
+            <input
+              type="checkbox"
+              id="hasSize"
+              [(ngModel)]="hasDifferentSize"
+              name="hasSize"
+            />
+            <span>Have a different size</span>
+          </div>
+
+          }
+        </div>
+        }
+      </div>
+
+      <app-button buttonText="Add Food" />
+    </form>
+  </div>
+</main>
+@if (isLoading()) {
+<app-loading-spinner />
+}

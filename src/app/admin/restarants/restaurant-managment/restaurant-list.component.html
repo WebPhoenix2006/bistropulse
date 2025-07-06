@@ -1,0 +1,202 @@
+<div id="container" class="container-fluid">
+  <header>
+    <h1 class="special-h1">Resturants</h1>
+
+    <div class="btn-container">
+      <label title="Search By Restaurant Name">
+        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="text"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Search By Restaurant Name"
+        />
+      </label>
+
+      <div class="position-relative">
+        <app-filter-button [text]="buttonText()" (click)="toggleFilterModal()">
+          <span *ngIf="!isFilterModalOpen()"
+            ><i class="ri-filter-3-fill"></i
+          ></span>
+          <span *ngIf="isFilterModalOpen()"
+            ><i class="fa-solid fa-xmark"></i
+          ></span>
+        </app-filter-button>
+        <div
+          *ngIf="isFilterModalOpen()"
+          id="filter-modal"
+          class="container shadow-lg rounder-3"
+        >
+          <h1 class="special-h1">Filter</h1>
+          <div class="row">
+            <!-- Location -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Location</h1>
+              <select name="location">
+                <option value="">Select Category</option>
+                <option value="lagos">Lagos</option>
+                <option value="abuja">Abuja</option>
+                <option value="portharcourt">Port Harcourt</option>
+                <option value="ibadan">Ibadan</option>
+              </select>
+            </div>
+            <!-- Rating -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Rating</h1>
+              <select name="rating">
+                <option value="">Select Category</option>
+                <option value="5">5 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="2">2 Stars</option>
+                <option value="1">1 Star</option>
+              </select>
+            </div>
+            <!-- Status -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Status</h1>
+              <select name="status">
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="closed">Closed</option>
+                <option value="banned">Banned</option>
+              </select>
+            </div>
+            <!-- Buttons -->
+            <div class="modal-input-wrapper col-md-6">
+              <app-button
+                color="secondary"
+                buttonText="Clear Filter"
+                style="width: 100%"
+              ></app-button>
+            </div>
+            <div class="modal-input-wrapper col-md-6">
+              <app-button
+                buttonText="Apply Filter"
+                style="width: 100%"
+              ></app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <app-button
+        buttonText="Add Resturant"
+        routerLink="/admin/restaurants/add-restaurant"
+      />
+      <select class="btn rounder-2">
+        <option value="1" selected disabled>
+          <i class="ri-file-download-line"></i> <span>Export</span>
+        </option>
+      </select>
+    </div>
+  </header>
+  <!-- ======= BEGINNING OF SECOND HALF OF THE PAGE ====== -->
+  <!-- BREAKPOINT -->
+
+  <div class="body">
+    <ng-container *ngIf="!isLoading(); else loading">
+      <ng-container *ngIf="restaurants.length > 0; else emptyList">
+        <table class="table mt-3 table-hover">
+          <thead>
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  style="cursor: pointer"
+                  (click)="checkAll()"
+                />
+                Name <span><i class="ri-arrow-up-down-line"></i></span>
+              </td>
+              <td>Representative</td>
+              <td>Location</td>
+              <td>Phone Number</td>
+              <td>Ratings</td>
+              <td>Status</td>
+              <td>Action</td>
+            </tr>
+          </thead>
+          <!-- BREAKPOINT -->
+          <tbody>
+            @for (restaurant of restaurants | filterRestaurants: searchTerm();
+            track restaurant.id) {
+            <tr
+              class="mb-3"
+              [class.checked]="restaurant.checked"
+              style="cursor: pointer"
+              tabindex="0"
+              [routerLink]="['/admin/restaurants', restaurant.id]"
+              role="button"
+            >
+              <td>
+                <input
+                  type="checkbox"
+                  style="cursor: pointer"
+                  [checked]="restaurant.checked"
+                  (click)="toggleChecked(restaurant.id)"
+                />
+                {{ restaurant.name }}
+              </td>
+              <td>{{ restaurant.representative }}</td>
+              <td>{{ restaurant.location }}</td>
+              <td>{{ restaurant.phone }}</td>
+              <td class="img-con">
+                <span><img src="assets/images/Vector.png" /></span
+                >{{ restaurant.rating }}
+              </td>
+              <td
+                [style.color]="restaurant.status === 'Open' ? 'green' : 'red'"
+              >
+                {{ restaurant.status }}
+              </td>
+              <td class="position-relative" id="toolbar-container">
+                <button
+                  class="toolbar-toggle rounded-3"
+                  [class.active]="restaurant.isToolbarOpen"
+                  (click)="
+                    toggleVisibility(restaurant.id); $event.stopPropagation()
+                  "
+                >
+                  <i class="ri-more-2-fill"></i>
+                </button>
+                <ul
+                  class="toolbar shadow visible"
+                  [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
+                >
+                  <li>
+                    <span><i class="ri-eye-line"></i></span> View
+                  </li>
+                  <li>
+                    <span><i class="ri-pencil-line"></i></span> Delete
+                  </li>
+                  <li class="toggle-container">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        [checked]="restaurant.checked"
+                        (change)="toggleChecked(restaurant.id)"
+                        (click)="$event.stopPropagation()"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                    Deactivate
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #loading>
+      <app-mini-loader />
+    </ng-template>
+
+    <ng-template #emptyList>
+      <app-empty-list />
+    </ng-template>
+  </div>
+</div>

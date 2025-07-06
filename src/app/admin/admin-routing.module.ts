@@ -3,13 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutComponent } from './layout/layout.component';
 import { authGuard } from '../auth/auth.guard';
-import { RestaurantListComponent } from './restaurant-managment/restaurant-managment.component';
-import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component';
-import { CustomersComponent } from './customers/customers.component';
-import { AddCustomerComponent } from './add-customer/add-customer.component';
-import { RestaurantOverviewComponent } from './restaurant-overview/restaurant-overview.component';
-import { ViewCustomerComponent } from './view-customer/view-customer.component';
-import { CustomersOverviewComponent } from './customers-overview/customers-overview.component';
+import { RestaurantListComponent } from './restarants/restaurant-managment/restaurant-managment.component';
+import { AddRestaurantComponent } from './restarants/add-restaurant/add-restaurant.component';
+import { CustomersComponent } from './customer-related/customers/customers.component';
+import { AddCustomerComponent } from './customer-related/add-customer/add-customer.component';
+import { RestaurantOverviewComponent } from './restarants/restaurant-overview/restaurant-overview.component';
+import { ViewCustomerComponent } from './customer-related/view-customer/view-customer.component';
+import { CustomersOverviewComponent } from './customer-related/customers-overview/customers-overview.component';
+import { FoodListComponent } from './food-related/food-list/food-menu.component';
+import { AddFoodComponent } from './food-related/add-food/add-food.component';
 
 const routes: Routes = [
   {
@@ -39,6 +41,14 @@ const routes: Routes = [
         children: [
           { path: '', component: CustomersComponent },
           { path: 'add-customer', component: AddCustomerComponent },
+          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
+        ],
+      },
+      {
+        path: 'food-menu',
+        children: [
+          { path: '', component: FoodListComponent },
+          { path: 'add-food', component: AddFoodComponent },
           { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
         ],
       },

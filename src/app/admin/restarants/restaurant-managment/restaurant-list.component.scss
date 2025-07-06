@@ -1,4 +1,4 @@
-@use "../../../styles.scss" as *;
+@use "../../../../styles.scss" as *;
 
 #container {
   background: white;
@@ -90,6 +90,11 @@
       }
     }
   }
+}
+
+#first-column {
+  padding: 24px;
+  background: white;
 }
 
 input[type="checkbox"] {

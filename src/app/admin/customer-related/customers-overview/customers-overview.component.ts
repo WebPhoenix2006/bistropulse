@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { CustomersService } from '../../shared/services/customers.service';
-import { CustomerStateService } from '../../shared/services/customer-state.service';
+import { CustomersService } from '../../../shared/services/customers.service';
+import { CustomerStateService } from '../../../shared/services/customer-state.service';
 
 @Component({
   selector: 'app-customers-overview',

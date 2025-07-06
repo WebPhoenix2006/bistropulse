@@ -33,7 +33,14 @@ const routes: Routes = [
         children: [
           { path: '', component: RestaurantListComponent },
           { path: 'add-restaurant', component: AddRestaurantComponent },
-          { path: ':id', component: RestaurantOverviewComponent },
+          {
+            path: ':id',
+            children: [
+              { path: '', component: RestaurantOverviewComponent },
+              { path: 'food-list', component: FoodListComponent },
+              { path: 'add-food', component: AddFoodComponent },
+            ],
+          },
         ],
       },
       {

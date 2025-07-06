@@ -1,4 +1,30 @@
-@use "../../../styles.scss" as *;
+@use "../../../../styles.scss" as *;
+
+.tab-header {
+  overflow-x: auto; // enables horizontal scrolling
+  white-space: nowrap; // keep tabs in a single line
+  -webkit-overflow-scrolling: touch;
+  background: white !important; // smooth scrolling on iOS
+  scroll-behavior: smooth;
+  padding: 10px;
+
+  // Hide scrollbar for Chrome, Safari and Opera
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Hide scrollbar for IE and Edge
+  -ms-overflow-style: none;
+
+  // Hide scrollbar for Firefox
+  scrollbar-width: none;
+}
+
+cus-tab {
+  display: inline-flex; // keep tabs side-by-side
+  gap: 1rem; // spacing between tabs
+  padding: 0.5rem 1rem;
+}
 
 .container {
   margin-top: 2rem;

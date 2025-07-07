@@ -126,7 +126,7 @@
               [class.checked]="restaurant.checked"
               style="cursor: pointer"
               tabindex="0"
-              [routerLink]="['/admin/restaurants', restaurant.id]"
+              (click)="selectRestaurant(restaurant.id)"
               role="button"
             >
               <td>

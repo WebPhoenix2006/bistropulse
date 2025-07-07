@@ -1,5 +1,5 @@
 <div id="container" class="container-fluid">
-  <header>
+  <header class="table-header mb-5">
     <h1 class="special-h1">Food</h1>
 
     <div class="btn-container">
@@ -107,19 +107,19 @@
         <table class="table mt-3 table-hover">
           <thead>
             <tr>
-              <td>
+              <th>
                 <input
                   type="checkbox"
                   style="cursor: pointer"
                   (click)="checkAll()"
                 />
                 Name <i class="ri-arrow-up-down-line"></i>
-              </td>
-              <td>Image</td>
-              <td>Category</td>
-              <td>Price</td>
-              <td>Status</td>
-              <td>Action</td>
+              </th>
+              <th>Image</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -133,14 +133,20 @@
               role="button"
             >
               <td>
-                <input
-                  type="checkbox"
-                  [checked]="food.checked"
-                  (click)="toggleChecked(food.id)"
-                />
-                {{ food.name }}
+                <div class="td-checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    [checked]="food.checked"
+                    (click)="toggleChecked(food.id)"
+                  />
+                  {{ food.name }}
+                </div>
               </td>
-              <td>{{ food.imageUrl }}</td>
+              <td>
+                <div class="img-con">
+                  <img src="{{ food.imageUrl }}" alt="" />
+                </div>
+              </td>
               <td>{{ food.category }}</td>
               <td>₦{{ food.price }}</td>
               <td [style.color]="food.status === 'Active' ? 'green' : 'red'">
@@ -149,11 +155,9 @@
               <td class="position-relative" id="toolbar-container">
                 <button
                   class="toolbar-toggle rounded-3"
-                  [class.active]="openDropdownIndex === $index"
-                  [ngClass]="
-                    openDropdownIndex === $index ? 'visible' : 'hidden'
-                  "
-                  (click)="toggleDropdown($index); $event.stopPropagation()"
+                  [class.active]="food.isToolbarOpen"
+                  [ngClass]="food.isToolbarOpen ? 'visible' : 'hidden'"
+                  (click)="toggleToolbar(food.id); $event.stopPropagation()"
                 >
                   <i class="ri-more-2-fill"></i>
                 </button>
@@ -173,11 +177,10 @@
                         type="checkbox"
                         [checked]="food.checked"
                         (change)="toggleChecked(food.id)"
-                        (click)="$event.stopPropagation()"
                       />
-                      <span class="slider round"></span>
+                      <span class="slider"></span>
                     </label>
-                    Deactivate
+                    <span class="ms-2">Deactivate</span>
                   </li>
                 </ul>
               </td>

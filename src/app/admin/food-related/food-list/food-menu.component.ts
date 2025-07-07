@@ -1,5 +1,5 @@
 // food-list.component.ts
-import { Component, signal } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 
 interface FoodItem {
   name: string;
@@ -45,7 +45,7 @@ export class FoodListComponent {
       category: 'Pizza',
       price: 24.0,
       status: 'Active',
-      imageUrl: 'assets/food1.jpg',
+      imageUrl: 'assets/food-images/food-1.png',
       checked: false,
       isToolbarOpen: false,
     },
@@ -54,7 +54,7 @@ export class FoodListComponent {
       category: 'Pizza',
       price: 24.0,
       status: 'Deactivate',
-      imageUrl: 'assets/food2.jpg',
+      imageUrl: 'assets/food-images/food-2.png',
       checked: false,
       isToolbarOpen: false,
       id: this.generateId(),
@@ -64,7 +64,7 @@ export class FoodListComponent {
       category: 'Burger',
       price: 24.0,
       status: 'Active',
-      imageUrl: 'assets/food3.jpg',
+      imageUrl: 'assets/food-images/food-3.png',
       checked: false,
       isToolbarOpen: false,
       id: this.generateId(),
@@ -74,7 +74,7 @@ export class FoodListComponent {
       category: 'Burger',
       price: 24.0,
       status: 'Deactivate',
-      imageUrl: 'assets/food4.jpg',
+      imageUrl: 'assets/food-images/food-4.png',
       checked: false,
       isToolbarOpen: false,
       id: this.generateId(),
@@ -84,7 +84,7 @@ export class FoodListComponent {
       category: 'Pizza',
       price: 24.0,
       status: 'Active',
-      imageUrl: 'assets/food5.jpg',
+      imageUrl: 'assets/food-images/food-5.png',
       checked: false,
       isToolbarOpen: false,
       id: this.generateId(),
@@ -94,7 +94,7 @@ export class FoodListComponent {
       category: 'Appetizer',
       price: 24.0,
       status: 'Deactivate',
-      imageUrl: 'assets/food6.jpg',
+      imageUrl: 'assets/food-images/food-6.png',
       checked: false,
       isToolbarOpen: false,
       id: this.generateId(),
@@ -117,19 +117,35 @@ export class FoodListComponent {
   }
 
   toggleChecked(id: string) {
-    const matchingFood = this.foods.find((f) => f.id === id);
+    this.foods = this.foods.map((food) => {
+      if (food.id === id) {
+        return {
+          ...food,
+          checked: !food.checked,
+        };
+      }
+      return food;
+    });
+  }
+
+  toggleToolbar(id: string) {
+    this.closeAll();
+    this.foods = this.foods.map((food) => {
+      if (food.id === id) {
+        return {
+          ...food,
+          isToolbarOpen: !food.isToolbarOpen,
+        };
+      }
+      return food;
+    });
+  }
+
+  checkAll(): void {
     this.foods = this.foods.map((food) => ({
       ...food,
       checked: !food.checked,
     }));
-  }
-
-  checkAll(): void {
-    if (this.selectedFoods.size === this.foods.length) {
-      this.selectedFoods.clear();
-    } else {
-      this.foods.forEach((_, index) => this.selectedFoods.add(index));
-    }
   }
 
   getStatusClass(status: 'Active' | 'Deactivate') {
@@ -140,6 +156,34 @@ export class FoodListComponent {
     const idx = this.foods.findIndex((f) => f.id === id);
     if (idx !== -1) {
       this.foods.splice(idx, 1);
+    }
+  }
+
+  closeAll(): void {
+    this.foods = this.foods.map((food) => {
+      return {
+        ...food,
+        isToolbarOpen: false,
+      };
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    const isInsideToolbar = clickedElement.closest('.toolbar') !== null;
+    const isToolbarToggle = clickedElement.closest('.toolbar-toggle') !== null;
+    const isInsideFilter = clickedElement.closest('#filter-modal') !== null;
+    const isFilterButton =
+      clickedElement.closest('#filter-modal-button') !== null;
+
+    if (!isInsideToolbar && !isToolbarToggle) {
+      this.closeAll();
+    }
+
+    if (!isInsideFilter && !isFilterButton) {
+      this.isFilterModalOpen.set(false);
     }
   }
 }

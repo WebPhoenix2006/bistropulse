@@ -38,12 +38,12 @@ export class SignupComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      otp: ['', Validators.required], // ✅ Added OTP
     });
   }
 
   showPass(event: Event) {
     const checkbox = event.target as HTMLInputElement;
-
     if (this.passwordInput) {
       this.passwordInput.nativeElement.type = checkbox.checked
         ? 'text'
@@ -59,8 +59,9 @@ export class SignupComponent implements OnInit {
 
     this.isLoading.set(true);
     const formData = this.signupForm.value;
+
     this.slowNetwork.start(() => {
-      if (this.isLoading) {
+      if (this.isLoading()) {
         this.toastr.warning(
           'Hmm... this is taking longer than usual. Please check your connection.',
           'Slow Network'
@@ -70,17 +71,27 @@ export class SignupComponent implements OnInit {
 
     this.auth.signup(formData).subscribe({
       next: (res) => {
-        // Optional: save token if returned
-        // this.auth.saveToken(res.token);
-        alert('Sign up successful');
+        if (res.token) {
+          this.auth.saveToken(res.token);
+        }
+        if (res.user) {
+          this.auth.saveUserData(res.user); // ✅ store role and other user info
+        }
+
+        this.toastr.success('Sign up successful!', 'Welcome');
         this.isLoading.set(false);
         this.slowNetwork.clear();
         this.router.navigate(['/auth/login']);
       },
+
       error: (err) => {
         console.error('Signup error:', err);
-        this.slowNetwork.clear();
+        this.toastr.error(
+          'Signup failed',
+          err.error?.otp || 'Check your OTP or try again.'
+        );
         this.isLoading.set(false);
+        this.slowNetwork.clear();
       },
     });
 

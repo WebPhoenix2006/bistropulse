@@ -12,12 +12,12 @@
           </div>
 
           <div class="form">
-            <!-- ✨ Form is reactive now -->
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+              <!-- Fullname -->
               <div class="form-group">
-                <label for="fullname"
-                  >Fullname <span class="text-danger">*</span></label
-                >
+                <label for="fullname">
+                  Fullname <span class="text-danger">*</span>
+                </label>
                 <div class="with-icon">
                   <input
                     type="text"
@@ -30,10 +30,11 @@
                 </div>
               </div>
 
+              <!-- Username -->
               <div class="form-group">
-                <label for="username"
-                  >Username <span class="text-danger">*</span></label
-                >
+                <label for="username">
+                  Username <span class="text-danger">*</span>
+                </label>
                 <div class="with-icon">
                   <input
                     type="text"
@@ -46,10 +47,11 @@
                 </div>
               </div>
 
+              <!-- Email -->
               <div class="form-group">
-                <label for="email"
-                  >Email <span class="text-danger">*</span></label
-                >
+                <label for="email">
+                  Email <span class="text-danger">*</span>
+                </label>
                 <div class="with-icon">
                   <input
                     type="email"
@@ -62,10 +64,11 @@
                 </div>
               </div>
 
+              <!-- Phone -->
               <div class="form-group">
-                <label for="phone"
-                  >Phone <span class="text-danger">*</span></label
-                >
+                <label for="phone">
+                  Phone <span class="text-danger">*</span>
+                </label>
                 <div class="with-icon">
                   <input
                     type="text"
@@ -78,10 +81,11 @@
                 </div>
               </div>
 
+              <!-- Password -->
               <div class="form-group">
-                <label for="password"
-                  >Password <span class="text-danger">*</span></label
-                >
+                <label for="password">
+                  Password <span class="text-danger">*</span>
+                </label>
                 <div class="with-icon">
                   <input
                     type="password"
@@ -107,9 +111,33 @@
                 </div>
               </div>
 
+              <!-- OTP -->
+              <div class="form-group">
+                <label for="otp">
+                  Signup OTP <span class="text-danger">*</span>
+                </label>
+                <div class="with-icon">
+                  <input
+                    type="text"
+                    id="otp"
+                    class="form-control"
+                    placeholder="Enter OTP provided by super admin"
+                    formControlName="otp"
+                  />
+                  <span><i class="fa fa-key"></i></span>
+                </div>
+                <div
+                  *ngIf="signupForm.get('otp')?.touched && signupForm.get('otp')?.invalid"
+                  class="text-danger"
+                >
+                  OTP is required
+                </div>
+              </div>
+
               <p class="text-danger">The "*" indicates required field.</p>
               <p>
-                Already have an account? <a routerLink="/auth/login">Login</a>
+                Already have an account?
+                <a routerLink="/auth/login">Login</a>
               </p>
 
               <div class="submit">
@@ -122,4 +150,6 @@
     </div>
   </div>
 </div>
+
+<!-- Loading spinner -->
 <app-loading-spinner *ngIf="isLoading()" />

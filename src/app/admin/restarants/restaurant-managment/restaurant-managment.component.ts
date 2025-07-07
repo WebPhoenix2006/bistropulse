@@ -72,6 +72,10 @@ export class RestaurantListComponent implements OnInit {
 
   ngOnInit() {
     this.getRestaurants();
+      const isFromRestaurant = this.router.url.includes('/restaurants/');
+  if (!isFromRestaurant) {
+    this.restaurantContext.setRestaurantId(null);
+  }
   }
 
   @HostListener('document:click', ['$event'])

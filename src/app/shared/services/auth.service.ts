@@ -31,7 +31,17 @@ export class AuthService {
       .post(`${this.BASE_URL}/register/`, data, {
         headers: this.getCommonHeaders(),
       })
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap((response: any) => {
+          if (response.token) {
+            this.saveToken(response.token);
+          }
+          if (response.user) {
+            this.saveUserData(response.user); // ✅ Save user & role here too
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
   login(data: any): Observable<any> {

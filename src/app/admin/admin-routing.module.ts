@@ -15,6 +15,7 @@ import { AddFoodComponent } from './food-related/add-food/add-food.component';
 import { OrdersComponent } from './order-related/orders/orders.component';
 import { AddOrderComponent } from './order-related/add-order/add-order.component';
 import { ChatComponent } from './chat/chat.component';
+import { OtpManagementComponent } from './otp-management/otp-management.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,7 @@ const routes: Routes = [
         ],
       },
       { path: 'chat', component: ChatComponent },
+      { path: 'otp', component: OtpManagementComponent },
     ],
   },
   // Remove this line:

@@ -1,4 +1,9 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OtpService } from '../../shared/services/otp.service';
 import { isPlatformBrowser } from '@angular/common';
@@ -10,7 +15,7 @@ import { isPlatformBrowser } from '@angular/common';
   standalone: false,
 })
 export class OtpManagementComponent implements OnInit {
-  otpForm: FormGroup;
+  otpForm!: FormGroup;
   otps: any[] = [];
   loading = false;
   errorMsg: string = '';
@@ -21,20 +26,30 @@ export class OtpManagementComponent implements OnInit {
     private otpService: OtpService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.isBrowser = isPlatformBrowser(this.platformId); // ✅ detect browser
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  ngOnInit(): void {
     this.otpForm = this.fb.group({
       otp: ['', Validators.required],
       role: ['', Validators.required],
     });
-  }
 
-  ngOnInit(): void {
     if (this.isBrowser) {
-      this.loadOtps(); // ✅ only run in browser
+      this.loadOtps();
     }
   }
 
-  submitOtp() {
+  generateOtp(): void {
+    const chars = '0123456789';
+    let random = '';
+    for (let i = 0; i < 6; i++) {
+      random += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    this.otpForm.get('otp')?.setValue(random);
+  }
+
+  submitOtp(): void {
     if (this.otpForm.invalid) return;
 
     const { otp, role } = this.otpForm.value;
@@ -45,24 +60,21 @@ export class OtpManagementComponent implements OnInit {
       next: (res) => {
         console.log('OTP created:', res);
         this.otpForm.reset();
-        this.loadOtps(); // refresh list
+        this.loadOtps();
       },
       error: (err) => {
         console.error('OTP creation failed:', err);
-        this.errorMsg = err.error?.detail || 'Failed to create OTP';
+        this.errorMsg = err.error?.detail || 'Failed to create OTP.';
       },
       complete: () => (this.loading = false),
     });
   }
 
-  loadOtps() {
+  loadOtps(): void {
     this.loading = true;
-    this.errorMsg = '';
-
     this.otpService.getOtps().subscribe({
       next: (res: any) => {
-        console.log('OTP fetch result:', res);
-        this.otps = res.results ?? res;
+        this.otps = res?.results ?? res;
       },
       error: (err) => {
         console.error('Failed to load OTPs:', err);

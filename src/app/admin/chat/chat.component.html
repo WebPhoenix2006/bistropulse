@@ -1,36 +1,87 @@
-<div class="flex flex-col h-full max-h-[600px] border rounded-2xl shadow p-4 bg-white">
-  <div class="flex-1 overflow-y-auto space-y-2 mb-4">
-    <div
-      *ngFor="let message of messages"
-      [ngClass]="{
-        'text-right': message.is_mine,
-        'text-left': !message.is_mine
-      }"
-    >
-      <div
-        [ngClass]="{
-          'bg-blue-500 text-white': message.is_mine,
-          'bg-gray-200 text-gray-900': !message.is_mine
-        }"
-        class="inline-block px-4 py-2 rounded-2xl max-w-xs break-words"
-      >
-        {{ message.content }}
+<div class="chat-app">
+  <!-- Sidebar Navigation -->
+ 
+
+  <!-- Chat Section -->
+  <section class="chat-section">
+    <!-- Chat Sidebar -->
+    <div class="chat-sidebar">
+      <div class="header">
+        <h3>Messages</h3>
+        <i class="fas fa-search"></i>
+      </div>
+      <input class="search-input" placeholder="Search People or Groups" />
+      <ul class="contact-list">
+        <li
+          *ngFor="let contact of contacts"
+          [class.active]="contact.id === selectedContact?.id"
+          (click)="selectContact(contact)"
+        >
+          <img [src]="contact.avatar" alt="Avatar" class="avatar" />
+          <div class="contact-info">
+            <h4>{{ contact.name }}</h4>
+            <p>{{ contact.lastMessage }}</p>
+          </div>
+          <span class="time">{{ contact.time }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window" *ngIf="selectedContact">
+      <div class="chat-header">
+        <img [src]="selectedContact.avatar" class="avatar" />
+        <div>
+          <h3>{{ selectedContact.name }}</h3>
+          <p>Online</p>
+        </div>
+        <button class="view-profile">
+          <i class="fas fa-user"></i> View Profile
+        </button>
+      </div>
+
+      <div class="chat-history">
+        <div
+          *ngFor="let msg of messages"
+          [ngClass]="{ 'message': true, 'from-me': msg.fromMe }"
+        >
+          <ng-container *ngIf="msg.text">
+            <p>{{ msg.text }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="msg.image">
+            <img [src]="msg.image" class="message-img" />
+          </ng-container>
+
+          <ng-container *ngIf="msg.file">
+            <div class="file-msg">
+              📄 {{ msg.file.name }}
+              <a href="{{ msg.file.url }}" target="_blank">Download</a>
+            </div>
+          </ng-container>
+
+          <span class="msg-time">{{ msg.time }}</span>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="chat-input">
+        <label>
+          <i class="fas fa-paperclip"></i>
+          <input type="file" hidden (change)="attachFile($event)" />
+        </label>
+        <input
+          type="text"
+          placeholder="Type your message..."
+          [(ngModel)]="newMessage"
+          (keydown.enter)="sendMessage()"
+        />
+        <button class="send-btn" (click)="sendMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
       </div>
     </div>
-  </div>
-
-  <div class="flex items-center gap-2 mt-auto">
-    <input
-      type="text"
-      [(ngModel)]="newMessage"
-      class="flex-1 border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-      placeholder="Type a message..."
-    />
-    <button
-      (click)="sendMessage()"
-      class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
-    >
-      Send
-    </button>
-  </div>
+  </section>
 </div>
+
+  

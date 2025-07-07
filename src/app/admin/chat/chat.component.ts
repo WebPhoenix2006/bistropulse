@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../../shared/services/chat.service';
-
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -8,28 +6,71 @@ import { ChatService } from '../../shared/services/chat.service';
   styleUrls: ['./chat.component.scss'],
   standalone: false,
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent {
+  newMessage = '';
+  selectedContact: any = null;
+
+
+  contacts = [
+    {
+      id: 1,
+      name: 'Jason Binoffe',
+      avatar: 'assets/images/profile-img.png',
+      lastMessage: 'Received, Thanks',
+      time: '2:34 PM',
+    },
+    {
+      id: 2,
+      name: 'Arun V.',
+      avatar: 'assets/images/profile-img.png',
+      lastMessage: 'Any updates?',
+      time: '2:34 PM',
+    },
+  ];
+
   messages: any[] = [];
-  selectedUserId: number = 0; // Replace with the ID of the user being chatted with
-  newMessage: string = '';
 
-  constructor(private chatService: ChatService) {}
-
-  ngOnInit(): void {
-    this.chatService
-      .pollMessagesWithUser(this.selectedUserId, 3000)
-      .subscribe((data: any) => {
-        this.messages = data;
-      });
+  selectContact(contact: any) {
+    this.selectedContact = contact;
+    this.messages = [
+      { text: 'Hi, any update on the project?', fromMe: true, time: '6:33 PM' },
+      {
+        text: 'Yes, I will share the estimate today.',
+        fromMe: false,
+        time: '6:35 PM',
+      },
+      {
+        image: 'assets/images/restaurant-picture.jpeg',
+        fromMe: false,
+        time: '6:36 PM',
+      },
+      {
+        file: { name: 'statement2022.pdf', url: '#' },
+        fromMe: true,
+        time: '6:45 PM',
+      },
+    ];
   }
 
   sendMessage() {
     if (!this.newMessage.trim()) return;
 
-    this.chatService
-      .sendMessage({ receiver: this.selectedUserId, content: this.newMessage })
-      .subscribe(() => {
-        this.newMessage = '';
+    this.messages.push({
+      text: this.newMessage,
+      fromMe: true,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    });
+    this.newMessage = '';
+  }
+
+  attachFile(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.messages.push({
+        file: { name: file.name, url: '#' },
+        fromMe: true,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       });
+    }
   }
 }

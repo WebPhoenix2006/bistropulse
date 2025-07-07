@@ -16,6 +16,8 @@ import { ViewCustomerComponent } from './customer-related/view-customer/view-cus
 import { CustomersOverviewComponent } from './customer-related/customers-overview/customers-overview.component';
 import { FoodListComponent } from './food-related/food-list/food-menu.component';
 import { AddFoodComponent } from './food-related/add-food/add-food.component';
+import { OrdersComponent } from './order-related/orders/orders.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { AddFoodComponent } from './food-related/add-food/add-food.component';
     CustomersOverviewComponent,
     FoodListComponent,
     AddFoodComponent,
+    OrdersComponent,
+    ChatComponent
   ],
 
   imports: [

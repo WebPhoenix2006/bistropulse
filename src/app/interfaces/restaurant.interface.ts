@@ -1,3 +1,4 @@
+import { Food } from './food.interface';
 import { FoodCategory } from './foodCategory.interface';
 
 export interface Restaurant {
@@ -16,5 +17,6 @@ export interface Restaurant {
   large_option: string;
   checked: boolean;
   isToolbarOpen: boolean;
-  categories?: FoodCategory[];
+  categories?: FoodCategory[]; // New
+  foods?: Food[];
 }

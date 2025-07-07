@@ -1,6 +1,8 @@
 export interface Food {
-  food_name: string;
-  image_url: string;
-  category_id: string;
-  restaurant_id: string;
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+  description?: string;
+  categoryId?: string;
 }

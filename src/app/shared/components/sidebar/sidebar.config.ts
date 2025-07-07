@@ -80,8 +80,11 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     collapseId: 'foodMenu',
     roles: ['admin', 'manager'],
     children: [
-      { label: 'Menu List', route: '/admin/food-menu' },
-      { label: 'Add New Menu', route: '/admin/food-menu/add-food' },
+      { label: 'Menu List', route: '/admin/restaurants/:id/food-list' },
+      {
+        label: 'Add New Menu',
+        route: '/admin/restaurants/:id/food-list/add-food',
+      },
     ],
   },
 ];

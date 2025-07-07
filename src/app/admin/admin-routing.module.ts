@@ -12,6 +12,9 @@ import { ViewCustomerComponent } from './customer-related/view-customer/view-cus
 import { CustomersOverviewComponent } from './customer-related/customers-overview/customers-overview.component';
 import { FoodListComponent } from './food-related/food-list/food-menu.component';
 import { AddFoodComponent } from './food-related/add-food/add-food.component';
+import { OrdersComponent } from './order-related/orders/orders.component';
+import { AddOrderComponent } from './order-related/add-order/add-order.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   {
@@ -51,6 +54,22 @@ const routes: Routes = [
           { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
         ],
       },
+      {
+        path: 'orders',
+        children: [
+          { path: '', component: OrdersComponent },
+          { path: 'add-order', component: AddOrderComponent },
+        ],
+      },
+      {
+        path: 'food-menu',
+        children: [
+          { path: '', component: FoodListComponent },
+          { path: 'add-food', component: AddFoodComponent },
+          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
+        ],
+      },
+      { path: 'chat', component: ChatComponent },
     ],
   },
   // Remove this line:

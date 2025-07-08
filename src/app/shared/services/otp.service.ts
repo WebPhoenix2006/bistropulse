@@ -4,28 +4,23 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class OtpService {
-  private BASE_URL = 'https://bistropulse-backend.onrender.com/api/users';
+  private readonly BASE_URL =
+    'https://bistropulse-backend.onrender.com/api/users/role-otps/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  getAuthHeader() {
+  private getAuthHeader() {
     const token = this.auth.getToken();
-    return token
-      ? { Authorization: `Token ${token}` }
-      : {}; // return empty headers if token is missing
+    return token ? { Authorization: `Token ${token}` } : {}; // return empty if no token
   }
 
   getOtps() {
     const headers = this.getAuthHeader();
-    return this.http.get(`${this.BASE_URL}/role-otps/`, { headers });
+    return this.http.get(this.BASE_URL, { headers });
   }
 
   addOtp(otp: string, role: string) {
     const headers = this.getAuthHeader();
-    return this.http.post(
-      `${this.BASE_URL}/role-otps/`,
-      { otp, role },
-      { headers }
-    );
+    return this.http.post(this.BASE_URL, { otp, role }, { headers });
   }
 }

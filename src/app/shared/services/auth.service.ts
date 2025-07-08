@@ -4,6 +4,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { jwtDecode } from 'jwt-decode'; // ✅ Correct
 
 @Injectable({
   providedIn: 'root',
@@ -33,12 +34,8 @@ export class AuthService {
       })
       .pipe(
         tap((response: any) => {
-          if (response.token) {
-            this.saveToken(response.token);
-          }
-          if (response.user) {
-            this.saveUserData(response.user); // ✅ Save user & role here too
-          }
+          if (response.token) this.saveToken(response.token);
+          if (response.user) this.saveUserData(response.user);
         }),
         catchError(this.handleError)
       );
@@ -51,12 +48,8 @@ export class AuthService {
       })
       .pipe(
         tap((response: any) => {
-          if (response.token) {
-            this.saveToken(response.token);
-          }
-          if (response.user) {
-            this.saveUserData(response.user);
-          }
+          if (response.token) this.saveToken(response.token);
+          if (response.user) this.saveUserData(response.user);
         }),
         catchError(this.handleError)
       );
@@ -98,15 +91,31 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      return !!this.getToken();
-    }
-    return false;
+    return isPlatformBrowser(this.platformId) && !!this.getToken();
   }
 
   getUserRole(): string {
     const user = this.getUserData();
-    return user?.role || 'admin'; // Default to 'admin' if no role found
+    return user?.role || 'admin';
+  }
+
+  /**
+   * ✅ Decode JWT token to extract payload (user info)
+   */
+  decodeToken(): any | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      return null;
+    }
+  }
+  getCurrentUserId(): number | null {
+    const user = this.getUserData();
+    return user?.id || null;
   }
 
   private handleError(error: any): Observable<never> {

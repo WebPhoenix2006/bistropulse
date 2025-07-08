@@ -3,6 +3,7 @@
     <h1 class="special-h1">Food</h1>
 
     <div class="btn-container">
+      <!-- Search -->
       <label title="Search By Restaurant Name">
         <span><i class="fa-solid fa-magnifying-glass"></i></span>
         <input
@@ -13,6 +14,7 @@
         />
       </label>
 
+      <!-- Filter Button & Modal -->
       <div class="position-relative">
         <app-filter-button [text]="buttonText()" (click)="toggleFilterModal()">
           <span *ngIf="!isFilterModalOpen()"
@@ -22,6 +24,7 @@
             ><i class="fa-solid fa-xmark"></i
           ></span>
         </app-filter-button>
+
         <div
           *ngIf="isFilterModalOpen()"
           id="filter-modal"
@@ -40,6 +43,7 @@
                 <option value="ibadan">Ibadan</option>
               </select>
             </div>
+
             <!-- Rating -->
             <div class="modal-input-wrapper col-md-12">
               <h1>Rating</h1>
@@ -52,6 +56,7 @@
                 <option value="1">1 Star</option>
               </select>
             </div>
+
             <!-- Status -->
             <div class="modal-input-wrapper col-md-12">
               <h1>Status</h1>
@@ -63,7 +68,8 @@
                 <option value="banned">Banned</option>
               </select>
             </div>
-            <!-- Buttons -->
+
+            <!-- Filter Buttons -->
             <div class="modal-input-wrapper col-md-6">
               <app-button
                 color="secondary"
@@ -81,119 +87,115 @@
         </div>
       </div>
 
+      <!-- Add Food + Export -->
       <app-button
         buttonText="Add Food"
         routerLink="/admin/restaurants/add-restaurant"
       />
       <select class="btn rounder-2">
         <option value="1" selected disabled>
-          <i class="ri-file-download-line"></i> <span>Export</span>
+          <i class="ri-file-download-line"></i> Export
         </option>
       </select>
     </div>
   </header>
-  <!-- ======= BEGINNING OF SECOND HALF OF THE PAGE ====== -->
-  <!-- BREAKPOINT -->
+
+  <!-- Table Content -->
   <div class="body">
-    <div class="body">
-      <ng-container *ngIf="!isLoading(); else loading">
-        <ng-container *ngIf="foods.length > 0; else emptyList">
-          <table class="table mt-3 table-hover">
-            <thead>
-              <tr>
-                <td>
-                  <input
-                    type="checkbox"
-                    style="cursor: pointer"
-                    (click)="checkAll()"
-                  />
-                  Name <span><i class="ri-arrow-up-down-line"></i></span>
-                </td>
-                <td>Image</td>
-                <td>Category</td>
-                <td>Price</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-            </thead>
-            <!-- BREAKPOINT -->
-            <tbody>
-              @for (food of foods; track $index) {
-              <tr
-                class="mb-3"
-                [class.checked]="food.checked"
-                style="cursor: pointer"
-                tabindex="0"
-                [routerLink]="['/admin/restaurants', food.id]"
-                role="button"
-              >
-                <td>
-                  <input
-                    type="checkbox"
-                    style="cursor: pointer"
-                    [checked]="food.checked"
-                    (click)="toggleChecked(food.id)"
-                  />
-                  {{ food.name }}
-                </td>
-                <td>{{ food.representative }}</td>
-                <td>{{ food.location }}</td>
-                <td>{{ food.phone }}</td>
-                <td class="img-con">
-                  <span><img src="assets/images/Vector.png" /></span
-                  >{{ food.rating }}
-                </td>
-                <td [style.color]="food.status === 'Open' ? 'green' : 'red'">
-                  {{ food.status }}
-                </td>
-                <td class="position-relative" id="toolbar-container">
-                  <button
-                    class="toolbar-toggle rounded-3"
-                    [class.active]="food.isToolbarOpen"
-                    (click)="
-                      toggleVisibility(food.id); $event.stopPropagation()
-                    "
-                  >
-                    <i class="ri-more-2-fill"></i>
-                  </button>
-                  <ul
-                    class="toolbar shadow visible"
-                    [ngClass]="food.isToolbarOpen ? 'visible' : 'hidden'"
-                  >
-                    <li>
-                      <span><i class="ri-eye-line"></i></span> View
-                    </li>
-                    <li>
-                      <span><i class="ri-pencil-line"></i></span> Delete
-                    </li>
-                    <li class="toggle-container">
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          [checked]="food.checked"
-                          (change)="toggleChecked(food.id)"
-                          (click)="$event.stopPropagation()"
-                        />
-                        <span class="slider round"></span>
-                      </label>
-                      Deactivate
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </ng-container>
+    <ng-container *ngIf="!isLoading(); else loading">
+      <ng-container *ngIf="foods.length > 0; else emptyList">
+        <table class="table mt-3 table-hover">
+          <thead>
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  style="cursor: pointer"
+                  (click)="checkAll()"
+                />
+                Name <i class="ri-arrow-up-down-line"></i>
+              </td>
+              <td>Image</td>
+              <td>Category</td>
+              <td>Price</td>
+              <td>Status</td>
+              <td>Action</td>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (food of foods; track $index) {
+            <tr
+              class="mb-3"
+              [class.checked]="food.checked"
+              style="cursor: pointer"
+              tabindex="0"
+              role="button"
+            >
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="food.checked"
+                  (click)="toggleChecked(food.id)"
+                />
+                {{ food.name }}
+              </td>
+              <td>{{ food.imageUrl }}</td>
+              <td>{{ food.category }}</td>
+              <td>₦{{ food.price }}</td>
+              <td [style.color]="food.status === 'Active' ? 'green' : 'red'">
+                {{ food.status }}
+              </td>
+              <td class="position-relative" id="toolbar-container">
+                <button
+                  class="toolbar-toggle rounded-3"
+                  [class.active]="openDropdownIndex === $index"
+                  [ngClass]="
+                    openDropdownIndex === $index ? 'visible' : 'hidden'
+                  "
+                  (click)="toggleDropdown($index); $event.stopPropagation()"
+                >
+                  <i class="ri-more-2-fill"></i>
+                </button>
+
+                <ul
+                  class="toolbar shadow"
+                  [ngClass]="food.isToolbarOpen ? 'visible' : 'hidden'"
+                >
+                  <li><i class="ri-eye-line"></i> View</li>
+                  <li><i class="ri-pencil-line"></i> Edit</li>
+                  <li (click)="deleteFood(food.id)">
+                    <i class="ri-delete-bin-line"></i> Delete
+                  </li>
+                  <li class="toggle-container">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        [checked]="food.checked"
+                        (change)="toggleChecked(food.id)"
+                        (click)="$event.stopPropagation()"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                    Deactivate
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
       </ng-container>
+    </ng-container>
 
-      <ng-template #loading>
-        <app-mini-loader />
-      </ng-template>
+    <!-- Loading State -->
+    <ng-template #loading>
+      <app-mini-loader />
+    </ng-template>
 
-      <ng-template #emptyList>
-        <app-empty-list />
-      </ng-template>
-    </div>
+    <!-- Empty State -->
+    <ng-template #emptyList>
+      <app-empty-list />
+    </ng-template>
   </div>
 </div>

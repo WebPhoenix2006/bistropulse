@@ -1,0 +1,64 @@
+@use '../../../styles.scss' as *;
+.otp-management {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    .otp-input{
+      input{
+        position: relative;
+      }
+      span{
+        position: absolute;
+        top: 7px;
+        right: 20px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: transparent;
+        transition: .3s all linear;
+        cursor: pointer;
+        &:hover{
+            background-color: $gray;
+            color: $primary;
+            transition: .3s all linear;
+        }
+      }
+    }
+  }
+  .form-control {
+    padding: 0.7rem;
+    border: 1px solid #cfd4da;
+    border-radius: 6px;
+  }
+
+  .btn-primary {
+    background-color: $primary;
+    color: white;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 6px;
+  }
+
+  .otp-list {
+    margin-top: 1.5rem;
+
+    .list-group-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

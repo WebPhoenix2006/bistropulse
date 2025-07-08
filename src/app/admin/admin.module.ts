@@ -9,13 +9,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RestaurantListComponent } from './restarants/restaurant-managment/restaurant-managment.component';
 import { AddRestaurantComponent } from './restarants/add-restaurant/add-restaurant.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomersComponent } from './customer-related/customers/customers.component';
 import { AddCustomerComponent } from './customer-related/add-customer/add-customer.component';
 import { ViewCustomerComponent } from './customer-related/view-customer/view-customer.component';
 import { CustomersOverviewComponent } from './customer-related/customers-overview/customers-overview.component';
 import { FoodListComponent } from './food-related/food-list/food-menu.component';
 import { AddFoodComponent } from './food-related/add-food/add-food.component';
+import { OrdersComponent } from './order-related/orders/orders.component';
+import { ChatComponent } from './chat/chat.component';
+import { OtpManagementComponent } from './otp-management/otp-management.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { AddFoodComponent } from './food-related/add-food/add-food.component';
     CustomersOverviewComponent,
     FoodListComponent,
     AddFoodComponent,
+    OrdersComponent,
+    ChatComponent,
+    OtpManagementComponent
   ],
 
   imports: [
@@ -38,6 +44,7 @@ import { AddFoodComponent } from './food-related/add-food/add-food.component';
     SharedModule,
     NgxChartsModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

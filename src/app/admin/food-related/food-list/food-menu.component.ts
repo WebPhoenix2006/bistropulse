@@ -24,7 +24,7 @@ export class FoodListComponent {
   isFilterModalOpen = signal<boolean>(false);
   isLoading = signal<boolean>(false);
 
-  toggleFilterModal(): void {
+  toggleFilterModal() {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
   }
 
@@ -46,8 +46,8 @@ export class FoodListComponent {
       price: 24.0,
       status: 'Active',
       imageUrl: 'assets/food-images/food-1.png',
-      checked: false,
       isToolbarOpen: false,
+      checked: false,
     },
     {
       name: 'Cheese Pizza',
@@ -55,8 +55,8 @@ export class FoodListComponent {
       price: 24.0,
       status: 'Deactivate',
       imageUrl: 'assets/food-images/food-2.png',
-      checked: false,
       isToolbarOpen: false,
+      checked: false,
       id: this.generateId(),
     },
     {
@@ -65,8 +65,8 @@ export class FoodListComponent {
       price: 24.0,
       status: 'Active',
       imageUrl: 'assets/food-images/food-3.png',
-      checked: false,
       isToolbarOpen: false,
+      checked: false,
       id: this.generateId(),
     },
     {
@@ -75,8 +75,8 @@ export class FoodListComponent {
       price: 24.0,
       status: 'Deactivate',
       imageUrl: 'assets/food-images/food-4.png',
-      checked: false,
       isToolbarOpen: false,
+      checked: false,
       id: this.generateId(),
     },
     {
@@ -85,8 +85,8 @@ export class FoodListComponent {
       price: 24.0,
       status: 'Active',
       imageUrl: 'assets/food-images/food-5.png',
-      checked: false,
       isToolbarOpen: false,
+      checked: false,
       id: this.generateId(),
     },
     {
@@ -95,8 +95,8 @@ export class FoodListComponent {
       price: 24.0,
       status: 'Deactivate',
       imageUrl: 'assets/food-images/food-6.png',
-      checked: false,
       isToolbarOpen: false,
+      checked: false,
       id: this.generateId(),
     },
   ];
@@ -109,43 +109,29 @@ export class FoodListComponent {
   }
 
   toggleSelection(index: number) {
-    if (this.selectedFoods.has(index)) {
-      this.selectedFoods.delete(index);
-    } else {
-      this.selectedFoods.add(index);
-    }
+    const food = this.foods[index];
+    food.checked = !food.checked;
   }
 
-  toggleChecked(id: string) {
-    this.foods = this.foods.map((food) => {
-      if (food.id === id) {
-        return {
-          ...food,
-          checked: !food.checked,
-        };
-      }
-      return food;
-    });
+  clearCheckedList(): void {
+    this.selectedFoods.clear();
   }
 
-  toggleToolbar(id: string) {
-    this.closeAll();
-    this.foods = this.foods.map((food) => {
-      if (food.id === id) {
-        return {
-          ...food,
-          isToolbarOpen: !food.isToolbarOpen,
-        };
-      }
-      return food;
-    });
+  toggleCheckedList(): void {
+    const allSelected = this.foods.every((food) => food.checked);
+    this.foods.forEach((food) => (food.checked = !allSelected));
   }
 
-  checkAll(): void {
-    this.foods = this.foods.map((food) => ({
-      ...food,
-      checked: !food.checked,
-    }));
+  isToolbarOpen(index: number): boolean {
+    return this.openDropdownIndex === index;
+  }
+
+  isSelected(index: number): boolean {
+    return this.selectedFoods.has(index);
+  }
+
+  allSelected(): boolean {
+    return this.foods.every((food) => food.checked);
   }
 
   getStatusClass(status: 'Active' | 'Deactivate') {
@@ -159,18 +145,10 @@ export class FoodListComponent {
     }
   }
 
-  closeAll(): void {
-    this.foods = this.foods.map((food) => {
-      return {
-        ...food,
-        isToolbarOpen: false,
-      };
-    });
-  }
-
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent) {
     const clickedElement = event.target as HTMLElement;
+    this.openDropdownIndex = null;
 
     const isInsideToolbar = clickedElement.closest('.toolbar') !== null;
     const isToolbarToggle = clickedElement.closest('.toolbar-toggle') !== null;
@@ -179,7 +157,7 @@ export class FoodListComponent {
       clickedElement.closest('#filter-modal-button') !== null;
 
     if (!isInsideToolbar && !isToolbarToggle) {
-      this.closeAll();
+      this.selectedFoods.clear();
     }
 
     if (!isInsideFilter && !isFilterButton) {

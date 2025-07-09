@@ -53,6 +53,11 @@
       .table {
         .tbody {
           tr {
+            td {
+              img {
+                object-fit: cover;
+              }
+            }
             td span {
               display: flex;
               align-items: center;
@@ -263,4 +268,9 @@ label {
     background: transparent;
     outline: none;
   }
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
 }

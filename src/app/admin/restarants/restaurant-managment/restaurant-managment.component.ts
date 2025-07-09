@@ -1,16 +1,26 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
+import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 
 @Component({
   selector: 'app-restaurant-list',
   standalone: false,
   templateUrl: './restaurant-list.component.html',
   styleUrl: './restaurant-list.component.scss',
+  providers: [FilterByPipe],
 })
 export class RestaurantListComponent implements OnInit {
   isFilterModalOpen = signal<boolean>(false);
@@ -23,7 +33,8 @@ export class RestaurantListComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     public slowNetwork: SlowNetworkService,
-    private restaurantContext: RestaurantContextService
+    private restaurantContext: RestaurantContextService,
+    private filterPipe: FilterByPipe
   ) {}
 
   selectRestaurant(id: string): void {
@@ -70,12 +81,17 @@ export class RestaurantListComponent implements OnInit {
     });
   }
 
+  filteredRestaurants: any = computed(() =>
+    this.filterPipe.transform(this.restaurants, this.searchTerm(), 'name')
+  );
+
   ngOnInit() {
     this.getRestaurants();
-      const isFromRestaurant = this.router.url.includes('/restaurants/');
-  if (!isFromRestaurant) {
-    this.restaurantContext.setRestaurantId(null);
-  }
+
+    const isFromRestaurant = this.router.url.includes('/restaurants/');
+    if (!isFromRestaurant) {
+      this.restaurantContext.setRestaurantId(null);
+    }
   }
 
   @HostListener('document:click', ['$event'])

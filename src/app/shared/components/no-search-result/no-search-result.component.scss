@@ -1,0 +1,25 @@
+@use "../../../../styles.scss" as *;
+
+.img-con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 400px;
+  margin: auto !important;
+
+  p {
+    text-align: center;
+    font-size: 25px;
+    text-transform: capitalize;
+    color: $secondary;
+  }
+
+  img {
+    opacity: 0.7;
+    max-width: 400px;
+    object-fit: cover;
+    background-blend-mode: multiply;
+  }
+}

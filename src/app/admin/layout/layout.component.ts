@@ -1,33 +1,60 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, HostListener, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  HostListener,
+  Inject,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
+import { OfflineService } from '../../shared/services/offline-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-layout',
   standalone: false,
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+  styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
   isLeftSidebarCollapsed = signal<boolean>(false);
   isSidebarCollapsed = false;
+  videoEnded: boolean = false;
+
+  offlineService = inject(OfflineService);
+  toastr = inject(ToastrService);
 
   screenWidth = signal<number>(0); // Initialize with 0 or a safe default
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
+  // ✅ This was wrongly placed outside before
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.screenWidth.set(window.innerWidth);
       const isMobile = window.innerWidth < 768;
-      // Do DOM-related logic here
+      // Add more logic if needed
+
+      effect(() => {
+        const isOffline = this.offlineService.isOffline();
+        if (isOffline) {
+          this.videoEnded = false;
+          this.toastr.error(
+            'No internet connection. Waiting to reconnect...',
+            'Error'
+          );
+        }
+      });
     }
   }
-  get layoutClass() {
-  return {
-    'sidebar-collapsed': this.isSidebarCollapsed,
-  };
-}
 
+  get layoutClass() {
+    return {
+      'sidebar-collapsed': this.isSidebarCollapsed,
+    };
+  }
 
   @HostListener('window:resize')
   onResize() {
@@ -36,8 +63,6 @@ export class LayoutComponent implements OnInit {
       this.isLeftSidebarCollapsed.set(true);
     }
   }
-
-  
 
   changeSidebarState(state: boolean): void {
     this.isLeftSidebarCollapsed.set(state);

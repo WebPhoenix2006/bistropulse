@@ -53,7 +53,11 @@
       .table {
         .tbody {
           tr {
+            &.checked {
+              background: $gray;
+            }
             td {
+              background: transparent !important;
               img {
                 object-fit: cover;
               }

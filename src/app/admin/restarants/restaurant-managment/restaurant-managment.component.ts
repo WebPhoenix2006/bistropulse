@@ -81,9 +81,13 @@ export class RestaurantListComponent implements OnInit {
     });
   }
 
-  filteredRestaurants: any = computed(() =>
-    this.filterPipe.transform(this.restaurants, this.searchTerm(), 'name')
-  );
+  get filteredRestaurants(): any[] {
+    return this.filterPipe.transform(
+      this.restaurants,
+      this.searchTerm(),
+      'name'
+    );
+  }
 
   ngOnInit() {
     this.getRestaurants();
@@ -113,25 +117,18 @@ export class RestaurantListComponent implements OnInit {
     }
   }
 
-  toggleChecked(id: string): void {
-    this.restaurants = this.restaurants.map((restaurant) => {
-      if (restaurant.id === id) {
-        return {
-          ...restaurant,
-          checked: !restaurant.checked,
-        };
-      }
-      return restaurant;
-    });
+  toggleSelection(index: number): void {
+    this.filteredRestaurants[index].checked =
+      !this.filteredRestaurants[index].checked;
   }
 
-  checkAll(): void {
-    this.restaurants = this.restaurants.map((restaurant) => {
-      return {
-        ...restaurant,
-        checked: !restaurant.checked,
-      };
-    });
+  toggleSelectAll(): void {
+    const newState = !this.allChecked();
+    this.filteredRestaurants.forEach((r) => (r.checked = newState));
+  }
+
+  allChecked(): boolean {
+    return this.filteredRestaurants.every((r) => r.checked);
   }
 
   toggleVisibility(id: string): void {
@@ -167,5 +164,13 @@ export class RestaurantListComponent implements OnInit {
         isToolbarOpen: false,
       };
     });
+  }
+
+  editRestaurant(id: string) {
+    console.log('Edit', id);
+  }
+
+  deleteRestaurant(id: string) {
+    console.log('Delete', id);
   }
 }

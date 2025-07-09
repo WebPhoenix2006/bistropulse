@@ -19,6 +19,7 @@ import { AddFoodComponent } from './food-related/add-food/add-food.component';
 import { OrdersComponent } from './order-related/orders/orders.component';
 import { ChatComponent } from './chat/chat.component';
 import { OtpManagementComponent } from './otp-management/otp-management.component';
+import { OfflineBannerComponent } from '../shared/components/offline-banner/offline-banner.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { OtpManagementComponent } from './otp-management/otp-management.componen
     AddFoodComponent,
     OrdersComponent,
     ChatComponent,
-    OtpManagementComponent
+    OtpManagementComponent,
   ],
 
   imports: [
@@ -44,7 +45,7 @@ import { OtpManagementComponent } from './otp-management/otp-management.componen
     SharedModule,
     NgxChartsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

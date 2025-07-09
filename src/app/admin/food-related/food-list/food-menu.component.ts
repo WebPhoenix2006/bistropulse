@@ -113,10 +113,6 @@ export class FoodListComponent {
     food.checked = !food.checked;
   }
 
-  clearCheckedList(): void {
-    this.selectedFoods.clear();
-  }
-
   toggleCheckedList(): void {
     const allSelected = this.foods.every((food) => food.checked);
     this.foods.forEach((food) => (food.checked = !allSelected));
@@ -124,10 +120,6 @@ export class FoodListComponent {
 
   isToolbarOpen(index: number): boolean {
     return this.openDropdownIndex === index;
-  }
-
-  isSelected(index: number): boolean {
-    return this.selectedFoods.has(index);
   }
 
   allSelected(): boolean {

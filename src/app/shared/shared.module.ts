@@ -19,6 +19,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { EmptyListComponent } from './components/empty-list/empty-list.component';
 import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
 import { NoSearchResultComponent } from './components/no-search-result/no-search-result.component';
+import { OfflineBannerComponent } from './components/offline-banner/offline-banner.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { NoSearchResultComponent } from './components/no-search-result/no-search
     ToggleSliderComponent,
     FilterByPipe,
     NoSearchResultComponent,
+    OfflineBannerComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -59,6 +61,7 @@ import { NoSearchResultComponent } from './components/no-search-result/no-search
     ToggleSliderComponent,
     FilterByPipe,
     NoSearchResultComponent,
+    OfflineBannerComponent,
   ],
 })
 export class SharedModule {}

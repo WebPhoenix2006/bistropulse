@@ -32,105 +32,117 @@
       class="table-parent"
       *ngIf="!isLoading && customers.length > 0; else loading"
     >
-      <table class="table table-hover">
-        <thead class="thead">
-          <tr>
-            <td style="width: 30px">
-              <input type="checkbox" (change)="toggleSelectAll()" />
-            </td>
-            <td>
-              <strong class="d-flex align-items-center">
-                Name <span><svg-icons name="reorder"></svg-icons></span>
-              </strong>
-            </td>
-            <td><strong>Phone</strong></td>
-            <td><strong>Email</strong></td>
-            <td><strong>Location</strong></td>
-            <td>
-              <strong class="d-flex align-items-center">
-                Created <span><svg-icons name="reorder"></svg-icons></span>
-              </strong>
-            </td>
-            <td><strong>Action</strong></td>
-          </tr>
-        </thead>
-
-        <tbody class="tbody">
-          <tr
-            *ngFor="let customer of customers"
-            style="cursor: pointer"
-            [routerLink]="['/admin/customers', customer.customer_id]"
-          >
-            <td>
-              <input
-                type="checkbox"
-                [checked]="customer.checked"
-                (change)="toggleChecked(customer.id)"
-                (click)="$event.stopPropagation()"
-              />
-            </td>
-
-            <td>
-              <div class="customer d-flex align-items-center" style="gap: 8px">
-                <div class="profile">
-                  <img
-                    [src]="
-                      customer.photo_url || 'assets/images/profile-img.png'
-                    "
-                    alt="profile-img"
-                    class="img-fluid"
-                    style="width: 50px; height: 50px; border-radius: 100%"
-                  />
+      <ng-container *ngIf="filteredCustomers as filtered">
+        <table
+          class="table table-hover"
+          *ngIf="filtered.length > 0; else noSearchResults"
+        >
+          <thead class="thead">
+            <tr>
+              <td style="width: 30px">
+                <input
+                  type="checkbox"
+                  (change)="toggleSelectAll()"
+                  [checked]="allSelected()"
+                />
+              </td>
+              <td>
+                <strong class="d-flex align-items-center">
+                  Name <span><svg-icons name="reorder"></svg-icons></span>
+                </strong>
+              </td>
+              <td><strong>Phone</strong></td>
+              <td><strong>Email</strong></td>
+              <td><strong>Location</strong></td>
+              <td>
+                <strong class="d-flex align-items-center">
+                  Created <span><svg-icons name="reorder"></svg-icons></span>
+                </strong>
+              </td>
+              <td><strong>Action</strong></td>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr
+              *ngFor="let customer of filtered; index as i"
+              style="cursor: pointer"
+              [class.checked]="customer.checked"
+              [routerLink]="['/admin/customers', customer.customer_id]"
+            >
+              <td>
+                <input
+                  type="checkbox"
+                  [checked]="customer.checked"
+                  (change)="toggleSelection(i)"
+                  (click)="$event.stopPropagation()"
+                />
+              </td>
+              <td>
+                <div
+                  class="customer d-flex align-items-center"
+                  style="gap: 8px"
+                >
+                  <div class="profile">
+                    <img
+                      [src]="
+                        customer.photo_url || 'assets/images/profile-img.png'
+                      "
+                      alt="profile-img"
+                      class="img-fluid"
+                      style="width: 50px; height: 50px; border-radius: 100%"
+                    />
+                  </div>
+                  <div class="name">{{ customer.name }}</div>
                 </div>
-                <div class="name">{{ customer.name }}</div>
-              </div>
-            </td>
+              </td>
+              <td>
+                <span>{{ customer.phone }}</span>
+              </td>
+              <td>
+                <span>{{ customer.email }}</span>
+              </td>
+              <td>
+                <span>{{ customer.location }}</span>
+              </td>
+              <td>
+                <span>{{ customer.created_at | date : "dd, MMM yyyy" }}</span>
+              </td>
+              <td>
+                <div class="actions" (click)="$event.stopPropagation()">
+                  <app-dropdown
+                    [ellipsis]="true"
+                    [options]="[
+                      {
+                        label: 'View',
+                        value: 'view',
+                        icon: 'view-eye',
+                        iconPosition: 'left'
+                      },
+                      {
+                        label: 'Edit',
+                        value: 'edit',
+                        icon: 'pencil',
+                        iconPosition: 'left'
+                      },
+                      {
+                        label: 'Disable',
+                        value: 'disable',
+                        icon: 'times',
+                        iconPosition: 'left'
+                      }
+                    ]"
+                  ></app-dropdown>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ng-template #noSearchResults>
+          <empty-search />
+        </ng-template>
+      </ng-container>
 
-            <td>
-              <span>{{ customer.phone }}</span>
-            </td>
-            <td>
-              <span>{{ customer.email }}</span>
-            </td>
-            <td>
-              <span>{{ customer.location }}</span>
-            </td>
-            <td>
-              <span>{{ customer.created_at | date : "dd, MMM yyyy" }}</span>
-            </td>
-
-            <td>
-              <div class="actions" (click)="$event.stopPropagation()">
-                <app-dropdown
-                  [ellipsis]="true"
-                  [options]="[
-                    {
-                      label: 'View',
-                      value: 'view',
-                      icon: 'view-eye',
-                      iconPosition: 'left'
-                    },
-                    {
-                      label: 'Edit',
-                      value: 'edit',
-                      icon: 'pencil',
-                      iconPosition: 'left'
-                    },
-                    {
-                      label: 'Disable',
-                      value: 'disable',
-                      icon: 'times',
-                      iconPosition: 'left'
-                    }
-                  ]"
-                ></app-dropdown>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="pages">
+      <div class="pages" *ngIf="filteredCustomers.length > 0">
         <div class="count">
           <span>{{ currentPage }} of {{ totalPages }}</span>
         </div>

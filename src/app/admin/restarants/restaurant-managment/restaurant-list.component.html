@@ -130,6 +130,7 @@
                 [class.checked]="restaurant.checked"
                 style="cursor: pointer"
                 tabindex="0"
+                (click)="selectRestaurant(restaurant.id)"
                 role="button"
               >
                 <td>
@@ -168,7 +169,7 @@
                     class="toolbar shadow visible"
                     [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
                   >
-                    <li>
+                    <li (click)="selectRestaurant(restaurant.id)">
                       <span><i class="ri-eye-line"></i></span> View
                     </li>
                     <li>

@@ -1,16 +1,6 @@
 // food-list.component.ts
 import { Component, HostListener, signal } from '@angular/core';
-
-interface FoodItem {
-  name: string;
-  category: string;
-  price: number;
-  status: 'Active' | 'Deactivate';
-  imageUrl: string;
-  checked?: boolean; // <-- NEW
-  isToolbarOpen?: boolean;
-  id: string;
-}
+import { Food } from '../../../interfaces/food.interface';
 
 @Component({
   selector: 'app-food-list',
@@ -38,65 +28,71 @@ export class FoodListComponent {
     return result;
   }
 
-  foods: FoodItem[] = [
+  foods: Food[] = [
     {
       name: 'Beef onion pizza',
+      categoryId: this.generateId(),
       id: this.generateId(),
-      category: 'Pizza',
       price: 24.0,
       status: 'Active',
-      imageUrl: 'assets/food-images/food-1.png',
+      image: 'assets/food-images/food-1.png',
       isToolbarOpen: false,
       checked: false,
+      categoryName: 'Appetizer',
     },
     {
       name: 'Cheese Pizza',
-      category: 'Pizza',
+      categoryId: this.generateId(),
       price: 24.0,
-      status: 'Deactivate',
-      imageUrl: 'assets/food-images/food-2.png',
+      status: 'Deactive',
+      image: 'assets/food-images/food-2.png',
       isToolbarOpen: false,
       checked: false,
+      categoryName: 'Appetizer',
       id: this.generateId(),
     },
     {
       name: 'Chicken burger',
-      category: 'Burger',
+      categoryId: this.generateId(),
       price: 24.0,
       status: 'Active',
-      imageUrl: 'assets/food-images/food-3.png',
+      image: 'assets/food-images/food-3.png',
       isToolbarOpen: false,
       checked: false,
+      categoryName: 'Appetizer',
       id: this.generateId(),
     },
     {
       name: 'Beef burger',
-      category: 'Burger',
+      categoryId: this.generateId(),
       price: 24.0,
-      status: 'Deactivate',
-      imageUrl: 'assets/food-images/food-4.png',
+      status: 'Deactive',
+      image: 'assets/food-images/food-4.png',
       isToolbarOpen: false,
       checked: false,
+      categoryName: 'Appetizer',
       id: this.generateId(),
     },
     {
       name: 'Beef special pizza',
-      category: 'Pizza',
+      categoryId: this.generateId(),
       price: 24.0,
       status: 'Active',
-      imageUrl: 'assets/food-images/food-5.png',
+      image: 'assets/food-images/food-5.png',
       isToolbarOpen: false,
       checked: false,
+      categoryName: 'Appetizer',
       id: this.generateId(),
     },
     {
       name: 'Cheese Pizza',
-      category: 'Appetizer',
+      categoryId: 'Appetizer',
       price: 24.0,
-      status: 'Deactivate',
-      imageUrl: 'assets/food-images/food-6.png',
+      status: 'Deactive',
+      image: 'assets/food-images/food-6.png',
       isToolbarOpen: false,
       checked: false,
+      categoryName: 'Appetizer',
       id: this.generateId(),
     },
   ];

@@ -8,7 +8,7 @@ export interface Restaurant {
   phone: string;
   business_license: string;
   owner_nid: string;
-  restaurant_image_url: string;
+  restaurant_image_url: string | File;
   location: string;
   rating: string; // You can change this to number if needed
   status: 'Open' | 'Closed'; // Extend this if there are more possible statuses

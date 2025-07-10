@@ -146,10 +146,10 @@
               </td>
               <td>
                 <div class="img-con">
-                  <img src="{{ food.imageUrl }}" alt="" />
+                  <img src="{{ food.image }}" alt="" />
                 </div>
               </td>
-              <td>{{ food.category }}</td>
+              <td>{{ food.categoryName }}</td>
               <td>₦{{ food.price }}</td>
               <td [style.color]="food.status === 'Active' ? 'green' : 'red'">
                 {{ food.status }}

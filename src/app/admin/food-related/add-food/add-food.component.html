@@ -19,7 +19,7 @@
 
     <form
       class="update-restaurant container"
-      (submit)="onSubmit(); $event.stopPropagation()"
+      (submit)="onSubmit(); $event.preventDefault()"
     >
       <div class="row">
         @for (input of inputs; track $index) {
@@ -45,6 +45,7 @@
               (change)="onFileChange($event, input.name)"
               hidden
               accept=".pdf"
+              required
             />
             <div class="file-ui" (click)="fileInput.click()">
               <span>{{ formData[input.name]?.name || "Choose file" }}</span>
@@ -63,14 +64,14 @@
             </option>
             }
           </select>
-          } @else if (input.type === 'message') {
+          }@else if (input.type === 'message') {
           <textarea
             name="{{ input.name }}"
             class="form-control mb-3"
             [(ngModel)]="formData[input.name]"
             placeholder="Write ingredients. Separate by comma (,)"
           ></textarea>
-          <!-- Optional Size Checkbox -->
+
           <div id="checkbox-container">
             <input
               type="checkbox"
@@ -81,6 +82,23 @@
             <span>Have a different size</span>
           </div>
 
+          <ng-container class="w-100 d-flex" *ngIf="hasDifferentSize">
+            <div
+              class="small-col-container w-100 d-flex justify-content-between gap-2"
+            >
+              @for (input of tempoaryInputs; track $index) {
+              <div class="col-md-4">
+                <h2>{{ input.label }}</h2>
+                <input
+                  type="{{ input.type }}"
+                  name="{{ input.name }}"
+                  [(ngModel)]="formData[input.name]"
+                  placeholder="{{ input.placeholder }}"
+                />
+              </div>
+              }
+            </div>
+          </ng-container>
           }
         </div>
         }

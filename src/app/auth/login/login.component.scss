@@ -1,5 +1,6 @@
 // SCSS
 @use "../../../styles.scss" as *;
+@use "sass:color";
 
 .container {
   margin-top: 200px;
@@ -76,7 +77,7 @@
       &:focus-within {
         span i {
           transform: scale(1.2);
-          color: darken($color: $primary, $amount: 15%);
+          color: color.adjust($primary, $lightness: -15%);
         }
       }
 
@@ -103,7 +104,7 @@
       width: 100%;
 
       &:active {
-        background: lighten($primary, 10%);
+        background: color.adjust($color: $primary, $lightness: 10%);
       }
     }
   }

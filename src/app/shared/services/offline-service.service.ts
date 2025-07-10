@@ -4,11 +4,17 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class OfflineService {
-  private readonly _isOffline = signal(!navigator.onLine);
+  private readonly _isOffline = signal(
+    typeof navigator !== 'undefined' ? !navigator.onLine : false
+  );
   readonly isOffline = this._isOffline.asReadonly();
 
   constructor() {
-    window.addEventListener('online', () => this._isOffline.set(false));
-    window.addEventListener('offline', () => this._isOffline.set(true));
+    typeof window !== 'undefined'
+      ? window.addEventListener('online', () => this._isOffline.set(false))
+      : null;
+    typeof window !== 'undefined'
+      ? window.addEventListener('offline', () => this._isOffline.set(true))
+      : null;
   }
 }

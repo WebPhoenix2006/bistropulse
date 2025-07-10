@@ -1,12 +1,14 @@
 // food-list.component.ts
 import { Component, HostListener, signal } from '@angular/core';
 import { Food } from '../../../interfaces/food.interface';
+import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 
 @Component({
   selector: 'app-food-list',
   standalone: false,
   templateUrl: './food-list.component.html',
   styleUrls: ['./food-list.component.scss'],
+  providers: [FilterByPipe],
 })
 export class FoodListComponent {
   searchTerm = '';
@@ -26,6 +28,12 @@ export class FoodListComponent {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return result;
+  }
+
+  constructor(private filterPipe: FilterByPipe) {}
+
+  get filteredFoods(): any[] {
+    return this.filterPipe.transform(this.foods, this.searchTerm, 'name');
   }
 
   foods: Food[] = [

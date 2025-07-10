@@ -10,7 +10,7 @@
           type="text"
           name="searchTerm"
           [(ngModel)]="searchTerm"
-          placeholder="Search By Restaurant Name"
+          placeholder="Search By Food Name"
         />
       </label>
 
@@ -104,91 +104,98 @@
   <div class="body">
     <ng-container *ngIf="!isLoading(); else loading">
       <ng-container *ngIf="foods.length > 0; else emptyList">
-        <table class="table mt-3 table-hover">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  style="cursor: pointer"
-                  [checked]="allSelected()"
-                  (change)="toggleCheckedList()"
-                />
-                Name <i class="ri-arrow-up-down-line"></i>
-              </th>
-              <th>Image</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody></tbody>
-          <tbody>
-            <tr
-              *ngFor="let food of foods; let i = index"
-              class="mb-3"
-              [class.checked]="food.checked"
-              style="cursor: pointer"
-              tabindex="0"
-              role="button"
-            >
-              <td>
-                <div class="td-checkbox-wrapper">
+        <ng-container *ngIf="filteredFoods as filtered">
+          <table
+            class="table mt-3 table-hover"
+            *ngIf="filtered.length > 0; else noSearchResults"
+          >
+            <thead>
+              <tr>
+                <th>
                   <input
                     type="checkbox"
-                    [checked]="food.checked"
-                    (click)="toggleSelection(i)"
+                    style="cursor: pointer"
+                    [checked]="allSelected()"
+                    (change)="toggleCheckedList()"
                   />
-                  {{ food.name }}
-                </div>
-              </td>
-              <td>
-                <div class="img-con">
-                  <img src="{{ food.image }}" alt="" />
-                </div>
-              </td>
-              <td>{{ food.categoryName }}</td>
-              <td>₦{{ food.price }}</td>
-              <td [style.color]="food.status === 'Active' ? 'green' : 'red'">
-                {{ food.status }}
-              </td>
-              <td class="position-relative" id="toolbar-container">
-                <button
-                  class="toolbar-toggle rounded-3"
-                  [class.active]="food.isToolbarOpen"
-                  [ngClass]="food.isToolbarOpen ? 'visible' : 'hidden'"
-                  (click)="toggleDropdown(i); $event.stopPropagation()"
-                >
-                  <i class="ri-more-2-fill"></i>
-                </button>
-                <ul
-                  class="toolbar shadow"
-                  [class.visible]="openDropdownIndex === i"
-                  [class.hidden]="openDropdownIndex !== i"
-                >
-                  <li><i class="ri-eye-line"></i> View</li>
-                  <li><i class="ri-pencil-line"></i> Edit</li>
-                  <li (click)="deleteFood(food.id)">
-                    <i class="ri-delete-bin-line"></i> Delete
-                  </li>
-                  <li class="toggle-container">
-                    <label class="switch">
-                      <input
-                        type="checkbox"
-                        [checked]="food.checked"
-                        (change)="toggleSelection(i)"
-                      />
-                      <span class="slider"></span>
-                    </label>
-                    <span class="ms-2">Deactivate</span>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  Name <i class="ri-arrow-up-down-line"></i>
+                </th>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tbody>
+              <tr
+                *ngFor="let food of filtered; let i = index"
+                class="mb-3"
+                [class.checked]="food.checked"
+                style="cursor: pointer"
+                tabindex="0"
+                role="button"
+              >
+                <td>
+                  <div class="td-checkbox-wrapper">
+                    <input
+                      type="checkbox"
+                      [checked]="food.checked"
+                      (click)="toggleSelection(i)"
+                    />
+                    {{ food.name }}
+                  </div>
+                </td>
+                <td>
+                  <div class="img-con">
+                    <img src="{{ food.image }}" alt="" />
+                  </div>
+                </td>
+                <td>{{ food.categoryName }}</td>
+                <td>₦{{ food.price }}</td>
+                <td [style.color]="food.status === 'Active' ? 'green' : 'red'">
+                  {{ food.status }}
+                </td>
+                <td class="position-relative" id="toolbar-container">
+                  <button
+                    class="toolbar-toggle rounded-3"
+                    [class.active]="food.isToolbarOpen"
+                    [ngClass]="food.isToolbarOpen ? 'visible' : 'hidden'"
+                    (click)="toggleDropdown(i); $event.stopPropagation()"
+                  >
+                    <i class="ri-more-2-fill"></i>
+                  </button>
+                  <ul
+                    class="toolbar shadow"
+                    [class.visible]="openDropdownIndex === i"
+                    [class.hidden]="openDropdownIndex !== i"
+                  >
+                    <li><i class="ri-eye-line"></i> View</li>
+                    <li><i class="ri-pencil-line"></i> Edit</li>
+                    <li (click)="deleteFood(food.id)">
+                      <i class="ri-delete-bin-line"></i> Delete
+                    </li>
+                    <li class="toggle-container">
+                      <label class="switch">
+                        <input
+                          type="checkbox"
+                          [checked]="food.checked"
+                          (change)="toggleSelection(i)"
+                        />
+                        <span class="slider"></span>
+                      </label>
+                      <span class="ms-2">Deactivate</span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-template #noSearchResults>
+          <empty-search />
+        </ng-template>
       </ng-container>
     </ng-container>
 

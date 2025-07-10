@@ -7,6 +7,7 @@ import {
   inject,
   OnInit,
   PLATFORM_ID,
+  runInInjectionContext,
   signal,
 } from '@angular/core';
 import { OfflineService } from '../../shared/services/offline-service.service';
@@ -28,7 +29,26 @@ export class LayoutComponent implements OnInit {
 
   screenWidth = signal<number>(0); // Initialize with 0 or a safe default
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    if (isPlatformBrowser(this.platformId)) {
+      effect(() => {
+        const isOffline = this.offlineService.isOffline();
+        if (isOffline) {
+          this.videoEnded = false;
+          this.toastr.error(
+            'No internet connection. Waiting to reconnect...',
+            'Error',
+            {
+              timeOut: 0, // no auto close
+              extendedTimeOut: 0, // no hover delay
+              closeButton: true, // optional: add close button
+              disableTimeOut: true, // ✅ prevent auto-dismiss completely
+            }
+          );
+        }
+      });
+    }
+  }
 
   // ✅ This was wrongly placed outside before
   ngOnInit(): void {
@@ -36,17 +56,6 @@ export class LayoutComponent implements OnInit {
       this.screenWidth.set(window.innerWidth);
       const isMobile = window.innerWidth < 768;
       // Add more logic if needed
-
-      effect(() => {
-        const isOffline = this.offlineService.isOffline();
-        if (isOffline) {
-          this.videoEnded = false;
-          this.toastr.error(
-            'No internet connection. Waiting to reconnect...',
-            'Error'
-          );
-        }
-      });
     }
   }
 

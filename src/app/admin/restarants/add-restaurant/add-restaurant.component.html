@@ -2,85 +2,110 @@
   <h1 class="title ms-2">Add Restaurant</h1>
 
   <div class="container">
+    <!-- Image Upload Section -->
     <div class="file-upload-con my-5">
-      <!-- Hidden actual file input -->
-      <input type="file" (change)="onFileSelected($event)" #fileInput hidden />
+      <!-- Hidden image file input -->
+      <input
+        type="file"
+        (change)="onFileChange($event, 'restaurantImage')"
+        #restaurantImageInput
+        hidden
+        accept="image/*"
+      />
 
-      <!-- Clickable preview area -->
-      <div class="preview-box" (click)="fileInput.click()">
+      <!-- Clickable image preview -->
+      <div class="preview-box" (click)="restaurantImageInput.click()">
         <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" />
         <span *ngIf="!imagePreview">+ Add Photo</span>
       </div>
 
-      <!-- Buttons -->
+      <!-- Image Upload Buttons -->
       <app-button
-        [buttonText]="'Restaurant Image'"
-        (click)="fileInput?.click()"
-      />
-      <app-button buttonText="Remove" color="success" (click)="removeImage()" />
+        buttonText="Restaurant Image"
+        (click)="restaurantImageInput.click()"
+      ></app-button>
+      <app-button
+        buttonText="Remove"
+        color="success"
+        (click)="removeImage()"
+      ></app-button>
     </div>
 
+    <!-- Form Section -->
     <form
       class="update-restaurant container"
-      (submit)="onSubmit(); $event.stopPropagation()"
+      (submit)="onSubmit(); $event.preventDefault();"
     >
       <div class="row">
         @for (input of inputs; track $index) {
-        <div [class]="'input-wrapper ' + input.class">
-          <h2>{{ input.label }}</h2>
+          <div [class]="'input-wrapper ' + input.class">
+            <h2>{{ input.label }}</h2>
 
-          @if (input.type === 'text' || input.type === 'number' || input.type
-          === 'date') {
-          <input
-            [type]="input.type"
-            [name]="input.formControlName"
-            required
-            [(ngModel)]="formData[input.name]"
-            placeholder=" "
-          />
-          } @else if (input.type === 'file') {
-          <div class="file-input-block">
-            <input
-              type="file"
-              [name]="input.name"
-              #fileInput
-              (change)="onFileChange($event, input.name)"
-              hidden
-              accept=".pdf"
-            />
-            <div class="file-ui" (click)="fileInput.click()">
-              <span>{{ formData[input.name]?.name || "Choose file" }}</span>
-              <app-button
-                buttonText="Choose File"
-                (click)="fileInput?.click(); $event.stopPropagation()"
-                style="z-index: 100"
+            <!-- Text / Number / Date -->
+            @if (['text', 'number', 'date'].includes(input.type)) {
+              <input
+                [type]="input.type"
+                [name]="input.formControlName"
+                required
+                [(ngModel)]="formData[input.name]"
+                placeholder=" "
               />
-            </div>
-          </div>
-          } @else if (input.type === 'select') {
-          <select
-            [(ngModel)]="formData[input.name]"
-            [name]="input.formControlName"
-          >
-            @for (option of input.options; track $index) {
-            <option [value]="option">{{ option }}</option>
             }
-          </select>
-          } @else if (input.type === 'message') {
-          <textarea
-            name="{{ input.formControlName }}"
-            class="form-control mb-3"
-            [(ngModel)]="formData[input.name]"
-          ></textarea>
-          }
-        </div>
+
+            <!-- File Upload (PDF) -->
+            @else if (input.type === 'file') {
+              <div class="file-input-block">
+                <input
+                  type="file"
+                  [name]="input.name"
+                  #pdfInput
+                  hidden
+                  accept=".pdf"
+                  (change)="onFileChange($event, input.name)"
+                />
+                <div class="file-ui" (click)="pdfInput.click()">
+                  <span>
+                    {{ formData[input.name]?.name || 'Choose file' }}
+                  </span>
+                  <app-button
+                    buttonText="Choose File"
+                    (click)="pdfInput.click(); $event.stopPropagation()"
+                    style="z-index: 100"
+                  ></app-button>
+                </div>
+              </div>
+            }
+
+            <!-- Select Dropdown -->
+            @else if (input.type === 'select') {
+              <select
+                [(ngModel)]="formData[input.name]"
+                [name]="input.formControlName"
+              >
+                @for (option of input.options; track $index) {
+                  <option [value]="option">{{ option }}</option>
+                }
+              </select>
+            }
+
+            <!-- Textarea Message -->
+            @else if (input.type === 'message') {
+              <textarea
+                class="form-control mb-3"
+                [name]="input.formControlName"
+                [(ngModel)]="formData[input.name]"
+              ></textarea>
+            }
+          </div>
         }
       </div>
 
-      <app-button buttonText="Add Restaurant" />
+      <app-button buttonText="Add Restaurant"></app-button>
     </form>
   </div>
 </main>
+
+<!-- Loading Spinner -->
 @if (isLoading()) {
-<app-loading-spinner />
+  <app-loading-spinner />
 }

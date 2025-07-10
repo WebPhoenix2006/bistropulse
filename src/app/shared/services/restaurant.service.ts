@@ -1,16 +1,20 @@
-``;
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service'; // adjust path if needed
 
 @Injectable({
   providedIn: 'root',
 })
 export class RestaurantService {
-  private BASE_URL = 'https://bistropulse-backend.onrender.com/api';
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private BASE_URL = 'https://bistropulse-backend.onrender.com/api';
 
+  /**
+   * Dynamically generate authorization headers.
+   * @param isFormData - true if sending FormData
+   */
   private getAuthHeaders(isFormData: boolean = false): HttpHeaders {
     let headers = new HttpHeaders();
 
@@ -28,15 +32,43 @@ export class RestaurantService {
     return headers;
   }
 
-  uploadRestaurant(data: FormData) {
-    return this.http.post(`${this.BASE_URL}/restaurants/`, data, {
-      headers: this.getAuthHeaders(true), // Avoid setting Content-Type manually for FormData
-    });
+  /**
+   * Upload new restaurant using FormData
+   */
+  uploadRestaurant(data: FormData): Observable<any> {
+    const headers = this.getAuthHeaders(true); // skip setting content-type
+    return this.http.post(`${this.BASE_URL}/restaurants/`, data, { headers });
   }
 
-  getRestaurants() {
-    return this.http.get(`${this.BASE_URL}/restaurants/`, {
-      headers: this.getAuthHeaders(),
-    });
+  /**
+   * Get all restaurants for logged-in user
+   */
+  getRestaurants(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.BASE_URL}/restaurants/`, { headers });
+  }
+
+  /**
+   * Get restaurant by ID
+   */
+  getRestaurant(id: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.BASE_URL}/restaurants/${id}/`, { headers });
+  }
+
+  /**
+   * Update a restaurant by ID
+   */
+  updateRestaurant(id: string, data: FormData): Observable<any> {
+    const headers = this.getAuthHeaders(true);
+    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, data, { headers });
+  }
+
+  /**
+   * Delete a restaurant by ID
+   */
+  deleteRestaurant(id: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.BASE_URL}/restaurants/${id}/`, { headers });
   }
 }

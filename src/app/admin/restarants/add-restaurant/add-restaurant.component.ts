@@ -15,29 +15,28 @@ export class AddRestaurantComponent {
   isLoading = signal<boolean>(false);
   isSuccessfull = signal<boolean>(false);
 
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
+  constructor(private router: Router) {}
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
-
-      reader.readAsDataURL(file);
-      this.formData['restaurantImage'] = file;
-    }
-  }
-
-  onFileChange(event: Event, name: string) {
+  onFileChange(event: Event, name: string): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {
       this.formData[name] = file;
+
+      // Show image preview if it's the restaurant image
+      if (name === 'restaurantImage') {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagePreview = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
     }
   }
 
-  constructor(private router: Router) {}
+  removeImage(): void {
+    this.imagePreview = null;
+    delete this.formData['restaurantImage'];
+  }
 
   onSubmit(): void {
     this.isLoading.set(true);
@@ -63,8 +62,10 @@ export class AddRestaurantComponent {
       }
     }
 
-    const formDataObject = Object.fromEntries(Object.entries(this.formData));
-    console.log(formDataObject);
+    // Debug log
+    for (const [key, value] of form.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     this.restaurantService.uploadRestaurant(form).subscribe({
       next: (res) => {
@@ -82,11 +83,14 @@ export class AddRestaurantComponent {
     });
   }
 
-  removeImage(): void {
-    this.imagePreview = null;
-  }
-
   inputs = [
+    {
+      label: 'Restaurant Image',
+      type: 'file',
+      formControlName: 'restaurantImage',
+      name: 'restaurantImage',
+      class: 'col-md-12',
+    },
     {
       label: 'Restaurant Name',
       type: 'text',

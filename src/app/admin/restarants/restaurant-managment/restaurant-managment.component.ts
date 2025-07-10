@@ -1,12 +1,12 @@
 import {
   Component,
-  computed,
-  effect,
   HostListener,
   inject,
   OnInit,
+  PLATFORM_ID,
   signal,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
@@ -24,35 +24,45 @@ import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 })
 export class RestaurantListComponent implements OnInit {
   isFilterModalOpen = signal<boolean>(false);
-  restaurantService = inject(RestaurantService);
   buttonText = signal<string>('Filter');
   searchTerm = signal<string>('');
   isLoading = signal<boolean>(false);
-
-  constructor(
-    private router: Router,
-    private toastr: ToastrService,
-    public slowNetwork: SlowNetworkService,
-    private restaurantContext: RestaurantContextService,
-    private filterPipe: FilterByPipe
-  ) {}
-
-  selectRestaurant(id: string): void {
-    this.restaurantContext.setRestaurantId(id);
-    this.router.navigate(['/admin/restaurants', id]);
-  }
-
-  toggleFilterModal(): void {
-    this.isFilterModalOpen.set(!this.isFilterModalOpen());
-    this.closeAll();
-  }
-
   restaurants: Array<Restaurant> = [];
+
+  private restaurantService = inject(RestaurantService);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
+  private slowNetwork = inject(SlowNetworkService);
+  private restaurantContext = inject(RestaurantContextService);
+  private filterPipe = inject(FilterByPipe);
+  private platformId = inject(PLATFORM_ID);
+
+  ngOnInit() {
+    const isBrowser = isPlatformBrowser(this.platformId);
+
+    console.log('Component init - isPlatformBrowser:', isBrowser);
+    if (isBrowser) {
+      const token = localStorage.getItem('auth_token');
+      console.log('Token from localStorage:', token);
+
+      if (token) {
+        this.getRestaurants();
+      } else {
+        console.warn('No token found in localStorage');
+      }
+    }
+
+    const isFromRestaurant = this.router.url.includes('/restaurants/');
+    if (!isFromRestaurant) {
+      this.restaurantContext.setRestaurantId(null);
+    }
+  }
 
   getRestaurants(): void {
     this.isLoading.set(true);
+
     this.slowNetwork.start(() => {
-      if (this.isLoading) {
+      if (this.isLoading()) {
         this.toastr.warning(
           'Hmm... this is taking longer than usual. Please check your connection.',
           'Slow Network'
@@ -60,21 +70,25 @@ export class RestaurantListComponent implements OnInit {
       }
     });
 
+    console.log('Calling restaurantService.getRestaurants()...');
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        this.restaurants = data.results.map((dataObject: any) => ({
-          ...dataObject,
+        console.log('Restaurants fetched:', data);
+        this.restaurants = data.results.map((restaurant: any) => ({
+          ...restaurant,
           checked: false,
           isToolbarOpen: false,
         }));
-        this.isLoading.set(false);
+
         this.toastr.success('Loaded successfully', 'Success', {
           timeOut: 1200,
         });
+        this.isLoading.set(false);
         this.slowNetwork.clear();
       },
       error: (err) => {
         console.error('FETCH ERROR:', err);
+        this.toastr.error('Failed to fetch restaurants');
         this.isLoading.set(false);
         this.slowNetwork.clear();
       },
@@ -89,13 +103,14 @@ export class RestaurantListComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.getRestaurants();
+  selectRestaurant(id: string): void {
+    this.restaurantContext.setRestaurantId(id);
+    this.router.navigate(['/admin/restaurants', id]);
+  }
 
-    const isFromRestaurant = this.router.url.includes('/restaurants/');
-    if (!isFromRestaurant) {
-      this.restaurantContext.setRestaurantId(null);
-    }
+  toggleFilterModal(): void {
+    this.isFilterModalOpen.set(!this.isFilterModalOpen());
+    this.closeAll();
   }
 
   @HostListener('document:click', ['$event'])
@@ -136,21 +151,15 @@ export class RestaurantListComponent implements OnInit {
       (r) => r.id === id
     )?.isToolbarOpen;
 
-    this.restaurants = this.restaurants.map((restaurant) => {
-      return {
-        ...restaurant,
-        isToolbarOpen: false, // close all first
-      };
-    });
+    this.restaurants = this.restaurants.map((restaurant) => ({
+      ...restaurant,
+      isToolbarOpen: false,
+    }));
 
-    // If it was closed before, open it now (after all are closed)
     if (!currentOpenState) {
       this.restaurants = this.restaurants.map((restaurant) => {
         if (restaurant.id === id) {
-          return {
-            ...restaurant,
-            isToolbarOpen: true,
-          };
+          return { ...restaurant, isToolbarOpen: true };
         }
         return restaurant;
       });
@@ -158,12 +167,10 @@ export class RestaurantListComponent implements OnInit {
   }
 
   closeAll(): void {
-    this.restaurants = this.restaurants.map((restaurant) => {
-      return {
-        ...restaurant,
-        isToolbarOpen: false,
-      };
-    });
+    this.restaurants = this.restaurants.map((restaurant) => ({
+      ...restaurant,
+      isToolbarOpen: false,
+    }));
   }
 
   editRestaurant(id: string) {

@@ -1,7 +1,7 @@
 <main>
   <h1 class="title ms-2">Add Restaurant</h1>
 
-  <div class="container">
+  <div class="container" style="transition: all 0.3s ease-in-out">
     <!-- Image Upload Section -->
     <div class="file-upload-con my-5">
       <!-- Hidden image file input -->
@@ -34,78 +34,154 @@
     <!-- Form Section -->
     <form
       class="update-restaurant container"
-      (submit)="onSubmit(); $event.preventDefault();"
+      (submit)="onSubmit(); $event.preventDefault()"
     >
       <div class="row">
         @for (input of inputs; track $index) {
-          <div [class]="'input-wrapper ' + input.class">
-            <h2>{{ input.label }}</h2>
+        <div [class]="'input-wrapper ' + input.class">
+          <h2>{{ input.label }}</h2>
 
-            <!-- Text / Number / Date -->
-            @if (['text', 'number', 'date'].includes(input.type)) {
-              <input
-                [type]="input.type"
-                [name]="input.formControlName"
-                required
-                [(ngModel)]="formData[input.name]"
-                placeholder=" "
-              />
+          <!-- Text / Number / Date -->
+          @if (['text', 'number', 'date'].includes(input.type)) {
+          <input
+            [type]="input.type"
+            [name]="input.formControlName"
+            required
+            [(ngModel)]="formData[input.name]"
+            placeholder=" "
+          />
+          }
+
+          <!-- File Upload (PDF) -->
+          @else if (input.type === 'file') {
+          <div
+            class="file-input-block"
+            [style.display]="
+              input.name === 'restaurantImage' ? 'none' : 'block'
+            "
+          >
+            <input
+              type="file"
+              [name]="input.name"
+              #pdfInput
+              hidden
+              accept=".pdf"
+              (change)="onFileChange($event, input.name)"
+            />
+            <div class="file-ui" (click)="pdfInput.click()">
+              <span>
+                {{ formData[input.name]?.name || "Choose file" }}
+              </span>
+              <app-button
+                buttonText="Choose File"
+                (click)="pdfInput.click(); $event.stopPropagation()"
+                style="z-index: 100"
+              ></app-button>
+            </div>
+          </div>
+          }
+
+          <!-- Select Dropdown -->
+          @else if (input.type === 'select') {
+          <select
+            [(ngModel)]="formData[input.name]"
+            [name]="input.formControlName"
+          >
+            @for (option of input.options; track $index) {
+            <option [value]="option">{{ option }}</option>
             }
+          </select>
+          }
 
-            <!-- File Upload (PDF) -->
-            @else if (input.type === 'file') {
-              <div class="file-input-block">
+          <!-- Textarea Message -->
+          @else if (input.type === 'message') {
+          <textarea
+            class="form-control mb-3"
+            [name]="input.formControlName"
+            [(ngModel)]="formData[input.name]"
+          ></textarea>
+          }
+        </div>
+        }
+
+        <div
+          class="representative-dropdown-container container"
+          [class.open]="isDropdownOpen()"
+        >
+          <div id="rep-heading" class="w-100 mb-4">
+            <span class="me-1">Representative Info</span>
+            <i
+              class="fa-solid fa-angle-right accordion-icon"
+              style="cursor: pointer"
+              [class.rotate]="isDropdownOpen()"
+              (click)="isDropdownOpen.set(!isDropdownOpen())"
+            ></i>
+          </div>
+
+          <div class="representative-body-wrapper">
+            <div
+              class="representative-input row"
+              [style.maxHeight]="isDropdownOpen() ? '1000px' : '0px'"
+              [style.overflow]="'hidden'"
+              style="transition: 0.3s ease-in-out"
+            >
+              @for (input of representativeInputs; track $index) {
+              <!-- FILE TYPE INPUT -->
+              @if (input.type === 'file') {
+              <div class="file-upload-con my-5" [class]="input.class">
                 <input
                   type="file"
-                  [name]="input.name"
-                  #pdfInput
-                  hidden
-                  accept=".pdf"
                   (change)="onFileChange($event, input.name)"
+                  #repImageInput
+                  hidden
+                  accept="image/*"
                 />
-                <div class="file-ui" (click)="pdfInput.click()">
-                  <span>
-                    {{ formData[input.name]?.name || 'Choose file' }}
-                  </span>
-                  <app-button
-                    buttonText="Choose File"
-                    (click)="pdfInput.click(); $event.stopPropagation()"
-                    style="z-index: 100"
-                  ></app-button>
+
+                <div class="preview-box" (click)="repImageInput.click()">
+                  <img
+                    *ngIf="imagePreview"
+                    [src]="imagePreview"
+                    alt="Preview"
+                  />
+                  <span *ngIf="!imagePreview">+ Add Photo</span>
                 </div>
+
+                <app-button
+                  [buttonText]="'Representative Image'"
+                  (click)="repImageInput.click()"
+                ></app-button>
+                <app-button
+                  buttonText="Remove"
+                  color="success"
+                  (click)="removeImage()"
+                ></app-button>
               </div>
-            }
+              }
 
-            <!-- Select Dropdown -->
-            @else if (input.type === 'select') {
-              <select
-                [(ngModel)]="formData[input.name]"
-                [name]="input.formControlName"
-              >
-                @for (option of input.options; track $index) {
-                  <option [value]="option">{{ option }}</option>
-                }
-              </select>
-            }
-
-            <!-- Textarea Message -->
-            @else if (input.type === 'message') {
-              <textarea
-                class="form-control mb-3"
-                [name]="input.formControlName"
-                [(ngModel)]="formData[input.name]"
-              ></textarea>
-            }
+              <!-- OTHER INPUT TYPES -->
+              @else {
+              <div [class]="'input-wrapper ' + input.class">
+                <h2>{{ input.label }}</h2>
+                <input
+                  [type]="input.type"
+                  [(ngModel)]="formData[input.name]"
+                  [name]="input.formControlName"
+                  placeholder=" "
+                  required
+                />
+              </div>
+              } }
+            </div>
           </div>
-        }
+        </div>
       </div>
 
-      <app-button buttonText="Add Restaurant"></app-button>
+      <app-button buttonText="Add Restaurant" buttonType="submit"></app-button>
     </form>
   </div>
 </main>
 
 <!-- Loading Spinner -->
 @if (isLoading()) {
-  <app-loading-spinner />
+<app-loading-spinner />
 }

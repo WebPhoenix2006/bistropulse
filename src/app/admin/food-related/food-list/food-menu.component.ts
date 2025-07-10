@@ -1,7 +1,8 @@
 // food-list.component.ts
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { Food } from '../../../interfaces/food.interface';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-food-list',
@@ -10,7 +11,7 @@ import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
   styleUrls: ['./food-list.component.scss'],
   providers: [FilterByPipe],
 })
-export class FoodListComponent {
+export class FoodListComponent implements OnInit {
   searchTerm = '';
   buttonText = signal<string>('Filter');
   isFilterModalOpen = signal<boolean>(false);
@@ -19,6 +20,8 @@ export class FoodListComponent {
   toggleFilterModal() {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
   }
+
+  restaurantId!: string;
 
   generateId(): string {
     const chars =
@@ -30,7 +33,15 @@ export class FoodListComponent {
     return result;
   }
 
-  constructor(private filterPipe: FilterByPipe) {}
+  ngOnInit(): void {
+    this.restaurantId = this.route.snapshot.paramMap.get('id')!;
+    console.log(this.restaurantId);
+  }
+
+  constructor(
+    private filterPipe: FilterByPipe,
+    private route: ActivatedRoute
+  ) {}
 
   get filteredFoods(): any[] {
     return this.filterPipe.transform(this.foods, this.searchTerm, 'name');

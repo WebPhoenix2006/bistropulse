@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
+import { Restaurant } from '../../../interfaces/restaurant.interface';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -14,6 +15,7 @@ export class AddRestaurantComponent {
   restaurantService = inject(RestaurantService);
   isLoading = signal<boolean>(false);
   isSuccessfull = signal<boolean>(false);
+  isDropdownOpen = signal<boolean>(false);
 
   constructor(private router: Router) {}
 
@@ -39,53 +41,84 @@ export class AddRestaurantComponent {
   }
 
   onSubmit(): void {
-    this.isLoading.set(true);
+    // this.isLoading.set(true);
     const form = new FormData();
 
-    const fieldMap: Record<string, string> = {
-      restaurantName: 'name',
-      representativeName: 'representative',
-      phoneNumber: 'phone',
-      businessLicense: 'business_license',
-      ownerNID: 'owner_nid',
-      establishedDate: 'established_date',
-      workingPeriod: 'working_period',
-      largeOption: 'large_option',
-      location: 'location',
-      restaurantImage: 'restaurant_image',
+    // Create nested object
+    const representativeInfo = {
+      representativeName: this.formData['representativeName'],
+      representativeNumber: this.formData['representativeNumber'],
+      representativeLocation: this.formData['representativeLocation'],
     };
 
-    for (const key in this.formData) {
-      if (this.formData.hasOwnProperty(key)) {
-        const mappedKey = fieldMap[key] || key;
-        form.append(mappedKey, this.formData[key]);
-      }
-    }
+    form.append('restaurantName', this.formData['restaurantName']);
+    form.append('phone', this.formData['phoneNumber']); // Assuming this maps correctly
+    form.append('business_license', this.formData['businessLicense']);
+    form.append('owner_nid', this.formData['ownerNID']);
+    form.append('established_date', this.formData['establishedDate']);
+    form.append('working_period', this.formData['workingPeriod']);
+    form.append('large_option', this.formData['largeOption']);
+    form.append('location', this.formData['location']);
+    form.append('restaurant_image_url', this.formData['restaurantImage']);
 
-    // Debug log
+    form.append('representativeInfo', JSON.stringify(representativeInfo));
+    form.append(
+      'representativeInfo.representativeImage',
+      this.formData['representativeImage']
+    );
+
+    // this.restaurantService.uploadRestaurant(form).subscribe({
+    //   next: (res) => {
+    //     console.log('Uploaded!', res);
+    //     this.isLoading.set(false);
+    //     this.isSuccessfull.set(true);
+    //     setTimeout(() => {
+    //       this.router.navigateByUrl('/admin/restaurants');
+    //     }, 2000);
+    //   },
+    //   error: (err) => {
+    //     console.warn('Upload failed', err);
+    //     this.isLoading.set(false);
+    //   },
+    // });
+
     for (const [key, value] of form.entries()) {
-      console.log(`${key}:`, value);
+      console.log(key, value);
     }
+  }
 
-    this.restaurantService.uploadRestaurant(form).subscribe({
-      next: (res) => {
-        console.log('Uploaded!', res);
-        this.isLoading.set(false);
-        this.isSuccessfull.set(true);
-        setTimeout(() => {
-          this.router.navigateByUrl('/admin/restaurants');
-        }, 2000);
-      },
-      error: (err) => {
-        console.warn('Upload failed', err);
-        this.isLoading.set(false);
-      },
-    });
+  // REP IMAGE PREVIEW LOGIC
+
+  repImagePreview: string | null = null;
+
+  onRepImageChange(event: any, name: string) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (name === 'restaurantImage') {
+        this.imagePreview = reader.result as string;
+      } else if (name === 'representativeImage') {
+        this.repImagePreview = reader.result as string;
+      }
+
+      this.formData[name] = file;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeRepImage(name: string) {
+    if (name === 'restaurantImage') {
+      this.imagePreview = null;
+    } else if (name === 'representativeImage') {
+      this.repImagePreview = null;
+    }
+    this.formData[name] = null;
   }
 
   inputs = [
     {
-      label: 'Restaurant Image',
       type: 'file',
       formControlName: 'restaurantImage',
       name: 'restaurantImage',
@@ -96,13 +129,6 @@ export class AddRestaurantComponent {
       type: 'text',
       formControlName: 'restaurantName',
       name: 'restaurantName',
-      class: 'col-md-12',
-    },
-    {
-      label: 'Representative Name',
-      type: 'text',
-      formControlName: 'representativeName',
-      name: 'representativeName',
       class: 'col-md-12',
     },
     {
@@ -162,6 +188,36 @@ export class AddRestaurantComponent {
       formControlName: 'location',
       name: 'location',
       class: 'col-md-12',
+    },
+  ];
+
+  representativeInputs = [
+    {
+      type: 'file',
+      formControlName: 'representativeImage',
+      name: 'representativeImage',
+      class: 'col-md-12',
+    },
+    {
+      type: 'text',
+      name: 'representativeName',
+      class: 'col-md-4',
+      formControlName: 'representativeName',
+      label: 'Representative Name',
+    },
+    {
+      type: 'number',
+      name: 'representativeNumber',
+      class: 'col-md-4',
+      formControlName: 'representativeNumber',
+      label: 'Representative Number',
+    },
+    {
+      type: 'text',
+      name: 'representativeLocation',
+      class: 'col-md-4',
+      formControlName: 'representativeLocation',
+      label: 'Representative Location',
     },
   ];
 }

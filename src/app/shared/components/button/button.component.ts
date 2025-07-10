@@ -13,4 +13,6 @@ export class ButtonComponent {
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
   @Input() color: 'primary' | 'secondary' | 'danger' | 'success' = 'primary';
+
+  @Input() buttonType: 'button' | 'submit' = 'button';
 }

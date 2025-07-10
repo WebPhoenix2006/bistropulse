@@ -23,6 +23,31 @@ main {
     }
   }
 
+  .representative-dropdown-container {
+    transition: padding 0.3s ease, width 0.3s ease;
+
+    .accordion-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-icon.rotate {
+      transform: rotate(90deg); // Flips the caret
+    }
+
+    .representative-body-wrapper {
+      transition: max-height 0.4s ease;
+      overflow: hidden;
+    }
+
+    &.open {
+      padding-bottom: 1.5rem; // Optional spacing when opened
+    }
+  }
+
+  .file-input-block:nth-child(1) {
+    display: none;
+  }
+
   .file-upload-con {
     display: flex;
     align-items: center;
@@ -116,4 +141,15 @@ main {
       }
     }
   }
+}
+
+#rep-heading {
+  background: $gray;
+  padding: 12px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 600;
 }

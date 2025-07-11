@@ -16,6 +16,7 @@ import { OrdersComponent } from './order-related/orders/orders.component';
 import { AddOrderComponent } from './order-related/add-order/add-order.component';
 import { ChatComponent } from './chat/chat.component';
 import { OtpManagementComponent } from './otp-management/otp-management.component';
+import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
 
 const routes: Routes = [
   {
@@ -41,8 +42,17 @@ const routes: Routes = [
             path: ':id',
             children: [
               { path: '', component: RestaurantOverviewComponent },
-              { path: 'food-list', component: FoodListComponent },
-              { path: 'food-list/add-food', component: AddFoodComponent },
+              {
+                path: 'food-list',
+                component: FoodListComponent,
+                children: [
+                  { path: 'add-food', component: AddFoodComponent },
+                  {
+                    path: ':foodId/food-details',
+                    component: FoodDetailsComponent,
+                  },
+                ],
+              },
             ],
           },
         ],
@@ -60,14 +70,6 @@ const routes: Routes = [
         children: [
           { path: '', component: OrdersComponent },
           { path: 'add-order', component: AddOrderComponent },
-        ],
-      },
-      {
-        path: 'food-menu',
-        children: [
-          { path: '', component: FoodListComponent },
-          { path: 'add-food', component: AddFoodComponent },
-          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
         ],
       },
       { path: 'chat', component: ChatComponent },

@@ -2,7 +2,7 @@
 import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { Food } from '../../../interfaces/food.interface';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-food-list',
@@ -23,6 +23,12 @@ export class FoodListComponent implements OnInit {
 
   restaurantId!: string;
 
+  selectFood(id: string): void {
+    this.router.navigate([
+      `/admin/restaurants/${this.restaurantId}/foods/${id}`,
+    ]);
+  }
+
   generateId(): string {
     const chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -35,12 +41,12 @@ export class FoodListComponent implements OnInit {
 
   ngOnInit(): void {
     this.restaurantId = this.route.snapshot.paramMap.get('id')!;
-    console.log(this.restaurantId);
   }
 
   constructor(
     private filterPipe: FilterByPipe,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   get filteredFoods(): any[] {

@@ -20,6 +20,7 @@ import { OrdersComponent } from './order-related/orders/orders.component';
 import { ChatComponent } from './chat/chat.component';
 import { OtpManagementComponent } from './otp-management/otp-management.component';
 import { OfflineBannerComponent } from '../shared/components/offline-banner/offline-banner.component';
+import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { OfflineBannerComponent } from '../shared/components/offline-banner/offl
     OrdersComponent,
     ChatComponent,
     OtpManagementComponent,
+    FoodDetailsComponent,
   ],
 
   imports: [

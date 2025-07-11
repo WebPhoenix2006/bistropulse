@@ -82,7 +82,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     children: [
       { label: 'Menu List', route: '/admin/restaurants/:id/food-list' },
       {
-        label: 'Add New Menu',
+        label: 'Add New Food',
         route: '/admin/restaurants/:id/food-list/add-food',
       },
     ],

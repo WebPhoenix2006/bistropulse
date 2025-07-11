@@ -40,15 +40,13 @@ export class RestaurantListComponent implements OnInit {
   ngOnInit() {
     const isBrowser = isPlatformBrowser(this.platformId);
 
-    console.log('Component init - isPlatformBrowser:', isBrowser);
     if (isBrowser) {
       const token = localStorage.getItem('auth_token');
-      console.log('Token from localStorage:', token);
 
       if (token) {
         this.getRestaurants();
       } else {
-        console.warn('No token found in localStorage');
+        this.toastr.error('You are not authorized to view this page', 'Error');
       }
     }
 

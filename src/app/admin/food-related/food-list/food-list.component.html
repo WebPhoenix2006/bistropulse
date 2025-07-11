@@ -171,7 +171,9 @@
                     [class.visible]="openDropdownIndex === i"
                     [class.hidden]="openDropdownIndex !== i"
                   >
-                    <li><i class="ri-eye-line"></i> View</li>
+                    <li (click)="selectFood(food.id)">
+                      <i class="ri-eye-line"></i> View
+                    </li>
                     <li><i class="ri-pencil-line"></i> Edit</li>
                     <li (click)="deleteFood(food.id)">
                       <i class="ri-delete-bin-line"></i> Delete

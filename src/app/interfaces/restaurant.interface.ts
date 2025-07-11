@@ -6,7 +6,7 @@ import { Review } from './review.interface';
 export interface Restaurant {
   id: string;
   restaurantName: string;
-  phone: string;
+  restaurantNumber: number;
   representativeInfo: Representative;
   businessLicense: string;
   ownerNID: string;

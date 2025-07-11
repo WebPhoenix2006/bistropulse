@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
+import { RestaurantSubmit } from '../../../interfaces/restaurant-submit.interface';
 
 @Component({
   selector: 'app-add-restaurant',
@@ -10,7 +11,8 @@ import { Restaurant } from '../../../interfaces/restaurant.interface';
   styleUrl: './add-restaurant.component.scss',
 })
 export class AddRestaurantComponent {
-  imagePreview: string | ArrayBuffer | null = null;
+  restaurantImagePreview: string | ArrayBuffer | null = null;
+  representativeImagePreview: string | ArrayBuffer | null = null;
   formData: { [key: string]: any } = {};
   restaurantService = inject(RestaurantService);
   isLoading = signal<boolean>(false);
@@ -19,102 +21,70 @@ export class AddRestaurantComponent {
 
   constructor(private router: Router) {}
 
+  // Handle restaurant image file input
+  onRestaurantImageChange(event: Event): void {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (file) {
+      this.formData['restaurantImage'] = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.restaurantImagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeRestaurantImage(): void {
+    this.restaurantImagePreview = null;
+    delete this.formData['restaurantImage'];
+  }
+
+  // Handle representative image file input
+  onRepresentativeImageChange(event: Event): void {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (file) {
+      this.formData['representativeImage'] = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.representativeImagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeRepresentativeImage(): void {
+    this.representativeImagePreview = null;
+    delete this.formData['representativeImage'];
+  }
+
+  // General file handler for other files (e.g. pdfs)
   onFileChange(event: Event, name: string): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {
       this.formData[name] = file;
-
-      // Show image preview if it's the restaurant image
-      if (name === 'restaurantImage') {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.imagePreview = reader.result;
-        };
-        reader.readAsDataURL(file);
-      }
     }
-  }
-
-  removeImage(): void {
-    this.imagePreview = null;
-    delete this.formData['restaurantImage'];
   }
 
   onSubmit(): void {
-    // this.isLoading.set(true);
-    const form = new FormData();
-
-    // Create nested object
-    const representativeInfo = {
-      representativeName: this.formData['representativeName'],
-      representativeNumber: this.formData['representativeNumber'],
-      representativeLocation: this.formData['representativeLocation'],
+    // Build a JSON object for submission (not FormData)
+    const data: RestaurantSubmit = {
+      restaurantName: this.formData['restaurantName'] || '',
+      restaurantNumber: this.formData['phoneNumber'] || '',
+      businessLicense: this.formData['businessLicense'] || null,
+      ownerNID: this.formData['ownerNID'] || null,
+      establishedDate: this.formData['establishedDate'] || '',
+      workingPeriod: this.formData['workingPeriod'] || '',
+      largeOption: this.formData['largeOption'] || '',
+      location: this.formData['location'] || '',
+      restaurantImage: this.formData['restaurantImage'] || null,
+      representativeInfo: {
+        representativeName: this.formData['representativeName'] || '',
+        representativeNumber: this.formData['representativeNumber'] || '',
+        representativeLocation: this.formData['representativeLocation'] || '',
+        representativeImage: this.formData['representativeImage'] || null,
+      },
     };
-
-    form.append('restaurantName', this.formData['restaurantName']);
-    form.append('phone', this.formData['phoneNumber']); // Assuming this maps correctly
-    form.append('business_license', this.formData['businessLicense']);
-    form.append('owner_nid', this.formData['ownerNID']);
-    form.append('established_date', this.formData['establishedDate']);
-    form.append('working_period', this.formData['workingPeriod']);
-    form.append('large_option', this.formData['largeOption']);
-    form.append('location', this.formData['location']);
-    form.append('restaurant_image_url', this.formData['restaurantImage']);
-
-    form.append('representativeInfo', JSON.stringify(representativeInfo));
-    form.append(
-      'representativeInfo.representativeImage',
-      this.formData['representativeImage']
-    );
-
-    // this.restaurantService.uploadRestaurant(form).subscribe({
-    //   next: (res) => {
-    //     console.log('Uploaded!', res);
-    //     this.isLoading.set(false);
-    //     this.isSuccessfull.set(true);
-    //     setTimeout(() => {
-    //       this.router.navigateByUrl('/admin/restaurants');
-    //     }, 2000);
-    //   },
-    //   error: (err) => {
-    //     console.warn('Upload failed', err);
-    //     this.isLoading.set(false);
-    //   },
-    // });
-
-    for (const [key, value] of form.entries()) {
-      console.log(key, value);
-    }
-  }
-
-  // REP IMAGE PREVIEW LOGIC
-
-  repImagePreview: string | null = null;
-
-  onRepImageChange(event: any, name: string) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (name === 'restaurantImage') {
-        this.imagePreview = reader.result as string;
-      } else if (name === 'representativeImage') {
-        this.repImagePreview = reader.result as string;
-      }
-
-      this.formData[name] = file;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  removeRepImage(name: string) {
-    if (name === 'restaurantImage') {
-      this.imagePreview = null;
-    } else if (name === 'representativeImage') {
-      this.repImagePreview = null;
-    }
-    this.formData[name] = null;
+    console.log('Submit Data:', data);
   }
 
   inputs = [

@@ -28,6 +28,11 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Allow custom chat modes in VS Code  
+!.vscode/chat-modes/
+!.vscode/chat-modes/*.chatmode.md
+
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/

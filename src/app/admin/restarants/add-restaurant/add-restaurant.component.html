@@ -7,7 +7,7 @@
       <!-- Hidden image file input -->
       <input
         type="file"
-        (change)="onFileChange($event, 'restaurantImage')"
+        (change)="onRestaurantImageChange($event)"
         #restaurantImageInput
         hidden
         accept="image/*"
@@ -15,8 +15,12 @@
 
       <!-- Clickable image preview -->
       <div class="preview-box" (click)="restaurantImageInput.click()">
-        <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" />
-        <span *ngIf="!imagePreview">+ Add Photo</span>
+        <img
+          *ngIf="restaurantImagePreview"
+          [src]="restaurantImagePreview"
+          alt="Preview"
+        />
+        <span *ngIf="!restaurantImagePreview">+ Add Photo</span>
       </div>
 
       <!-- Image Upload Buttons -->
@@ -27,7 +31,7 @@
       <app-button
         buttonText="Remove"
         color="success"
-        (click)="removeImage()"
+        (click)="removeRestaurantImage()"
       ></app-button>
     </div>
 
@@ -131,7 +135,7 @@
               <div class="file-upload-con my-5" [class]="input.class">
                 <input
                   type="file"
-                  (change)="onFileChange($event, input.name)"
+                  (change)="onRepresentativeImageChange($event)"
                   #repImageInput
                   hidden
                   accept="image/*"
@@ -139,11 +143,11 @@
 
                 <div class="preview-box" (click)="repImageInput.click()">
                   <img
-                    *ngIf="imagePreview"
-                    [src]="imagePreview"
+                    *ngIf="representativeImagePreview"
+                    [src]="representativeImagePreview"
                     alt="Preview"
                   />
-                  <span *ngIf="!imagePreview">+ Add Photo</span>
+                  <span *ngIf="!representativeImagePreview">+ Add Photo</span>
                 </div>
 
                 <app-button
@@ -153,7 +157,7 @@
                 <app-button
                   buttonText="Remove"
                   color="success"
-                  (click)="removeImage()"
+                  (click)="removeRepresentativeImage()"
                 ></app-button>
               </div>
               }

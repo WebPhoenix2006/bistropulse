@@ -39,12 +39,8 @@ export class RestaurantListComponent implements OnInit {
 
   ngOnInit() {
     const isBrowser = isPlatformBrowser(this.platformId);
-
-    console.log('Component init - isPlatformBrowser:', isBrowser);
     if (isBrowser) {
       const token = localStorage.getItem('auth_token');
-      console.log('Token from localStorage:', token);
-
       if (token) {
         this.getRestaurants();
       } else {
@@ -70,10 +66,8 @@ export class RestaurantListComponent implements OnInit {
       }
     });
 
-    console.log('Calling restaurantService.getRestaurants()...');
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        console.log('Restaurants fetched:', data);
         this.restaurants = data.results.map((restaurant: any) => ({
           ...restaurant,
           checked: false,
@@ -174,10 +168,10 @@ export class RestaurantListComponent implements OnInit {
   }
 
   editRestaurant(id: string) {
-    console.log('Edit', id);
+    // Edit logic here
   }
 
   deleteRestaurant(id: string) {
-    console.log('Delete', id);
+    // Delete logic here
   }
 }

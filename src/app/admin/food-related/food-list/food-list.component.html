@@ -176,16 +176,20 @@
                     <li (click)="deleteFood(food.id)">
                       <i class="ri-delete-bin-line"></i> Delete
                     </li>
-                    <li class="toggle-container">
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          [checked]="food.checked"
-                          (change)="toggleSelection(i)"
-                        />
-                        <span class="slider"></span>
-                      </label>
-                      <span class="ms-2">Deactivate</span>
+                    <li
+                      class="toggle-container"
+                      (click)="toggleSelection(i); $event.stopPropagation()"
+                    >
+                      <button class="status-toggle">
+                        <i
+                          [class]="
+                            food.checked
+                              ? 'fa-solid fa-toggle-on'
+                              : 'fa-solid fa-toggle-off'
+                          "
+                        ></i>
+                      </button>
+                      Deactivate
                     </li>
                   </ul>
                 </td>

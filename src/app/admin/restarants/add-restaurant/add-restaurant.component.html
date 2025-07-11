@@ -7,7 +7,7 @@
       <!-- Hidden image file input -->
       <input
         type="file"
-        (change)="onRestaurantImageChange($event)"
+        (change)="onFileChange($event, 'restaurantImage')"
         #restaurantImageInput
         hidden
         accept="image/*"
@@ -15,12 +15,8 @@
 
       <!-- Clickable image preview -->
       <div class="preview-box" (click)="restaurantImageInput.click()">
-        <img
-          *ngIf="restaurantImagePreview"
-          [src]="restaurantImagePreview"
-          alt="Preview"
-        />
-        <span *ngIf="!restaurantImagePreview">+ Add Photo</span>
+        <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" />
+        <span *ngIf="!imagePreview">+ Add Photo</span>
       </div>
 
       <!-- Image Upload Buttons -->
@@ -31,7 +27,7 @@
       <app-button
         buttonText="Remove"
         color="success"
-        (click)="removeRestaurantImage()"
+        (click)="removeImage()"
       ></app-button>
     </div>
 
@@ -111,6 +107,7 @@
         <div
           class="representative-dropdown-container container"
           [class.open]="isDropdownOpen()"
+          (click)="isDropdownOpen.set(!isDropdownOpen())"
         >
           <div id="rep-heading" class="w-100 mb-4">
             <span class="me-1">Representative Info</span>
@@ -135,7 +132,7 @@
               <div class="file-upload-con my-5" [class]="input.class">
                 <input
                   type="file"
-                  (change)="onRepresentativeImageChange($event)"
+                  (change)="onRepImageChange($event, input.name)"
                   #repImageInput
                   hidden
                   accept="image/*"
@@ -143,11 +140,11 @@
 
                 <div class="preview-box" (click)="repImageInput.click()">
                   <img
-                    *ngIf="representativeImagePreview"
-                    [src]="representativeImagePreview"
+                    *ngIf="repImagePreview"
+                    [src]="repImagePreview"
                     alt="Preview"
                   />
-                  <span *ngIf="!representativeImagePreview">+ Add Photo</span>
+                  <span *ngIf="!repImagePreview">+ Add Photo</span>
                 </div>
 
                 <app-button
@@ -157,9 +154,10 @@
                 <app-button
                   buttonText="Remove"
                   color="success"
-                  (click)="removeRepresentativeImage()"
+                  (click)="removeRepImage('representativeImage')"
                 ></app-button>
               </div>
+
               }
 
               <!-- OTHER INPUT TYPES -->
@@ -172,6 +170,7 @@
                   [name]="input.formControlName"
                   placeholder=" "
                   required
+                  (click)="$event.stopPropagation()"
                 />
               </div>
               } }

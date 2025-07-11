@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service'; // adjust path if needed
+import { RestaurantSubmit } from '../../interfaces/restaurant-submit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +36,7 @@ export class RestaurantService {
   /**
    * Upload new restaurant using FormData
    */
-  uploadRestaurant(data: FormData): Observable<any> {
+  uploadRestaurant(data: RestaurantSubmit): Observable<any> {
     const headers = this.getAuthHeaders(true); // skip setting content-type
     return this.http.post(`${this.BASE_URL}/restaurants/`, data, { headers });
   }
@@ -61,7 +62,9 @@ export class RestaurantService {
    */
   updateRestaurant(id: string, data: FormData): Observable<any> {
     const headers = this.getAuthHeaders(true);
-    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, data, { headers });
+    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, data, {
+      headers,
+    });
   }
 
   /**

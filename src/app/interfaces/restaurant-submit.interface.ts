@@ -1,5 +1,3 @@
-import { Representative } from './representative.interface';
-
 export interface RestaurantSubmit {
   restaurantName: string;
   restaurantNumber?: string | number;

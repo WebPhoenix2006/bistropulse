@@ -168,6 +168,7 @@
                   <ul
                     class="toolbar shadow visible"
                     [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
+                    (click)="$event.stopPropagation()"
                   >
                     <li (click)="selectRestaurant(restaurant.id)">
                       <span><i class="ri-eye-line"></i></span> View
@@ -175,16 +176,19 @@
                     <li>
                       <span><i class="ri-pencil-line"></i></span> Delete
                     </li>
-                    <li class="toggle-container">
-                      <label class="switch">
-                        <input
-                          type="checkbox"
-                          [checked]="restaurant.checked"
-                          (change)="toggleSelection(i)"
-                          (click)="$event.stopPropagation()"
-                        />
-                        <span class="slider round"></span>
-                      </label>
+                    <li
+                      class="toggle-container"
+                      (click)="toggleSelection(i); $event.stopPropagation()"
+                    >
+                      <button class="status-toggle">
+                        <i
+                          [class]="
+                            restaurant.checked
+                              ? 'fa-solid fa-toggle-on'
+                              : 'fa-solid fa-toggle-off'
+                          "
+                        ></i>
+                      </button>
                       Deactivate
                     </li>
                   </ul>

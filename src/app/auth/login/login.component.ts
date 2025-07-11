@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
-        console.error('Login error:', err);
+        // console.error('Login error:', err);
         this.isLoading.set(false);
         this.slowNetwork.clear();
         this.toastr.error('Error', err.error?.message || 'Unknown Error');

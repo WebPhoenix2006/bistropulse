@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service'; // adjust path if needed
+import { AuthService } from './auth.service';
 import { RestaurantSubmit } from '../../interfaces/restaurant-submit.interface';
 
 @Injectable({
@@ -34,15 +34,55 @@ export class RestaurantService {
   }
 
   /**
-   * Upload new restaurant using FormData
+   * Convert RestaurantSubmit data into FormData for file + nested support
    */
-  uploadRestaurant(data: RestaurantSubmit): Observable<any> {
-    const headers = this.getAuthHeaders(true); // skip setting content-type
-    return this.http.post(`${this.BASE_URL}/restaurants/`, data, { headers });
+  private buildFormData(data: RestaurantSubmit): FormData {
+    const formData = new FormData();
+
+    // Basic restaurant info
+    formData.append('name', data.restaurantName);
+    formData.append('phone', String(data.restaurantNumber)); // ✅ number → string
+    formData.append('location', data.location);
+    formData.append('working_period', data.workingPeriod);
+    formData.append('large_option', data.largeOption);
+    formData.append('established_date', data.establishedDate);
+
+    // Files
+    if (data.restaurantImage) {
+      formData.append('restaurant_image', data.restaurantImage);
+    }
+
+    if (data.businessLicense) {
+      formData.append('business_license', data.businessLicense);
+    }
+
+    if (data.ownerNID) {
+      formData.append('owner_nid', data.ownerNID);
+    }
+
+    // Nested Representative object (Django-style dot notation)
+    formData.append('representative.full_name', data.representativeInfo.representativeName);
+    formData.append('representative.phone', String(data.representativeInfo.representativeNumber)); // ✅ number → string
+    formData.append('representative.location', data.representativeInfo.representativeLocation);
+
+    if (data.representativeInfo.representativeImage) {
+      formData.append('representative.photo', data.representativeInfo.representativeImage);
+    }
+
+    return formData;
   }
 
   /**
-   * Get all restaurants for logged-in user
+   * Upload a new restaurant with nested representative & image fields
+   */
+  uploadRestaurant(data: RestaurantSubmit): Observable<any> {
+    const formData = this.buildFormData(data);
+    const headers = this.getAuthHeaders(true); // ✅ Don't manually set Content-Type for FormData
+    return this.http.post(`${this.BASE_URL}/restaurants/`, formData, { headers });
+  }
+
+  /**
+   * Get all restaurants for the logged-in user
    */
   getRestaurants(): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -50,7 +90,7 @@ export class RestaurantService {
   }
 
   /**
-   * Get restaurant by ID
+   * Get a single restaurant by ID
    */
   getRestaurant(id: string): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -60,11 +100,10 @@ export class RestaurantService {
   /**
    * Update a restaurant by ID
    */
-  updateRestaurant(id: string, data: FormData): Observable<any> {
+  updateRestaurant(id: string, data: RestaurantSubmit): Observable<any> {
+    const formData = this.buildFormData(data);
     const headers = this.getAuthHeaders(true);
-    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, data, {
-      headers,
-    });
+    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, formData, { headers });
   }
 
   /**

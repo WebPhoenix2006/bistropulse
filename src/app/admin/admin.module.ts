@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -21,6 +21,7 @@ import { ChatComponent } from './chat/chat.component';
 import { OtpManagementComponent } from './otp-management/otp-management.component';
 import { OfflineBannerComponent } from '../shared/components/offline-banner/offline-banner.component';
 import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
+import { RestaurantOverviewComponent } from './restarants/restaurant-overview/restaurant-overview.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { FoodDetailsComponent } from './food-related/food-details/food-details.c
     ChatComponent,
     OtpManagementComponent,
     FoodDetailsComponent,
+    RestaurantOverviewComponent,
   ],
 
   imports: [
@@ -48,6 +50,7 @@ import { FoodDetailsComponent } from './food-related/food-details/food-details.c
     NgxChartsModule,
     FormsModule,
     ReactiveFormsModule,
+    DatePipe,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

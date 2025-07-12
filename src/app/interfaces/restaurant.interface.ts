@@ -5,21 +5,23 @@ import { Review } from './review.interface';
 
 export interface Restaurant {
   id: string;
-  restaurantName: string;
-  restaurantNumber: number;
-  representativeInfo: Representative;
-  businessLicense: string;
-  ownerNID: string;
-  restaurantImage: string | File;
+  name: string;
+  representative: Representative | null;
+  phone: string;
+  business_license: string;
+  owner_nid: string;
+  established_date: string;
+  working_period: string;
+  large_option: string;
   location: string;
-  ratings: number;
-  reviews: Review[]; // You can change this to number if needed
-  status: 'Open' | 'Closed'; // Extend this if there are more possible statuses
-  workingPeriod: string;
-  establishedDate: string; // Or Date if parsed
-  largeOption: string;
-  checked: boolean;
-  isToolbarOpen: boolean;
-  categories?: FoodCategory[]; // New
-  foods?: Food[];
+  restaurant_image: string | null;
+  restaurant_image_url: string | null;
+  rating: string;
+  status: 'Open' | 'Closed'; // Add more if needed
+  categories: FoodCategory[];
+  foods: Food[];
+  reviews: Review[];
+  riders: any[];
+  isToolbarOpen?: boolean;
+  checked?: boolean;
 }

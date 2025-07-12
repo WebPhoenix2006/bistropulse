@@ -1,10 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
+import { RestaurantService } from '../../../shared/services/restaurant.service';
+import { ActivatedRoute } from '@angular/router';
+import { Restaurant } from '../../../interfaces/restaurant.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-restaurant-overview',
-  imports: [SharedModule],
+  standalone: false,
   templateUrl: './restaurant-overview.component.html',
   styleUrl: './restaurant-overview.component.scss',
 })
-export class RestaurantOverviewComponent {}
+export class RestaurantOverviewComponent implements OnInit {
+  constructor(
+    private restaurantService: RestaurantService,
+    private route: ActivatedRoute,
+    private toastr: ToastrService
+  ) {}
+
+  restaurant: Restaurant | null = null;
+
+  restaurantId!: string;
+
+  ngOnInit(): void {
+    this.restaurantId = this.route.snapshot.paramMap.get('id');
+    this.restaurantService.getRestaurant(this.restaurantId).subscribe({
+      next: (data: Restaurant) => {
+        console.log('restaurant fetched: ', data);
+        this.toastr.success('restaurant fetched!');
+        this.restaurant = data;
+      },
+      error: (err) => {
+        console.error('FETCH ERROR', err);
+      },
+    });
+  }
+}

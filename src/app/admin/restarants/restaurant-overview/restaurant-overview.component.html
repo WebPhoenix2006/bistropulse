@@ -7,11 +7,11 @@
           <h2 class="title-h2">Restaurant Overview</h2>
           <div class="btn-container d-flex align-items-center gap-3">
             <span class="d-flex align-items-center gap-2">
-              Open
+              {{ restaurant?.status }}
               <label class="switch">
                 <input
                   type="checkbox"
-                  checked
+                  [checked]="restaurant?.status === 'Open'"
                   (click)="$event.stopPropagation()"
                 />
                 <span class="slider round"></span>
@@ -27,63 +27,83 @@
 
         <div class="img-container">
           <img
-            src="assets/images/restaurant-picture.jpeg"
+            [src]="
+              restaurant?.restaurant_image_url ||
+              'assets/images/restaurant-picture.jpeg'
+            "
             alt="Restaurant Image"
           />
         </div>
 
-        <h3 class="restaurant-name">Star Valley Restaurant</h3>
+        <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
         <p class="reviews-container">
           <span class="restaurant-reviews">
             <img src="assets/images/Vector.png" alt="ratings" />
-            5.0 (23 Reviews)
+            {{ restaurant?.rating }} ({{ restaurant?.reviews.length }} Reviews)
           </span>
           <span class="divider"></span>
-          <span>23 Orders</span>
+          <span>{{ restaurant?.foods.length }} Orders</span>
         </p>
 
         <div class="info-group">
           <span>
             <h4>Established</h4>
-            <p>Since 01 January 2025</p>
+            <p>
+              Since {{ restaurant?.established_date | date : "dd MMMM yyyy" }}
+            </p>
           </span>
 
           <span>
-            <h4>Payment Method</h4>
-            <p>Visa Card</p>
+            <h4>Large Option</h4>
+            <p>{{ restaurant?.large_option }}</p>
           </span>
 
           <span>
             <h4>Working Period</h4>
-            <p>9:00 AM - 10:00 PM</p>
+            <p>{{ restaurant?.working_period }}</p>
           </span>
 
           <span>
             <h4>Location</h4>
-            <p>G. P. O., Asafoatse Nettey Road, Accra...</p>
+            <p>{{ restaurant?.location }}</p>
           </span>
         </div>
       </div>
 
       <!-- Right Column -->
       <div id="second-column" class="col-md-5">
-        <div class="representative-info">
+        <div
+          class="representative-info"
+          *ngIf="restaurant?.representative; else noRep"
+        >
           <h2>Representative Info</h2>
           <div class="img-con">
-            <img src="assets/images/profile-img.png" alt="Profile" />
-            <h3>Chelsie Jhonson</h3>
+            <img
+              [src]="
+                restaurant?.representative?.photo_url ||
+                'assets/images/profile-img.png'
+              "
+              alt="Profile"
+            />
+            <h3>{{ restaurant?.representative.full_name }}</h3>
           </div>
           <div class="info-con">
             <span class="first-span">
               <h4>Phone Number</h4>
-              <p>(480) 555-0103</p>
+              <p>{{ restaurant?.representative.phone }}</p>
             </span>
             <span>
               <h4>Location</h4>
-              <p>Asafoatse Nettey Road, Accra...</p>
+              <p>{{ restaurant?.representative.location }}</p>
             </span>
           </div>
         </div>
+        <ng-template #noRep>
+          <div class="representative-info">
+            <h2>Representative Info</h2>
+            <p>No representative assigned</p>
+          </div>
+        </ng-template>
 
         <div class="documents">
           <h2>Documents</h2>
@@ -93,18 +113,22 @@
               <img src="assets/images/reward-points.png" alt="pdf icon" />
               <div class="info">
                 <h4>License</h4>
-                <p>Businesslicense.pdf</p>
+                <p>BusinessLicense.pdf</p>
               </div>
-              <svg-icons name="download-icon"></svg-icons>
+              <a [href]="restaurant?.business_license" target="_blank">
+                <svg-icons name="download-icon"></svg-icons>
+              </a>
             </div>
 
             <div class="pdf-img">
               <img src="assets/images/reward-points.png" alt="pdf icon" />
               <div class="info">
                 <h4>NID Card</h4>
-                <p>Nidcard.pdf</p>
+                <p>OwnerNID.pdf</p>
               </div>
-              <svg-icons name="download-icon"></svg-icons>
+              <a [href]="restaurant?.owner_nid" target="_blank">
+                <svg-icons name="download-icon"></svg-icons>
+              </a>
             </div>
           </div>
         </div>

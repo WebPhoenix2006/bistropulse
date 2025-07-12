@@ -42,16 +42,11 @@ const routes: Routes = [
             path: ':id',
             children: [
               { path: '', component: RestaurantOverviewComponent },
+              { path: 'food-list', component: FoodListComponent },
+              { path: 'food-list/add-food', component: AddFoodComponent },
               {
-                path: 'food-list',
-                component: FoodListComponent,
-                children: [
-                  { path: 'add-food', component: AddFoodComponent },
-                  {
-                    path: ':foodId/food-details',
-                    component: FoodDetailsComponent,
-                  },
-                ],
+                path: 'food-list/:foodId/food-details',
+                component: FoodDetailsComponent,
               },
             ],
           },

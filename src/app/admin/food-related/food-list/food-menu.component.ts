@@ -25,7 +25,7 @@ export class FoodListComponent implements OnInit {
 
   selectFood(id: string): void {
     this.router.navigate([
-      `/admin/restaurants/${this.restaurantId}/foods/${id}`,
+      `/admin/restaurants/${this.restaurantId}/food-list/${id}/food-details`,
     ]);
   }
 

@@ -97,7 +97,7 @@ export class RestaurantListComponent implements OnInit {
     return this.filterPipe.transform(
       this.restaurants,
       this.searchTerm(),
-      'restaurantName'
+      'name'
     );
   }
 

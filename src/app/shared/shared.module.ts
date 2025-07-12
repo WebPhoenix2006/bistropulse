@@ -20,6 +20,7 @@ import { EmptyListComponent } from './components/empty-list/empty-list.component
 import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.component';
 import { NoSearchResultComponent } from './components/no-search-result/no-search-result.component';
 import { OfflineBannerComponent } from './components/offline-banner/offline-banner.component';
+import { DesignedH1Component } from './components/designed-h1/designed-h1.component';
 
 @NgModule({
   declarations: [
@@ -41,11 +42,13 @@ import { OfflineBannerComponent } from './components/offline-banner/offline-bann
     FilterByPipe,
     NoSearchResultComponent,
     OfflineBannerComponent,
+    DesignedH1Component,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
     ButtonComponent,
     SearchFieldComponent,
+    DesignedH1Component,
     SvgIconsComponent,
     SidebarComponent,
     NavbarComponent,

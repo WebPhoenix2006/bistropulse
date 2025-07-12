@@ -1,0 +1,19 @@
+@use "../../../../styles.scss" as *;
+
+h1 {
+  position: relative;
+  margin-bottom: 18px !important;
+  font-size: 20px;
+  font-weight: 600;
+
+  &::before {
+    background: $primary;
+    width: 8px;
+    border-radius: 1.5px;
+    content: "";
+    left: -10px;
+    top: 0;
+    height: 100%;
+    position: absolute;
+  }
+}

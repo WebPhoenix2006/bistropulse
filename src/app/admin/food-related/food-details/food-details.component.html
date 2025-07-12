@@ -1,1 +1,124 @@
-<p>food-details works!</p>
+<div id="container" class="container py-4">
+  <div id="header" class="conatainer-fluid">
+    <app-h1 text="Food Details" />
+
+    <div class="btn-container">
+      <div class="form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          [checked]="food.available"
+        />
+        <label class="form-check-label ms-2">{{
+          food.available ? "Available" : "Unavailable"
+        }}</label>
+      </div>
+      <app-button buttonText="Edit">
+        <i class="fa-solid fa-pen"></i>
+      </app-button>
+    </div>
+  </div>
+  <div id="divider" class="row mx-auto">
+    <!-- Left Section -->
+    <div id="left-section" class="col-md-7">
+      <img
+        [src]="food.image_url || 'assets/food-images/pizza.png'"
+        class="img-fluid rounded mb-3"
+        alt="Beef Onion Pizza"
+      />
+
+      <h3 class="food-name">{{ food.name }}</h3>
+      <p class="text-muted">
+        <span><span class="text-warning">★</span> 5.0</span>
+        (23 Reviews) • 23 Sales
+      </p>
+
+      <h5 class="food-details mt-3">Details</h5>
+      <p id="p" class="text-muted">
+        {{ food.description }}
+      </p>
+
+      <h5 class="fw-semibold mt-4">Size</h5>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="size"
+          id="small"
+          checked
+        />
+        <label class="form-check-label" for="small"
+          >Small - ₵{{ food.price.small }}</label
+        >
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="size" id="medium" />
+        <label class="form-check-label" for="medium"
+          >Medium - ₵{{ food.price.medium }}</label
+        >
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="size" id="large" />
+        <label class="form-check-label" for="large"
+          >Large - ₵{{ food.price.large }}</label
+        >
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="col-md-5">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="fw-bold m-0">
+          5.0<span class="text-muted fs-6">/5.0</span>
+        </h2>
+      </div>
+
+      <!-- Star Breakdown -->
+      <div class="rating-breakdown mb-4">
+        <div *ngFor="let i of food.ratings">
+          <div class="d-flex align-items-center gap-2">
+            <span
+              ><img
+                [src]="`assets/ratings/rating-${i}.png`"
+                alt="ratings"
+                srcset=""
+            /></span>
+            <div class="progress w-100" style="height: 8px">
+              <div class="progress-bar bg-warning" style="width: 80%"></div>
+            </div>
+            <span>23</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ratings Section -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="fw-bold">Review & Ratings</h5>
+        <select class="form-select form-select-sm w-auto">
+          <option>Ratings</option>
+        </select>
+      </div>
+
+      <!-- Review Cards -->
+      <div class="review-card d-flex mb-3">
+        <img
+          src="assets/images/avatar.png"
+          alt="Reviewer"
+          class="rounded-circle me-3"
+          width="50"
+          height="50"
+        />
+        <div>
+          <h6 class="mb-1 fw-semibold">
+            Ralph Edwards
+            <span class="text-warning">★ 5.0</span>
+          </h6>
+          <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
+          <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
+        </div>
+      </div>
+
+      <!-- Clone the above div for more reviews -->
+    </div>
+  </div>
+</div>

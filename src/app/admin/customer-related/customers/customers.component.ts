@@ -3,7 +3,6 @@ import { CustomersService } from '../../../shared/services/customers.service';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
-
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
@@ -15,8 +14,9 @@ export class CustomersComponent implements OnInit {
   customerService = inject(CustomersService);
   searchTerm = '';
   customers: any[] = [];
-  isLoading = false;
+  filteredList: any[] = [];
 
+  isLoading = false;
   currentPage = 1;
   itemsPerPage = 10;
   totalCount = 0;
@@ -29,44 +29,34 @@ export class CustomersComponent implements OnInit {
     private filterPipe: FilterByPipe
   ) {}
 
-  get filteredCustomers(): any[] {
-    return this.filterPipe.transform(this.customers, this.searchTerm, 'name');
-  }
-
   ngOnInit(): void {
     const token = localStorage.getItem('auth_token');
     if (token) {
       this.loadCustomers();
-    } else {
-      console.warn(
-        '❌ Token not found in localStorage. Skipping customer fetch.'
-      );
     }
   }
 
-  loadCustomers(page: number = 1) {
+  loadCustomers(): void {
     this.isLoading = true;
     this.slowNetwork.start(() => {
       if (this.isLoading) {
-        this.toastr.warning(
-          'Hmm... this is taking longer than usual. Please check your connection.',
-          'Slow Network'
-        );
+        this.toastr.warning('Hmm... slow network');
       }
     });
 
-    this.customerService.getCustomers(page).subscribe({
+    this.customerService.getCustomers().subscribe({
       next: (res: any) => {
         this.customers =
-          res.results?.map((c: any) => ({ ...c, checked: false })) || [];
-        this.totalCount = res.count || 0;
-        this.currentPage = page;
+          res.results.map((c: any) => ({ ...c, checked: false })) || [];
+        this.applyFilters();
+        this.totalCount = this.filteredList.length;
         this.isLoading = false;
         this.slowNetwork.clear();
       },
       error: (err) => {
-        this.toastr.error('❌ Failed to fetch customers:', err);
+        this.toastr.error('❌ Failed to fetch customers');
         this.customers = [];
+        this.filteredList = [];
         this.totalCount = 0;
         this.isLoading = false;
         this.slowNetwork.clear();
@@ -74,11 +64,27 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  onPageChange(page: number) {
-    this.loadCustomers(page);
+  applyFilters(): void {
+    const filtered = this.filterPipe.transform(
+      this.customers,
+      this.searchTerm,
+      'name'
+    );
+    this.totalCount = filtered.length;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.filteredList = filtered.slice(startIndex, endIndex);
   }
 
-  // ⬇️ Dropdown Logic
+  get filteredCustomers(): any[] {
+    return this.filteredList;
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.applyFilters();
+  }
+
   toggleDropdown(index: number): void {
     this.openDropdownIndex = this.openDropdownIndex === index ? null : index;
   }
@@ -87,19 +93,17 @@ export class CustomersComponent implements OnInit {
     return this.openDropdownIndex === index;
   }
 
-  // ⬇️ Checkbox Logic
   toggleSelection(index: number): void {
-    this.filteredCustomers[index].checked =
-      !this.filteredCustomers[index].checked;
+    this.filteredList[index].checked = !this.filteredList[index].checked;
   }
 
   allSelected(): boolean {
-    return this.filteredCustomers.every((c) => c.checked);
+    return this.filteredList.every((c) => c.checked);
   }
 
   toggleSelectAll(): void {
     const newState = !this.allSelected();
-    this.filteredCustomers.forEach((c) => (c.checked = newState));
+    this.filteredList.forEach((c) => (c.checked = newState));
   }
 
   get totalPages(): number {

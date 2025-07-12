@@ -1,6 +1,8 @@
 export interface Review {
-  rating: number;
+  id: string;
+  userId: string; // who posted the review
+  name: string; // display name of the user
+  rating: number; // from 1 to 5
   comment: string;
-  userId: string;
-  restuarantId: string;
+  date: string; // ISO or formatted date
 }

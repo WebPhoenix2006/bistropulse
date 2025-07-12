@@ -1,17 +1,22 @@
+import { Review } from './review.interface';
+
 export interface Food {
-  categoryId: string;
   id: string;
   name: string;
-  price: number;
-  image?: File | string;
+  categoryId: string;
   description?: string;
+  image?: string | File;
+  available?: boolean;
+  price: number;
+  sizes?: {
+    smallPrice: number;
+    mediumPrice: number;
+    largePrice: number;
+  };
   categoryName?: string;
-  status?: 'Active' | 'Deactive';
   isToolbarOpen?: boolean;
   checked?: boolean;
-  sizes?: {
-    smallPrice?: string;
-    mediumPrice?: string;
-    largePrice?: string;
-  };
+  averageRating?: number; // calculated on backend
+  totalRatings?: number; // how many ratings
+  reviews?: Review[]; // full review objects
 }

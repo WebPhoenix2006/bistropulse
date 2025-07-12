@@ -31,7 +31,33 @@ export class FoodDetailsComponent implements OnInit {
       'Grilled veggie patty, lettuce, tomato, cheese, and creamy sauce.',
     available: true,
     ratings: [5, 5, 5, 5, 5],
-    reviews: [],
+    reviews: [
+      {
+        name: 'Ralph Edwards',
+        rating: 5,
+        comment: 'I’m very much happy. Food is good.',
+        date: 'Fri, Nov 28 • 12:30 PM',
+      },
+      {
+        name: 'Jenny Wilson',
+        rating: 4,
+        comment: 'Nice taste, but arrived a bit late.',
+        date: 'Sat, Nov 29 • 11:00 AM',
+      },
+      {
+        name: 'Devon Lane',
+        rating: 5,
+        comment: 'Excellent! Definitely ordering again.',
+        date: 'Sun, Nov 30 • 2:15 PM',
+      },
+      {
+        name: 'Leslie Alexander',
+        rating: 3,
+        comment: 'Average. Not bad but not great either.',
+        date: 'Mon, Dec 1 • 5:00 PM',
+      },
+      // ...add more as needed
+    ],
   };
 
   ratingBreakdown = [
@@ -42,7 +68,23 @@ export class FoodDetailsComponent implements OnInit {
     { stars: 1, count: 0 },
   ];
 
-  averageRating: number = 0;
+  Math = Math;
 
-  ngOnInit(): void {}
+  averageRating: number = 0;
+  totalRatings = this.food.ratings.length;
+
+  ngOnInit(): void {
+    const ratings = this.food.ratings; // Example: [5, 4, 4, 2, 1, 5, 5]
+
+    // Count each star
+    for (const r of ratings) {
+      const item = this.ratingBreakdown.find((b) => b.stars === r);
+      if (item) item.count++;
+    }
+
+    // Calculate average
+    const total = ratings.length;
+    const sum = ratings.reduce((a, b) => a + b, 0);
+    this.averageRating = total ? sum / total : 0;
+  }
 }

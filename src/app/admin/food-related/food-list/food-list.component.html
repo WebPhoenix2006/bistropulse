@@ -154,8 +154,8 @@
                 </td>
                 <td>{{ food.categoryName }}</td>
                 <td>₦{{ food.price }}</td>
-                <td [style.color]="food.status === 'Active' ? 'green' : 'red'">
-                  {{ food.status }}
+                <td [style.color]="food.available ? 'green' : 'red'">
+                  {{ food.available }}
                 </td>
                 <td class="position-relative" id="toolbar-container">
                   <button

@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
+// ... your imports remain the same
 
 @Component({
   selector: 'app-restaurant-list',
@@ -27,7 +28,13 @@ export class RestaurantListComponent implements OnInit {
   buttonText = signal<string>('Filter');
   searchTerm = signal<string>('');
   isLoading = signal<boolean>(false);
+
   restaurants: Array<Restaurant> = [];
+  filteredList: Array<Restaurant> = [];
+
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalCount = 0;
 
   private restaurantService = inject(RestaurantService);
   private router = inject(Router);
@@ -39,15 +46,10 @@ export class RestaurantListComponent implements OnInit {
 
   ngOnInit() {
     const isBrowser = isPlatformBrowser(this.platformId);
-
     if (isBrowser) {
       const token = localStorage.getItem('auth_token');
-
-      if (token) {
-        this.getRestaurants();
-      } else {
-        this.toastr.error('You are not authorized to view this page', 'Error');
-      }
+      if (token) this.getRestaurants();
+      else this.toastr.error('You are not authorized to view this page');
     }
 
     const isFromRestaurant = this.router.url.includes('/restaurants/');
@@ -58,34 +60,25 @@ export class RestaurantListComponent implements OnInit {
 
   getRestaurants(): void {
     this.isLoading.set(true);
-
     this.slowNetwork.start(() => {
       if (this.isLoading()) {
-        this.toastr.warning(
-          'Hmm... this is taking longer than usual. Please check your connection.',
-          'Slow Network'
-        );
+        this.toastr.warning('Hmm... this is taking longer than usual.');
       }
     });
 
-    console.log('Calling restaurantService.getRestaurants()...');
     this.restaurantService.getRestaurants().subscribe({
       next: (data: any) => {
-        console.log('Restaurants fetched:', data);
         this.restaurants = data.results.map((restaurant: any) => ({
           ...restaurant,
           checked: false,
           isToolbarOpen: false,
         }));
-
-        this.toastr.success('Loaded successfully', 'Success', {
-          timeOut: 1200,
-        });
+        this.applyFilters();
+        this.toastr.success('Loaded successfully');
         this.isLoading.set(false);
         this.slowNetwork.clear();
       },
       error: (err) => {
-        console.error('FETCH ERROR:', err);
         this.toastr.error('Failed to fetch restaurants');
         this.isLoading.set(false);
         this.slowNetwork.clear();
@@ -93,12 +86,25 @@ export class RestaurantListComponent implements OnInit {
     });
   }
 
-  get filteredRestaurants(): any[] {
-    return this.filterPipe.transform(
+  applyFilters(): void {
+    const filtered = this.filterPipe.transform(
       this.restaurants,
       this.searchTerm(),
       'name'
     );
+    this.totalCount = filtered.length;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.filteredList = filtered.slice(startIndex, endIndex);
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.applyFilters();
+  }
+
+  get filteredRestaurants(): any[] {
+    return this.filteredList;
   }
 
   selectRestaurant(id: string): void {
@@ -114,7 +120,6 @@ export class RestaurantListComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent) {
     const clickedElement = event.target as HTMLElement;
-
     const isInsideToolbar = clickedElement.closest('.toolbar') !== null;
     const isToolbarToggle = clickedElement.closest('.toolbar-toggle') !== null;
     const isInsideFilter = clickedElement.closest('#filter-modal') !== null;
@@ -124,24 +129,22 @@ export class RestaurantListComponent implements OnInit {
     if (!isInsideToolbar && !isToolbarToggle) {
       this.closeAll();
     }
-
     if (!isInsideFilter && !isFilterButton) {
       this.isFilterModalOpen.set(false);
     }
   }
 
   toggleSelection(index: number): void {
-    this.filteredRestaurants[index].checked =
-      !this.filteredRestaurants[index].checked;
+    this.filteredList[index].checked = !this.filteredList[index].checked;
   }
 
   toggleSelectAll(): void {
     const newState = !this.allChecked();
-    this.filteredRestaurants.forEach((r) => (r.checked = newState));
+    this.filteredList.forEach((r) => (r.checked = newState));
   }
 
   allChecked(): boolean {
-    return this.filteredRestaurants.every((r) => r.checked);
+    return this.filteredList.every((r) => r.checked);
   }
 
   toggleVisibility(id: string): void {
@@ -149,33 +152,18 @@ export class RestaurantListComponent implements OnInit {
       (r) => r.id === id
     )?.isToolbarOpen;
 
-    this.restaurants = this.restaurants.map((restaurant) => ({
-      ...restaurant,
-      isToolbarOpen: false,
-    }));
-
+    this.restaurants.forEach((r) => (r.isToolbarOpen = false));
     if (!currentOpenState) {
-      this.restaurants = this.restaurants.map((restaurant) => {
-        if (restaurant.id === id) {
-          return { ...restaurant, isToolbarOpen: true };
-        }
-        return restaurant;
-      });
+      const match = this.restaurants.find((r) => r.id === id);
+      if (match) match.isToolbarOpen = true;
     }
   }
 
   closeAll(): void {
-    this.restaurants = this.restaurants.map((restaurant) => ({
-      ...restaurant,
-      isToolbarOpen: false,
-    }));
+    this.restaurants.forEach((r) => (r.isToolbarOpen = false));
   }
 
-  editRestaurant(id: string) {
-    console.log('Edit', id);
-  }
-
-  deleteRestaurant(id: string) {
-    console.log('Delete', id);
+  get totalPages(): number {
+    return Math.ceil(this.totalCount / this.itemsPerPage);
   }
 }

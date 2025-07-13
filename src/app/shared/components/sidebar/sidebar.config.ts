@@ -85,6 +85,14 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         label: 'Add New Food',
         route: '/admin/restaurants/:id/food-list/add-food',
       },
+      {
+        label: 'Categories',
+        route: '/admin/restaurants/:id/categories',
+      },
+      {
+        label: 'Extras',
+        route: '/admin/restaurants/:id/extras',
+      },
     ],
   },
 ];

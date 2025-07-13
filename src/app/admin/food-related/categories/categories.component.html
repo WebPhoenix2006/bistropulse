@@ -1,0 +1,165 @@
+<div class="container" id="container">
+  <div class="container-fluid" id="header">
+    <app-h1 text="Food Category" />
+
+    <div class="btn-container">
+      <label title="Search By Restaurant Name">
+        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input type="text" placeholder="Search By Food Name" />
+      </label>
+
+      <app-button
+        buttonText="Add Category"
+        (click)="isCategoryModalOpen = true"
+      />
+      <select class="btn rounder-2">
+        <option value="1" selected disabled>Export</option>
+      </select>
+    </div>
+  </div>
+  <!-- =========== BEGINNING OF MODALS BELOW ========== -->
+
+  <!-- =========== ADD NEW MODAL BELOW ========== -->
+  <ng-container *ngIf="isCategoryModalOpen">
+    <div class="modal-backdrop">
+      <div class="modal-container">
+        <button class="close-btn" (click)="isCategoryModalOpen = false">
+          <i class="ri-close-line"></i>
+        </button>
+
+        <div class="modal-content">
+          <h2 id="title">Add Food Category</h2>
+          <form (ngSubmit)="addCategory()" #categoryForm="ngForm">
+            <fieldset>
+              <h2>Category Name</h2>
+              <input
+                type="text"
+                id="categoryName"
+                name="categoryName"
+                [(ngModel)]="newCategoryName"
+                placeholder="Enter category"
+                required
+              />
+            </fieldset>
+
+            <button
+              type="submit"
+              class="submit-btn"
+              [disabled]="!categoryForm.valid"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- =========== CONFIRM DELETE MODAL BELOW ========== -->
+  <ng-container *ngIf="isConfirmDeleteModalOpen">
+    <div class="modal-backdrop">
+      <div class="modal-container">
+        <button class="close-btn" (click)="isConfirmDeleteModalOpen = false">
+          <i class="ri-close-line"></i>
+        </button>
+
+        <div class="modal-content">
+          <h2 id="title">Delete Category</h2>
+          <p>Do you really want to delete this category</p>
+          <div
+            class="btn-con d-flex justify-content-between align-items-center gap-2"
+          >
+            <button
+              class="btn btn-outline-dark flex-grow-1"
+              (click)="isConfirmDeleteModalOpen = false"
+            >
+              Decline
+            </button>
+            <button
+              class="btn btn-primary flex-grow-1"
+              (click)="confirmDelete()"
+            >
+              Yes, Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- =========== DELETE CATEGORY WARNING MODAL BELOW ========== -->
+  <ng-container *ngIf="isDeleteWarningModalOpen">
+    <div class="modal-backdrop">
+      <div class="modal-container">
+        <button class="close-btn" (click)="isDeleteWarningModalOpen = false">
+          <i class="ri-close-line"></i>
+        </button>
+
+        <div class="modal-content">
+          <h2 id="title">Delete Category</h2>
+          <img
+            src="assets/images/can-t-delete.png"
+            alt="image"
+            class="mx-auto mt-2 mb-2"
+          />
+          <p>
+            There are some products inside this category. So, you can’t delete
+            this category. To delete this category delete all the items first.
+          </p>
+          <button
+            (click)="isDeleteWarningModalOpen = false"
+            class="btn btn-primary"
+          >
+            Ok! Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- =========== END OF MODALS ========== -->
+
+  <table class="table table:hover">
+    <thead>
+      <tr>
+        <th>
+          <span>
+            <input
+              type="checkbox"
+              [checked]="allChecked()"
+              (change)="checkAllItems()"
+            />
+          </span>
+          <span>Category Name</span>
+        </th>
+        <th>Number of items</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (category of CATEGORY_LIST; track category.id) {
+      <tr [class.checked]="category.checked">
+        <td>
+          <span>
+            <input
+              type="checkbox"
+              [checked]="category.checked"
+              (change)="checkCategory(category.id)"
+            />
+          </span>
+          <span>{{ category.name }}</span>
+        </td>
+        <td>{{ category.itemCount }}</td>
+        <td class="icons-container">
+          <span>
+            <svg-icons name="pencil" />
+          </span>
+          <span (click)="openDeleteModal(category.id)">
+            <svg-icons name="delete" />
+          </span>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

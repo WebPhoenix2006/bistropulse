@@ -17,6 +17,8 @@ import { AddOrderComponent } from './order-related/add-order/add-order.component
 import { ChatComponent } from './chat/chat.component';
 import { OtpManagementComponent } from './otp-management/otp-management.component';
 import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
+import { CategoriesComponent } from './food-related/categories/categories.component';
+import { ExtraComponent } from './food-related/extra/extra.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,8 @@ const routes: Routes = [
                 path: 'food-list/:foodId/food-details',
                 component: FoodDetailsComponent,
               },
+              { path: 'categories', component: CategoriesComponent },
+              { path: 'extras', component: ExtraComponent },
             ],
           },
         ],

@@ -1,138 +1,145 @@
-<div class="container rounded-3">
-  <div class="restaurant-overview">
-    <div class="row g-4">
-      <!-- Left Column -->
-      <div class="col-md-7" id="first-column">
-        <div class="header d-flex justify-content-between align-items-center">
-          <h2 class="title-h2">Restaurant Overview</h2>
-          <div class="btn-container d-flex align-items-center gap-3">
-            <span class="d-flex align-items-center gap-2">
-              {{ restaurant?.status }}
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  [checked]="restaurant?.status === 'Open'"
-                  (click)="$event.stopPropagation()"
-                />
-                <span class="slider round"></span>
-              </label>
-            </span>
-            <app-button buttonText="Edit">
-              <span class="me-2">
-                <svg-icons name="pencil"></svg-icons>
+<ng-container *ngIf="!isLoading(); else loading">
+  <div class="container rounded-3">
+    <div class="restaurant-overview">
+      <div class="row g-4">
+        <!-- Left Column -->
+        <div class="col-md-7" id="first-column">
+          <div class="header d-flex justify-content-between align-items-center">
+            <h2 class="title-h2">Restaurant Overview</h2>
+            <div class="btn-container d-flex align-items-center gap-3">
+              <span class="d-flex align-items-center gap-2">
+                {{ restaurant?.status }}
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    [checked]="restaurant?.status === 'Open'"
+                    (click)="$event.stopPropagation()"
+                  />
+                  <span class="slider round"></span>
+                </label>
               </span>
-            </app-button>
+              <app-button buttonText="Edit">
+                <span class="me-2">
+                  <svg-icons name="pencil"></svg-icons>
+                </span>
+              </app-button>
+            </div>
           </div>
-        </div>
 
-        <div class="img-container">
-          <img
-            [src]="
-              restaurant?.restaurant_image_url ||
-              'assets/images/restaurant-picture.jpeg'
-            "
-            alt="Restaurant Image"
-          />
-        </div>
-
-        <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
-        <p class="reviews-container">
-          <span class="restaurant-reviews">
-            <img src="assets/images/Vector.png" alt="ratings" />
-            {{ restaurant?.rating }} ({{ restaurant?.reviews.length }} Reviews)
-          </span>
-          <span class="divider"></span>
-          <span>{{ restaurant?.foods.length }} Orders</span>
-        </p>
-
-        <div class="info-group">
-          <span>
-            <h4>Established</h4>
-            <p>
-              Since {{ restaurant?.established_date | date : "dd MMMM yyyy" }}
-            </p>
-          </span>
-
-          <span>
-            <h4>Large Option</h4>
-            <p>{{ restaurant?.large_option }}</p>
-          </span>
-
-          <span>
-            <h4>Working Period</h4>
-            <p>{{ restaurant?.working_period }}</p>
-          </span>
-
-          <span>
-            <h4>Location</h4>
-            <p>{{ restaurant?.location }}</p>
-          </span>
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div id="second-column" class="col-md-5">
-        <div
-          class="representative-info"
-          *ngIf="restaurant?.representative; else noRep"
-        >
-          <h2>Representative Info</h2>
-          <div class="img-con">
+          <div class="img-container">
             <img
               [src]="
-                restaurant?.representative?.photo_url ||
-                'assets/images/profile-img.png'
+                restaurant?.restaurant_image_url ||
+                'assets/images/restaurant-picture.jpeg'
               "
-              alt="Profile"
+              alt="Restaurant Image"
             />
-            <h3>{{ restaurant?.representative.full_name }}</h3>
           </div>
-          <div class="info-con">
-            <span class="first-span">
-              <h4>Phone Number</h4>
-              <p>{{ restaurant?.representative.phone }}</p>
+
+          <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
+          <p class="reviews-container">
+            <span class="restaurant-reviews">
+              <img src="assets/images/Vector.png" alt="ratings" />
+              {{ restaurant?.rating }} ({{ restaurant?.reviews.length }}
+              Reviews)
             </span>
+            <span class="divider"></span>
+            <span>{{ restaurant?.foods.length }} Orders</span>
+          </p>
+
+          <div class="info-group">
+            <span>
+              <h4>Established</h4>
+              <p>
+                Since {{ restaurant?.established_date | date : "dd MMMM yyyy" }}
+              </p>
+            </span>
+
+            <span>
+              <h4>Large Option</h4>
+              <p>{{ restaurant?.large_option }}</p>
+            </span>
+
+            <span>
+              <h4>Working Period</h4>
+              <p>{{ restaurant?.working_period }}</p>
+            </span>
+
             <span>
               <h4>Location</h4>
-              <p>{{ restaurant?.representative.location }}</p>
+              <p>{{ restaurant?.location }}</p>
             </span>
           </div>
         </div>
-        <ng-template #noRep>
-          <div class="representative-info">
+
+        <!-- Right Column -->
+        <div id="second-column" class="col-md-5">
+          <div
+            class="representative-info"
+            *ngIf="restaurant?.representative; else noRep"
+          >
             <h2>Representative Info</h2>
-            <p>No representative assigned</p>
-          </div>
-        </ng-template>
-
-        <div class="documents">
-          <h2>Documents</h2>
-
-          <div class="pdf-container">
-            <div class="pdf-img">
-              <img src="assets/images/reward-points.png" alt="pdf icon" />
-              <div class="info">
-                <h4>License</h4>
-                <p>BusinessLicense.pdf</p>
-              </div>
-              <a [href]="restaurant?.business_license" target="_blank">
-                <svg-icons name="download-icon"></svg-icons>
-              </a>
+            <div class="img-con">
+              <img
+                [src]="
+                  restaurant?.representative?.photo_url ||
+                  'assets/images/profile-img.png'
+                "
+                alt="Profile"
+              />
+              <h3>{{ restaurant?.representative.full_name }}</h3>
             </div>
+            <div class="info-con">
+              <span class="first-span">
+                <h4>Phone Number</h4>
+                <p>{{ restaurant?.representative.phone }}</p>
+              </span>
+              <span>
+                <h4>Location</h4>
+                <p>{{ restaurant?.representative.location }}</p>
+              </span>
+            </div>
+          </div>
+          <ng-template #noRep>
+            <div class="representative-info">
+              <h2>Representative Info</h2>
+              <p>No representative assigned</p>
+            </div>
+          </ng-template>
 
-            <div class="pdf-img">
-              <img src="assets/images/reward-points.png" alt="pdf icon" />
-              <div class="info">
-                <h4>NID Card</h4>
-                <p>OwnerNID.pdf</p>
+          <div class="documents">
+            <h2>Documents</h2>
+
+            <div class="pdf-container">
+              <div class="pdf-img">
+                <img src="assets/images/reward-points.png" alt="pdf icon" />
+                <div class="info">
+                  <h4>License</h4>
+                  <p>BusinessLicense.pdf</p>
+                </div>
+                <a [href]="restaurant?.business_license" target="_blank">
+                  <svg-icons name="download-icon"></svg-icons>
+                </a>
               </div>
-              <a [href]="restaurant?.owner_nid" target="_blank">
-                <svg-icons name="download-icon"></svg-icons>
-              </a>
+
+              <div class="pdf-img">
+                <img src="assets/images/reward-points.png" alt="pdf icon" />
+                <div class="info">
+                  <h4>NID Card</h4>
+                  <p>OwnerNID.pdf</p>
+                </div>
+                <a [href]="restaurant?.owner_nid" target="_blank">
+                  <svg-icons name="download-icon"></svg-icons>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #loading>
+  <app-mini-loader />
+</ng-template>

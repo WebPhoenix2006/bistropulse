@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { SharedModule } from '../../../shared/shared.module';
+import { Component, OnInit, signal } from '@angular/core';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { ActivatedRoute } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
@@ -18,20 +17,26 @@ export class RestaurantOverviewComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  isLoading = signal<boolean>(false);
+
   restaurant: Restaurant | null = null;
 
   restaurantId!: string;
 
   ngOnInit(): void {
+    this.isLoading.set(true);
     this.restaurantId = this.route.snapshot.paramMap.get('id');
     this.restaurantService.getRestaurant(this.restaurantId).subscribe({
       next: (data: Restaurant) => {
         console.log('restaurant fetched: ', data);
         this.toastr.success('restaurant fetched!');
+        this.isLoading.set(false);
         this.restaurant = data;
       },
       error: (err) => {
         console.error('FETCH ERROR', err);
+        this.toastr.error('failed to fetch', '', { timeOut: 2000 });
+        this.isLoading.set(false);
       },
     });
   }

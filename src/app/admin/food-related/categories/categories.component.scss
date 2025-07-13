@@ -1,0 +1,250 @@
+@use "../../../../styles.scss" as *;
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid $gray;
+  padding: 10px 12px;
+  border-radius: 4px;
+  height: 40px; // Consistent height
+  max-width: none; // Remove this to prevent squishing
+  width: auto;
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 1rem;
+    }
+  }
+
+  input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 15px;
+    width: 100px; // Or auto-grow with flex: 1
+  }
+}
+
+#container {
+  background: white !important;
+  padding: 24px;
+
+  #header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btn-container {
+      display: flex;
+      gap: 10px;
+      select {
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 4px;
+        color: #000;
+        background-color: $gray; // use background-color instead of shorthand
+        border: 1px solid #6f767e;
+        cursor: pointer;
+      }
+
+      app-button button {
+        height: 40px;
+        padding: 0 16px;
+        border-radius: 4px;
+        font-size: 15px;
+      }
+    }
+  }
+
+  table {
+    width: 100% !important;
+    table-layout: fixed;
+    margin-top: 3rem;
+
+    input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      border-radius: 4px;
+      cursor: pointer !important;
+    }
+
+    thead th:nth-child(1),
+    tbody td:nth-child(1) {
+      text-align: left;
+    }
+
+    thead th:nth-child(2),
+    tbody td:nth-child(2) {
+      text-align: center;
+    }
+
+    thead th:nth-child(3),
+    tbody td:nth-child(3) {
+      text-align: right;
+    }
+
+    thead th,
+    tbody td {
+      vertical-align: middle;
+    }
+
+    thead {
+      tr {
+        th {
+          font-size: 16px;
+          font-weight: 500;
+        }
+        th:nth-child(1) {
+          span {
+            display: inline-block;
+            white-space: nowrap;
+            margin-inline-end: 16px;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        background: white;
+
+        &.checked {
+          background: $gray;
+        }
+
+        td {
+          background: transparent !important;
+        }
+
+        td:nth-child(1) {
+          span {
+            display: inline-block;
+            white-space: nowrap;
+            margin-inline-end: 16px;
+          }
+        }
+
+        .icons-container {
+          text-align: right;
+
+          span {
+            display: inline-block;
+            white-space: nowrap;
+            cursor: pointer;
+          }
+
+          span:nth-child(1) {
+            margin-inline-end: 19px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.modal-container {
+  background: #fff;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  #title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid $gray;
+  }
+
+  fieldset {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+    }
+  }
+
+  .submit-btn {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100% !important;
+    transition: background 0.3s ease;
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background: #125aaa;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

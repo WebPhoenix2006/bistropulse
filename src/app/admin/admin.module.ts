@@ -22,6 +22,8 @@ import { OtpManagementComponent } from './otp-management/otp-management.componen
 import { OfflineBannerComponent } from '../shared/components/offline-banner/offline-banner.component';
 import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
 import { RestaurantOverviewComponent } from './restarants/restaurant-overview/restaurant-overview.component';
+import { CategoriesComponent } from './food-related/categories/categories.component';
+import { ExtraComponent } from './food-related/extra/extra.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { RestaurantOverviewComponent } from './restarants/restaurant-overview/re
     OtpManagementComponent,
     FoodDetailsComponent,
     RestaurantOverviewComponent,
+    CategoriesComponent,
+    ExtraComponent,
   ],
 
   imports: [

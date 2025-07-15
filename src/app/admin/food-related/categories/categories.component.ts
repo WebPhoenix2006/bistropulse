@@ -1,18 +1,25 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FoodCategory } from '../../../interfaces/foodCategory.interface';
+import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 
 @Component({
   selector: 'app-categories',
   standalone: false,
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
+  providers: [FilterByPipe],
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
   isCategoryModalOpen: boolean = false;
   newCategoryName: string = '';
   isConfirmDeleteModalOpen: boolean = false;
   categoryToDelete: string | null = null;
+  searchTerm = signal<string>('');
   isDeleteWarningModalOpen: boolean = false;
+
+  filteredList: Array<FoodCategory> = [];
+
+  constructor(private filterPipe: FilterByPipe) {}
 
   CATEGORY_LIST: FoodCategory[] = [
     { id: 'C001', name: 'Smirnoff Ice', itemCount: 3, checked: false },
@@ -43,6 +50,18 @@ export class CategoriesComponent {
 
     this.newCategoryName = '';
     this.isCategoryModalOpen = false; // or this.isModalOpen = false if it's a boolean
+  }
+
+  applyFilters(): void {
+    this.filteredList = this.filterPipe.transform(
+      this.CATEGORY_LIST,
+      this.searchTerm(),
+      'name'
+    );
+  }
+
+  ngOnInit(): void {
+    this.applyFilters();
   }
 
   confirmDelete(): void {

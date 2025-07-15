@@ -38,11 +38,8 @@
         {{ food.description }}
       </p>
 
-      <h5 id="h5" class="mt-4">Size</h5>
-      <div
-        id="form-check"
-        class="form-check d-flex justify-content-between align-items-center"
-      >
+      <h5 class="fw-semibold mt-4">Size</h5>
+      <div class="form-check">
         <input
           class="form-check-input"
           type="radio"
@@ -50,28 +47,21 @@
           id="small"
           checked
         />
-        <label class="form-check-label ms-2 me-auto" for="small">Small</label>
-        <p class="mb-0">₵{{ food.price.small }}</p>
+        <label class="form-check-label" for="small"
+          >Small - ₵{{ food.price.small }}</label
+        >
       </div>
-
-      <!-- Medium -->
-      <div
-        id="form-check"
-        class="form-check d-flex justify-content-between align-items-center"
-      >
+      <div class="form-check">
         <input class="form-check-input" type="radio" name="size" id="medium" />
-        <label class="form-check-label ms-2 me-auto" for="medium">Medium</label>
-        <p class="mb-0">₵{{ food.price.medium }}</p>
+        <label class="form-check-label" for="medium"
+          >Medium - ₵{{ food.price.medium }}</label
+        >
       </div>
-
-      <!-- Large -->
-      <div
-        id="form-check"
-        class="form-check d-flex justify-content-between align-items-center"
-      >
+      <div class="form-check">
         <input class="form-check-input" type="radio" name="size" id="large" />
-        <label class="form-check-label ms-2 me-auto" for="large">Large</label>
-        <p class="mb-0">₵{{ food.price.large }}</p>
+        <label class="form-check-label" for="large"
+          >Large - ₵{{ food.price.large }}</label
+        >
       </div>
     </div>
 
@@ -80,9 +70,11 @@
       <div class="rating-range-container contianer-fluid">
         <div class="row">
           <!-- Left Column: Average + Total -->
-          <div id="average-rating-container" class="col-md-5">
-            <div id="ratings" class="d-flex flex-column">
-              <h2>
+          <div class="col-md-5">
+            <div
+              class="d-flex flex-column justify-content-center align-items-center mb-2"
+            >
+              <h2 class="fw-bold m-0">
                 {{ averageRating.toFixed(1) }}
                 <span class="text-muted fs-6">/5.0</span>
               </h2>
@@ -90,7 +82,7 @@
                 [src]="`assets/ratings/rating-${averageRating}.png`"
                 alt="Average Rating"
               />
-              <h1 class="total-ratings">{{ totalRatings }} Ratings</h1>
+              <h1>{{ totalRatings }}</h1>
             </div>
           </div>
 
@@ -98,25 +90,22 @@
           <div class="col-md-7">
             <div class="rating-breakdown mb-4">
               <div *ngFor="let item of ratingBreakdown">
-                <div
-                  class="d-flex align-items-baseline justify-content-center gap-2 flex-grow-1"
-                >
+                <div class="d-flex align-items-center gap-2">
                   <span>
                     <img
                       [src]="'assets/ratings/rating-' + item.stars + '.png'"
                       alt="rating"
-                      style="margin-bottom: 5px"
                     />
                   </span>
-                  <span class="progress w-100" style="height: 14px">
-                    <span
-                      class="progress-bar"
+                  <div class="progress w-100" style="height: 8px">
+                    <div
+                      class="progress-bar bg-warning"
                       role="progressbar"
                       [style.width.%]="
                         totalRatings ? (item.count / totalRatings) * 100 : 0
                       "
-                    ></span>
-                  </span>
+                    ></div>
+                  </div>
                   <span>{{ item.count }}</span>
                 </div>
               </div>
@@ -126,15 +115,13 @@
       </div>
 
       <!-- Ratings Section -->
-      <div id="ratings-and-reviews">
-        <h5 class="fw-bold mb-3">Review & Ratings</h5>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="fw-bold">Review & Ratings</h5>
       </div>
-      <!-- Scrollable Reviews Container -->
-      <div style="max-height: 300px; overflow-y: auto">
-        <div
-          class="review-card d-flex mb-3"
-          *ngFor="let review of food.reviews"
-        >
+
+      <!-- Review Cards -->
+      <div class="card-container">
+        <div class="review-card d-flex mb-3">
           <img
             src="assets/images/avatar.png"
             alt="Reviewer"
@@ -144,16 +131,65 @@
           />
           <div>
             <h6 class="mb-1 fw-semibold">
-              {{ review.name }}
-              <span class="text-warning">★ {{ review.rating.toFixed(1) }}</span>
+              Ralph Edwards
+              <span class="text-warning">★ 5.0</span>
             </h6>
-            <p class="text-muted mb-1">{{ review.comment }}</p>
-            <small class="text-muted">{{ review.date }}</small>
+            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
+            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
+          </div>
+        </div>
+        <div class="review-card d-flex mb-3">
+          <img
+            src="assets/images/avatar.png"
+            alt="Reviewer"
+            class="rounded-circle me-3"
+            width="50"
+            height="50"
+          />
+          <div>
+            <h6 class="mb-1 fw-semibold">
+              Ralph Edwards
+              <span class="text-warning">★ 5.0</span>
+            </h6>
+            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
+            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
+          </div>
+        </div>
+        <div class="review-card d-flex mb-3">
+          <img
+            src="assets/images/avatar.png"
+            alt="Reviewer"
+            class="rounded-circle me-3"
+            width="50"
+            height="50"
+          />
+          <div>
+            <h6 class="mb-1 fw-semibold">
+              Ralph Edwards
+              <span class="text-warning">★ 5.0</span>
+            </h6>
+            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
+            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
+          </div>
+        </div>
+        <div class="review-card d-flex mb-3">
+          <img
+            src="assets/images/avatar.png"
+            alt="Reviewer"
+            class="rounded-circle me-3"
+            width="50"
+            height="50"
+          />
+          <div>
+            <h6 class="mb-1 fw-semibold">
+              Ralph Edwards
+              <span class="text-warning">★ 5.0</span>
+            </h6>
+            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
+            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
           </div>
         </div>
       </div>
-
-      <!-- Review Cards -->
 
       <!-- Clone the above div for more reviews -->
     </div>

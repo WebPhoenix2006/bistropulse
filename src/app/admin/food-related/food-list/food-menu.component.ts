@@ -49,7 +49,7 @@ export class FoodListComponent implements OnInit {
     private router: Router
   ) {}
 
-  get filteredFoods(): any[] {
+  get filteredFoods(): Food[] {
     return this.filterPipe.transform(this.foods, this.searchTerm, 'name');
   }
 

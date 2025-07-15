@@ -5,7 +5,12 @@
     <div class="btn-container">
       <label title="Search By Restaurant Name">
         <span><i class="fa-solid fa-magnifying-glass"></i></span>
-        <input type="text" placeholder="Search By Food Name" />
+        <input
+          type="text"
+          placeholder="Search By Food Name"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="applyFilters()"
+        />
       </label>
 
       <app-button
@@ -17,6 +22,7 @@
       </select>
     </div>
   </div>
+
   <!-- =========== BEGINNING OF MODALS BELOW ========== -->
 
   <!-- =========== ADD NEW MODAL BELOW ========== -->
@@ -119,47 +125,60 @@
 
   <!-- =========== END OF MODALS ========== -->
 
-  <table class="table table:hover">
-    <thead>
-      <tr>
-        <th>
-          <span>
-            <input
-              type="checkbox"
-              [checked]="allChecked()"
-              (change)="checkAllItems()"
-            />
-          </span>
-          <span>Category Name</span>
-        </th>
-        <th>Number of items</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (category of CATEGORY_LIST; track category.id) {
-      <tr [class.checked]="category.checked">
-        <td>
-          <span>
-            <input
-              type="checkbox"
-              [checked]="category.checked"
-              (change)="checkCategory(category.id)"
-            />
-          </span>
-          <span>{{ category.name }}</span>
-        </td>
-        <td>{{ category.itemCount }}</td>
-        <td class="icons-container">
-          <span>
-            <svg-icons name="pencil" />
-          </span>
-          <span (click)="openDeleteModal(category.id)">
-            <svg-icons name="delete" />
-          </span>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
+  <ng-container *ngIf="CATEGORY_LIST.length > 0; else emptyList">
+    <ng-container *ngIf="filteredList as filtered">
+      <table
+        class="table table:hover"
+        *ngIf="filteredList.length > 0; else noSearchResults"
+      >
+        <thead>
+          <tr>
+            <th>
+              <span>
+                <input
+                  type="checkbox"
+                  [checked]="allChecked()"
+                  (change)="checkAllItems()"
+                />
+              </span>
+              <span>Category Name</span>
+            </th>
+            <th>Number of items</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (category of filtered; track category.id) {
+          <tr [class.checked]="category.checked">
+            <td>
+              <span>
+                <input
+                  type="checkbox"
+                  [checked]="category.checked"
+                  (change)="checkCategory(category.id)"
+                />
+              </span>
+              <span>{{ category.name }}</span>
+            </td>
+            <td>{{ category.itemCount }}</td>
+            <td class="icons-container">
+              <span>
+                <svg-icons name="pencil" />
+              </span>
+              <span (click)="openDeleteModal(category.id)">
+                <svg-icons name="delete" />
+              </span>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <ng-template #noSearchResults>
+        <empty-search />
+      </ng-template>
+    </ng-container>
+  </ng-container>
+  <ng-template #emptyList>
+    <app-empty-list />
+  </ng-template>
 </div>

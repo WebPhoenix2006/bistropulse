@@ -21,6 +21,7 @@ import { ToggleSliderComponent } from './components/toggle-slider/toggle-slider.
 import { NoSearchResultComponent } from './components/no-search-result/no-search-result.component';
 import { OfflineBannerComponent } from './components/offline-banner/offline-banner.component';
 import { DesignedH1Component } from './components/designed-h1/designed-h1.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { DesignedH1Component } from './components/designed-h1/designed-h1.compon
     NoSearchResultComponent,
     OfflineBannerComponent,
     DesignedH1Component,
+    ModalComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -65,6 +67,8 @@ import { DesignedH1Component } from './components/designed-h1/designed-h1.compon
     FilterByPipe,
     NoSearchResultComponent,
     OfflineBannerComponent,
+    ModalComponent
+
   ],
 })
 export class SharedModule {}

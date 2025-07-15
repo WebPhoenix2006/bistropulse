@@ -1,0 +1,15 @@
+<div
+  class="modal-backdrop"
+  *ngIf="isVisible"
+  @fadeInOut
+  (click)="onBackdropClick()"
+>
+  <div
+    class="modal-content"
+    [ngClass]="size"
+    @scaleInOut
+    (click)="$event.stopPropagation()"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>

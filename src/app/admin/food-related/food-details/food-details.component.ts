@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-food-details',
@@ -9,15 +7,6 @@ import { RestaurantContextService } from '../../../shared/services/restaurant-co
   styleUrl: './food-details.component.scss',
 })
 export class FoodDetailsComponent implements OnInit {
-  //   constructor(
-  //     private router: Router,
-  //     private restaurantContext: RestaurantContextService
-  //   ) {}
-  // selectRestaurant(id: string): void {
-  //   this.restaurantContext.setRestaurantId(id);
-  //   this.router.navigate(['/admin/restaurants', id]);
-  // }
-
   food = {
     id: 3,
     name: 'Veggie Delight Burger',
@@ -60,6 +49,16 @@ export class FoodDetailsComponent implements OnInit {
     ],
   };
 
+  openCommentIndex: number | null = null;
+
+  toggleCommentIndex(index: number): void {
+    if (this.openCommentIndex === index) {
+      this.openCommentIndex = null;
+    } else {
+      this.openCommentIndex = index;
+    }
+  }
+
   ratingBreakdown = [
     { stars: 5, count: 0 },
     { stars: 4, count: 0 },
@@ -86,5 +85,10 @@ export class FoodDetailsComponent implements OnInit {
     const total = ratings.length;
     const sum = ratings.reduce((a, b) => a + b, 0);
     this.averageRating = total ? sum / total : 0;
+  }
+
+  @HostListener('window:click')
+  closeModals(): void {
+    this.openCommentIndex = null;
   }
 }

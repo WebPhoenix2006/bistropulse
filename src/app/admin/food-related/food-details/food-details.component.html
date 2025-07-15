@@ -29,6 +29,7 @@
 
       <h3 class="food-name">{{ food.name }}</h3>
       <p class="text-muted">
+        <span class="fw-bold">70.00</span>
         <span><span class="text-warning">★</span> 5.0</span>
         (23 Reviews) • 23 Sales
       </p>
@@ -120,73 +121,52 @@
       </div>
 
       <!-- Review Cards -->
-      <div class="card-container">
-        <div class="review-card d-flex mb-3">
-          <img
-            src="assets/images/avatar.png"
-            alt="Reviewer"
-            class="rounded-circle me-3"
-            width="50"
-            height="50"
-          />
-          <div>
-            <h6 class="mb-1 fw-semibold">
-              Ralph Edwards
-              <span class="text-warning">★ 5.0</span>
-            </h6>
-            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
-            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
-          </div>
-        </div>
-        <div class="review-card d-flex mb-3">
-          <img
-            src="assets/images/avatar.png"
-            alt="Reviewer"
-            class="rounded-circle me-3"
-            width="50"
-            height="50"
-          />
-          <div>
-            <h6 class="mb-1 fw-semibold">
-              Ralph Edwards
-              <span class="text-warning">★ 5.0</span>
-            </h6>
-            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
-            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
-          </div>
-        </div>
-        <div class="review-card d-flex mb-3">
-          <img
-            src="assets/images/avatar.png"
-            alt="Reviewer"
-            class="rounded-circle me-3"
-            width="50"
-            height="50"
-          />
-          <div>
-            <h6 class="mb-1 fw-semibold">
-              Ralph Edwards
-              <span class="text-warning">★ 5.0</span>
-            </h6>
-            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
-            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
-          </div>
-        </div>
-        <div class="review-card d-flex mb-3">
-          <img
-            src="assets/images/avatar.png"
-            alt="Reviewer"
-            class="rounded-circle me-3"
-            width="50"
-            height="50"
-          />
-          <div>
-            <h6 class="mb-1 fw-semibold">
-              Ralph Edwards
-              <span class="text-warning">★ 5.0</span>
-            </h6>
-            <p class="text-muted mb-1">I’m very much happy. Food is good.</p>
-            <small class="text-muted">Fri, Nov 28 • 12:30 PM</small>
+      <div class="card-container container-fluid">
+        <div class="row">
+          <div
+            class="review-card row mb-2"
+            *ngFor="let comment of food.reviews; index as i"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="wrapper d-flex col-md-9">
+              <img
+                src="assets/images/avatar.png"
+                alt="Reviewer"
+                class="rounded-circle me-3"
+                width="50"
+                height="50"
+              />
+              <div>
+                <h6 class="mb-1 fw-semibold">
+                  {{ comment.name }}
+                  <span class="text-warning"
+                    >★ {{ comment.rating.toFixed(1) }}</span
+                  >
+                </h6>
+                <p class="text-muted mb-1">{{ comment.comment }}</p>
+                <small class="text-muted">{{ comment.date }}</small>
+              </div>
+            </div>
+            <div
+              class="btn-container col-md-3 d-flex"
+              (click)="toggleCommentIndex(i)"
+            >
+              <span class="reply">
+                <svg-icons name="reply" />
+                <span class="text-primary">Reply</span>
+              </span>
+            </div>
+            <div
+              class="reply-box col-lg-12 mt-3"
+              style="transition: 0.3s ease-in-out"
+              [class.show]="openCommentIndex === i"
+            >
+              <textarea
+                class="form-control"
+                placeholder="Write reply"
+              ></textarea>
+              <button class="btn btn-primary mt-2">Submit</button>
+            </div>
           </div>
         </div>
       </div>

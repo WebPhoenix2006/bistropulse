@@ -1,0 +1,258 @@
+@use "../../../../styles.scss" as *;
+@use "sass:color";
+
+#container {
+  background: white;
+  padding: 15px;
+
+  header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+
+    .special-h1 {
+      font-size: 20px;
+      font-weight: 600px;
+      color: #1a1d1f;
+      position: relative;
+      margin-left: 12px;
+
+      &::before {
+        position: absolute;
+        content: "";
+        width: 8px;
+        height: 20px;
+        border-radius: 2px;
+        background: $primary;
+        left: -10px;
+      }
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      justify-content: center;
+
+      .btn {
+        background: #e9e9e9;
+        font-size: 15px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .body {
+    table {
+      width: 100%;
+      thead {
+        tr {
+          td {
+            font-weight: 500;
+            font-size: 16px;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          background: white;
+
+          &.checked {
+            background-color: color.adjust($gray, $lightness: 5%);
+          }
+
+          td {
+            background: transparent;
+            align-content: flex-start;
+
+            button {
+              background: transparent;
+              border: none;
+              transition: 0.2s ease-in-out;
+
+              &:active {
+                background: rgba($color: rgb(205, 204, 204), $alpha: 0.7);
+              }
+
+              &.active {
+                background: rgba($color: rgb(205, 204, 204), $alpha: 0.7);
+              }
+            }
+          }
+
+          .img-con {
+            display: flex;
+            gap: 5px;
+            align-items: flex-start;
+          }
+        }
+      }
+    }
+  }
+}
+
+#first-column {
+  padding: 24px;
+  background: white;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  height: 20px;
+  width: 20px;
+}
+
+/* Toggle switch */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+
+  .status-toggle {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 18px;
+    color: #6f767e;
+    cursor: pointer;
+
+    i {
+      transition: color 0.3s ease;
+
+      &.fa-toggle-on {
+        color: $primary !important;
+      }
+    }
+
+    &:hover i {
+      color: $primary;
+    }
+  }
+}
+
+// STYLES FOR THE TOOLBAR
+#toolbar-container {
+  .toolbar {
+    background: white;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: 38px;
+    right: 30px;
+    padding: 8px;
+    border-radius: 8px;
+    list-style: none;
+    z-index: 1000 !important;
+    transition: 0.2s ease-in-out;
+
+    &.visible {
+      display: block;
+      opacity: 1;
+    }
+
+    &.hidden {
+      display: none;
+      opacity: 0;
+    }
+
+    li {
+      width: 100%;
+      margin-block-end: 10px;
+      background: transparent !important;
+      color: #6f767e;
+      font-size: 14px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      border-radius: 8px;
+      transition: 0.2s ease-in-out;
+      height: 36px;
+      gap: 15px;
+      padding: 11px;
+      cursor: pointer;
+
+      &:hover {
+        background: #efefef !important;
+      }
+    }
+  }
+}
+
+// STYLES FOR THE FILTER MODAL
+
+#filter-modal {
+  position: absolute;
+  bottom: -550px;
+  left: -100%;
+  background: white;
+  width: 320px;
+  padding: 25px;
+  z-index: 500;
+  transition: 0.3s ease-in-out;
+
+  h1 {
+    margin-bottom: 10px !important;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .modal-input-wrapper {
+    font-size: 14px;
+    margin-block: 24px;
+
+    select,
+    button {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 4px;
+      color: #6f767e;
+      border: 1px solid #6f767e;
+    }
+
+    select {
+      padding-inline-end: 40px;
+    }
+  }
+}
+
+label {
+  display: flex;
+  color: $secondary;
+  font-size: 15px;
+  gap: 10px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $gray;
+  padding: 8px;
+  max-width: 600px;
+
+  span {
+    width: 10%;
+    display: flex;
+    text-align: center;
+
+    i {
+      width: 100%;
+    }
+  }
+
+  input {
+    width: 90%;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+}
+
+.empty-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}

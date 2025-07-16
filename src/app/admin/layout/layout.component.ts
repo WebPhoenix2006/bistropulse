@@ -2,13 +2,16 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   effect,
+  EffectRef,
   HostListener,
   Inject,
   inject,
   OnInit,
+  OnDestroy,
   PLATFORM_ID,
-  runInInjectionContext,
   signal,
+  ChangeDetectorRef,
+  DestroyRef,
 } from '@angular/core';
 import { OfflineService } from '../../shared/services/offline-service.service';
 import { ToastrService } from 'ngx-toastr';
@@ -19,19 +22,26 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, OnDestroy {
+  private effectRef?: EffectRef;
   isLeftSidebarCollapsed = signal<boolean>(false);
   isSidebarCollapsed = false;
   videoEnded: boolean = false;
 
   offlineService = inject(OfflineService);
   toastr = inject(ToastrService);
+  cdr = inject(ChangeDetectorRef);
+  destroyRef = inject(DestroyRef);
 
   screenWidth = signal<number>(0); // Initialize with 0 or a safe default
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+
+  ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      effect(() => {
+      this.screenWidth.set(window.innerWidth);
+      // Setup effect for offlineService signal
+      this.effectRef = effect(() => {
         const isOffline = this.offlineService.isOffline();
         if (isOffline) {
           this.videoEnded = false;
@@ -39,24 +49,20 @@ export class LayoutComponent implements OnInit {
             'No internet connection. Waiting to reconnect...',
             'Error',
             {
-              timeOut: 0, // no auto close
-              extendedTimeOut: 0, // no hover delay
-              closeButton: true, // optional: add close button
-              disableTimeOut: true, // ✅ prevent auto-dismiss completely
+              timeOut: 0,
+              extendedTimeOut: 0,
+              closeButton: true,
+              disableTimeOut: true,
             }
           );
         }
+        this.cdr.markForCheck();
       });
     }
   }
 
-  // ✅ This was wrongly placed outside before
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.screenWidth.set(window.innerWidth);
-      const isMobile = window.innerWidth < 768;
-      // Add more logic if needed
-    }
+  ngOnDestroy(): void {
+    this.effectRef?.destroy();
   }
 
   get layoutClass() {

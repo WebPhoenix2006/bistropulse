@@ -155,7 +155,7 @@
                 <td>{{ food.categoryName }}</td>
                 <td>₦{{ food.price }}</td>
                 <td [style.color]="food.available ? 'green' : 'red'">
-                  {{ food.available }}
+                  {{ food.available ? "Active" : "Deactive" }}
                 </td>
                 <td class="position-relative" id="toolbar-container">
                   <button
@@ -170,18 +170,17 @@
                     class="toolbar shadow"
                     [class.visible]="openDropdownIndex === i"
                     [class.hidden]="openDropdownIndex !== i"
+                    (click)="$event.stopPropagation()"
                   >
                     <li (click)="selectFood(food.id)">
-                      <i class="ri-eye-line"></i> View
+                      <i class="ri-eye-line"></i>
+                      View
                     </li>
                     <li><i class="ri-pencil-line"></i> Edit</li>
                     <li (click)="deleteFood(food.id)">
                       <i class="ri-delete-bin-line"></i> Delete
                     </li>
-                    <li
-                      class="toggle-container"
-                      (click)="toggleSelection(i); $event.stopPropagation()"
-                    >
+                    <li class="toggle-container">
                       <button class="status-toggle">
                         <i
                           [class]="
@@ -189,9 +188,10 @@
                               ? 'fa-solid fa-toggle-on'
                               : 'fa-solid fa-toggle-off'
                           "
+                          (click)="toggleSelection(i)"
                         ></i>
                       </button>
-                      Deactivate
+                      <span class="ms-2">Deactivate</span>
                     </li>
                   </ul>
                 </td>

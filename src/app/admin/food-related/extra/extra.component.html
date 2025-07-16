@@ -1,1 +1,119 @@
-<p>extra works!</p>
+<div id="container" class="container-fluid">
+  <header class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="special-h1">Extras</h1>
+
+    <div class="btn-container d-flex gap-2 align-items-center">
+      <label class="d-flex align-items-center" title="Search By Name">
+        <i class="fa-solid fa-magnifying-glass me-2"></i>
+        <input
+          type="text"
+          class="form-control"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search By Name"
+        />
+      </label>
+
+      <app-button
+        buttonText="Add Extra"
+        routerLink="/admin/extras/add"
+      ></app-button>
+
+      <select class="btn rounded-2">
+        <option value="1" selected disabled>
+          <i class="ri-file-download-line"></i> Export
+        </option>
+      </select>
+    </div>
+  </header>
+
+  <!-- TABLE BODY -->
+  <div class="body">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>
+            <input
+              type="checkbox"
+              [checked]="allChecked()"
+              (change)="toggleSelectAll()"
+              style="cursor: pointer"
+            />
+          </th>
+          <th>
+            Name <span><i class="ri-arrow-up-down-line"></i></span>
+          </th>
+          <th>Image</th>
+          <th>
+            Price <span><i class="ri-arrow-up-down-line"></i></span>
+          </th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let extra of filterList; let i = index">
+          <td>
+            <input
+              type="checkbox"
+              [checked]="extra.checked"
+              (change)="toggleSelection(i)"
+              (click)="$event.stopPropagation()"
+              style="cursor: pointer"
+            />
+          </td>
+          <td>{{ extra.name }}</td>
+          <td>
+            <img
+              [src]="extra.image"
+              alt="{{ extra.name }}"
+              class="rounded"
+              width="40"
+              height="40"
+            />
+          </td>
+          <td>€ {{ extra.price.toFixed(2) }}</td>
+          <td [ngClass]="extra.checked ? 'text-danger' : 'text-success'">
+            {{ extra.checked ? "Deactive" : "Active" }}
+          </td>
+          <td class="position-relative">
+            <button
+              class="toolbar-toggle btn btn-sm"
+              [class.active]="extra.isToolbarOpen"
+              (click)="toggleVisibility(extra.id); $event.stopPropagation()"
+            >
+              <i class="ri-more-2-fill"></i>
+            </button>
+            <ul
+              class="toolbar dropdown-menu show"
+              *ngIf="extra.isToolbarOpen"
+              (click)="$event.stopPropagation()"
+            >
+              <li class="dropdown-item">
+                <i class="ri-pencil-line me-2"></i> Edit
+              </li>
+              <li class="dropdown-item">
+                <i class="ri-delete-bin-line me-2"></i> Delete
+              </li>
+              <li
+                class="dropdown-item d-flex align-items-center"
+                (click)="toggleSelection(i); $event.stopPropagation()"
+              >
+                <i
+                  class="me-2"
+                  [class]="
+                    extra.checked
+                      ? 'fa-solid fa-toggle-on'
+                      : 'fa-solid fa-toggle-off'
+                  "
+                ></i>
+                Deactivate
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

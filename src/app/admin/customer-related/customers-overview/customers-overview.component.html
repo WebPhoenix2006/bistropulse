@@ -75,81 +75,26 @@
                   </div>
 
                   <div class="details">
-                    <ng-container *ngIf="!editing; else editFields">
+                    <ng-container>
                       <h4>{{ customer.name }}</h4>
                       <p>{{ customer.email }}</p>
-                      <app-button
-                        buttonText="Edit profile"
-                        (click)="startEditing()"
-                      >
-                        <span class="me-2">
-                          <svg-icons name="pencil-alt"></svg-icons>
-                        </span>
-                      </app-button>
                     </ng-container>
-
-                    <ng-template #editFields>
-                      <input
-                        type="text"
-                        [(ngModel)]="customer.name"
-                        class="form-control mb-2"
-                        placeholder="Name"
-                      />
-                      <input
-                        type="email"
-                        [(ngModel)]="customer.email"
-                        class="form-control mb-2"
-                        placeholder="Email"
-                      />
-                    </ng-template>
                   </div>
 
                   <div class="more-details">
                     <div>
                       <p>Phone Number</p>
-                      <strong *ngIf="!editing">{{ customer.phone }}</strong>
-                      <input
-                        *ngIf="editing"
-                        type="text"
-                        [(ngModel)]="customer.phone"
-                        class="form-control"
-                      />
+                      <strong>{{ customer.phone }}</strong>
                     </div>
+
                     <div>
                       <p>University Student</p>
-                      <strong *ngIf="!editing">{{
-                        customer.is_student ? "Yes" : "No"
-                      }}</strong>
-                      <select
-                        *ngIf="editing"
-                        [(ngModel)]="customer.is_student"
-                        class="form-control"
-                      >
-                        <option [ngValue]="true">Yes</option>
-                        <option [ngValue]="false">No</option>
-                      </select>
+                      <strong>{{ customer.is_student ? "Yes" : "No" }}</strong>
                     </div>
+
                     <div>
                       <p>Location</p>
-                      <strong *ngIf="!editing">{{ customer.location }}</strong>
-                      <input
-                        *ngIf="editing"
-                        type="text"
-                        [(ngModel)]="customer.location"
-                        class="form-control"
-                      />
-                    </div>
-                    <div class="d-flex gap-2">
-                      <app-button
-                        buttonText="Cancel"
-                        color="secondary"
-                        (click)="cancelEditing()"
-                      ></app-button>
-                      <app-button
-                        buttonText="Save Changes"
-                        color="primary"
-                        (click)="saveChanges()"
-                      ></app-button>
+                      <strong>{{ customer.location }}</strong>
                     </div>
                   </div>
                 </div>
@@ -157,7 +102,57 @@
             </div>
           </cus-tab>
 
-          <cus-tab label="Orders"></cus-tab>
+          <cus-tab label="Orders">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" /></th>
+                    <th>Order ID</th>
+                    <th>Details</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of MOCK_CUSTOMER_ORDERS">
+                    <td><input type="checkbox" /></td>
+                    <td>{{ order.order_id }}</td>
+                    <td>{{ order.details }}</td>
+                    <td>{{ order.date | date : "MMM d, y" }}</td>
+                    <td class="span-container">
+                      <span
+                        class="status-badge"
+                        [ngClass]="getStatusClass(order.status)"
+                      >
+                        {{ order.status }}
+                      </span>
+                    </td>
+                    <td>
+                      <app-dropdown
+                        [ellipsis]="true"
+                        [options]="[
+                          {
+                            label: 'View Details',
+                            value: 'view',
+                            icon: 'eye',
+                            iconPosition: 'left'
+                          },
+                          {
+                            label: 'Cancel',
+                            value: 'cancel',
+                            icon: 'times',
+                            iconPosition: 'left'
+                          }
+                        ]"
+                      ></app-dropdown>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </cus-tab>
           <cus-tab label="Fav Restaurants"></cus-tab>
           <cus-tab label="Review & Rating"></cus-tab>
           <cus-tab label="Reward Point"></cus-tab>

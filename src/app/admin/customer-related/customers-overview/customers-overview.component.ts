@@ -17,7 +17,6 @@ export class CustomersOverviewComponent {
   isEnabled = false;
   isActive = true;
   customer: any = null;
-  editing = false;
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -35,8 +34,63 @@ export class CustomersOverviewComponent {
 
     this.customerState.selectedCustomer$.subscribe((data) => {
       this.customer = data;
-      this.editing = false; // reset editing when a new customer is selected
     });
+  }
+
+  MOCK_CUSTOMER_ORDERS = [
+    {
+      order_id: 'B0013789',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Pending',
+    },
+    {
+      order_id: 'B0013790',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Cancelled',
+    },
+    {
+      order_id: 'B0013791',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Preparing',
+    },
+    {
+      order_id: 'B0013792',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Delivered',
+    },
+    {
+      order_id: 'B0013793',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'On the way',
+    },
+    {
+      order_id: 'B0013794',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Cancelled',
+    },
+  ];
+
+  getStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return 'orange-badge';
+      case 'cancelled':
+        return 'red-badge';
+      case 'preparing':
+        return 'lightblue-badge';
+      case 'delivered':
+        return 'green-badge';
+      case 'on the way':
+        return 'darkblue-badge';
+      default:
+        return 'badge bg-secondary';
+    }
   }
 
   loadCustomers() {
@@ -66,35 +120,6 @@ export class CustomersOverviewComponent {
   isSelected(customer: any): boolean {
     const selected = this.customerState.getSelectedCustomerValue?.();
     return selected && selected.customer_id === customer.customer_id;
-  }
-
-  startEditing() {
-    this.editing = true;
-  }
-
-  cancelEditing() {
-    this.editing = false;
-  }
-
-  saveChanges() {
-    if (!this.customer) return;
-
-    console.log('🧪 Updating customer with ID:', this.customer.customer_id);
-    console.log('🧪 Full customer object:', this.customer);
-
-    this.customerService
-      .updateCustomer(this.customer.customer_id, this.customer)
-      .subscribe({
-        next: (res) => {
-          console.log('✅ Customer updated:', res);
-          this.customer = res;
-          this.customerState.setCustomer(res);
-          this.editing = false;
-        },
-        error: (err) => {
-          console.error('❌ Update failed:', err);
-        },
-      });
   }
 
   onToggle(state: boolean) {

@@ -24,6 +24,7 @@ import { FoodDetailsComponent } from './food-related/food-details/food-details.c
 import { RestaurantOverviewComponent } from './restarants/restaurant-overview/restaurant-overview.component';
 import { CategoriesComponent } from './food-related/categories/categories.component';
 import { ExtraComponent } from './food-related/extra/extra.component';
+import { AddExtraComponent } from './food-related/add-extra/add-extra.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ExtraComponent } from './food-related/extra/extra.component';
     RestaurantOverviewComponent,
     CategoriesComponent,
     ExtraComponent,
+    AddExtraComponent,
   ],
 
   imports: [

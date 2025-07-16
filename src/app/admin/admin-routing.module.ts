@@ -19,6 +19,7 @@ import { OtpManagementComponent } from './otp-management/otp-management.componen
 import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
 import { CategoriesComponent } from './food-related/categories/categories.component';
 import { ExtraComponent } from './food-related/extra/extra.component';
+import { AddExtraComponent } from './food-related/add-extra/add-extra.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,7 @@ const routes: Routes = [
               },
               { path: 'categories', component: CategoriesComponent },
               { path: 'extras', component: ExtraComponent },
+              { path: 'extras/add', component: AddExtraComponent },
             ],
           },
         ],

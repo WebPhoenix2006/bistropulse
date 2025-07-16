@@ -1,0 +1,71 @@
+<main>
+  <app-h1 text="Add Extra Food" />
+
+  <div id="container" class="container">
+    <div class="content-wrapper mx-auto">
+      <div class="file-upload-con my-5 gap-3 flex-wrap">
+        <!-- Hidden actual file input -->
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          #fileInput
+          hidden
+        />
+        <!-- Clickable preview area -->
+        <div
+          class="preview-box rounded d-flex align-items-center justify-content-center"
+          style="width: 140px; height: 140px; cursor: pointer"
+          (click)="fileInput.click()"
+        >
+          <img
+            *ngIf="imagePreview"
+            [src]="imagePreview"
+            alt="Preview"
+            class="img-fluid"
+          />
+          <span *ngIf="!imagePreview"><svg-icons name="cup" /></span>
+        </div>
+        <!-- Buttons -->
+        <div class="d-flex gap-2">
+          <app-button
+            [buttonText]="'+ Food Image'"
+            (click)="fileInput?.click()"
+          />
+          <app-button
+            buttonText="Remove"
+            color="secondary"
+            (click)="removeImage()"
+          />
+        </div>
+      </div>
+      <form
+        class="w-100"
+        style="max-width: 400px"
+        (ngSubmit)="submitForm()"
+        #formRef="ngForm"
+      >
+        <div class="input-wrapper mb-3">
+          <label class="form-label">Food Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Cheese Pizza"
+            [(ngModel)]="formData['name']"
+            name="name"
+          />
+        </div>
+        <div class="input-wrapper mb-4">
+          <label class="form-label">Price</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="GHC 30.00"
+            [(ngModel)]="formData['price']"
+            name="price"
+          />
+        </div>
+        <button class="btn btn-primary">Add Extra Food</button>
+      </form>
+    </div>
+  </div>
+</main>

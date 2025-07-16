@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { Extra } from '../../../interfaces/extra.interface';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
@@ -28,6 +28,10 @@ export class ExtraComponent implements OnInit {
   locationFilter = signal<string>('');
   ratingFilter = signal<string>('');
   statusFilter = signal<string>('');
+
+  restauarntId: string = '';
+
+  constructor(private route: ActivatedRoute) {}
 
   filteredList: Array<Extra> = [];
 
@@ -172,5 +176,6 @@ export class ExtraComponent implements OnInit {
 
   ngOnInit(): void {
     this.applyFilters();
+    this.restauarntId = this.route.snapshot.paramMap.get('id');
   }
 }

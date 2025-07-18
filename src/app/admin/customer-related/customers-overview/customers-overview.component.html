@@ -101,7 +101,7 @@
               </div>
             </div>
           </cus-tab>
-
+          <!-- ============= END OF OVERVIEW TAB =============== -->
           <cus-tab label="Orders">
             <div class="table-responsive padded">
               <div
@@ -190,10 +190,131 @@
               </div>
             </div>
           </cus-tab>
-          <cus-tab label="Fav Restaurants"></cus-tab>
-          <cus-tab label="Review & Rating"></cus-tab>
-          <cus-tab label="Reward Point"></cus-tab>
+          <!-- ============= END OF ORDERS TAB =============== -->
+          <cus-tab label="Fav Restaurants">
+            <div class="fav-restaurants-container">
+              <div class="fav-card" *ngFor="let favRes of favRestuarants">
+                <div class="img-wrapper">
+                  <img
+                    [src]="
+                      favRes.restaurant_image_url ||
+                      'assets/images/restaurant-placeholder.jpg'
+                    "
+                    alt="restaurant"
+                    class="restaurant-img"
+                  />
+                  <div class="discount-badge">
+                    {{ favRes.discount_percentage }}% OFF
+                  </div>
+                  <button class="favorite-icon">
+                    <svg-icons name="love" />
+                  </button>
+                </div>
+
+                <div class="details">
+                  <div class="fav-info">
+                    <h4>{{ favRes.name }}</h4>
+                    <div class="rating">
+                      <svg-icons name="star" />
+                      <span>{{ favRes.rating }}</span>
+                    </div>
+                  </div>
+                  <div class="meta">
+                    <span>{{ favRes.estimated_delivery_time }}</span>
+                    <span class="dot"></span>
+                    <svg-icons name="location" />
+                    <span>{{ favRes.location }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </cus-tab>
+          <cus-tab label="Review & Rating">
+            <div class="reviews-container">
+              <div class="review-card" *ngFor="let review of customerReviews">
+                <div class="header">
+                  <div>
+                    <h2>{{ review.orderId }}</h2>
+                    <p class="restaurant-name mt-2">
+                      {{ review.restaurantName }}
+                    </p>
+                  </div>
+                  <div class="datetime">
+                    {{ review.reviewedAt | date : "EEE, MMM d • hh:mm a" }}
+                  </div>
+                </div>
+
+                <div
+                  class="reviewed-items-container"
+                  [class.bordered]="review.replys.length > 0"
+                >
+                  <div class="reviewed-items">
+                    <div class="item" *ngFor="let item of review.reviewedItems">
+                      <img [src]="item.imageUrl" alt="{{ item.itemName }}" />
+                      <div class="details">
+                        <p class="item-name">{{ item.itemName }}</p>
+                        <p class="comment" *ngIf="item.comment">
+                          {{ item.comment }}
+                        </p>
+                        <p class="no-comment" *ngIf="!item.comment">
+                          No comment
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="footer">
+                    <div class="stars">
+                      <ng-container
+                        *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+                      >
+                        <svg-icons name="star" />
+                      </ng-container>
+                      <span class="status">
+                        {{
+                          review.rating >= 4
+                            ? "Good"
+                            : review.rating >= 2
+                            ? "Okay"
+                            : "Bad"
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="reply" *ngIf="review.replys?.length">
+                  <div *ngFor="let rep of review.replys">
+                    <p class="reply-text">
+                      <span class="review-icon-con"
+                        ><svg-icons name="reply-alt" />
+                      </span>
+                      {{ rep.text }}
+                    </p>
+                    <div class="meta">
+                      <span>Replied</span>
+                      <span
+                        >•
+                        {{
+                          rep.repliedAt | date : "EEE, MMM d • hh:mm a"
+                        }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </cus-tab>
+          <!-- ============= END OF RATINGS TAB =============== -->
+          <cus-tab label="Reward Point">
+            <div class="reward-points-container container-fluid">
+              <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6"></div>
+              </div>
+            </div>
+          </cus-tab>
         </cus-tabs>
+        <!-- ============= END OF REWARD POINTS TAB =============== -->
       </div>
     </div>
   </div>

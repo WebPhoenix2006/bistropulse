@@ -27,6 +27,8 @@ import { ExtraComponent } from './food-related/extra/extra.component';
 import { RidersComponent } from './rider-related/riders/riders.component';
 import { AddRiderComponent } from './rider-related/add-rider/add-rider.component';
 import { RiderShiftsComponent } from './rider-related/rider-shifts/rider-shifts.component';
+import { AddExtraComponent } from './food-related/add-extra/add-extra.component';
+import { RiderOverviewComponent } from './rider-related/rider-overview/rider-overview.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { RiderShiftsComponent } from './rider-related/rider-shifts/rider-shifts.
     ExtraComponent,
     RidersComponent,
     AddRiderComponent,
-    RiderShiftsComponent
+    RiderShiftsComponent,
+    AddExtraComponent,
+    RiderOverviewComponent
   ],
 
   imports: [

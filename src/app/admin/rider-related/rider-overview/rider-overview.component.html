@@ -1,0 +1,261 @@
+<div class="customer-overview">
+  <div class="row">
+    <!-- Left Sidebar with Customer List -->
+    <div class="col-lg-4 col-md-4 col-sm-12">
+      <div class="profiles">
+        <div class="heading">
+          <div class="title">
+            <h5>Riders</h5>
+          </div>
+        </div>
+
+        <div class="search">
+          <label title="Search By Restaurant Name">
+            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" placeholder="Search By Restaurant Name" />
+          </label>
+        </div>
+
+        <div class="customers-list">
+          <ul class="customers list-unstlyed">
+            <li
+              class="customer"
+              *ngFor="let rider of riders"
+              (click)="selectCustomer(rider)"
+              [class.selected]="isSelected(rider)"
+            >
+              <div class="customer-content">
+                <div class="img">
+                  <img
+                    [src]="
+                      rider.profile_image || 'assets/images/profile-img.png'
+                    "
+                    alt="profile-img"
+                    class="img-fluid object-fit-cover"
+                  />
+                </div>
+                <div class="details">
+                  <h5>{{ rider.full_name }}</h5>
+                  <p>{{ rider.phone }}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Tabs Section -->
+    <div class="col-lg-8 col-md-8 col-sm-12">
+      <div class="tabs">
+        <cus-tabs>
+          <cus-tab label="Overview">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="profile-overview" *ngIf="rider">
+                  <div class="active">
+                    <div class="alert">Active</div>
+                    <div class="switch">
+                      <toggle-switch
+                        [checked]="isActive"
+                        (toggled)="isActive = $event"
+                      ></toggle-switch>
+                    </div>
+                  </div>
+
+                  <div class="profile-info">
+                    <div class="img">
+                      <img
+                        [src]="
+                          rider.photo_url || 'assets/images/profile-img-alt.png'
+                        "
+                        alt="profile-img"
+                        class="img-fluid object-fit-cover"
+                      />
+                    </div>
+
+                    <div class="details">
+                      <ng-container>
+                        <h4>{{ rider.full_name }}</h4>
+                        <p>Rider Id: {{ rider.rider_code }}</p>
+                      </ng-container>
+                    </div>
+
+                    <div class="more-details">
+                      <div>
+                        <p>Phone Number</p>
+                        <strong>{{ rider.phone }}</strong>
+                      </div>
+
+                      <div>
+                        <p>Shift</p>
+                        <strong>10:00 AM - 3:00 PM</strong>
+                      </div>
+
+                      <div>
+                        <p>Address</p>
+                        <strong>{{ rider.address }}</strong>
+                      </div>
+                      <div>
+                        <p>Gender</p>
+                        <strong>{{ rider.gender }}</strong>
+                      </div>
+                      <div>
+                        <p>Date of Birth</p>
+                        <strong>{{ rider.date_of_birth }}</strong>
+                      </div>
+                      <div>
+                        <p>User ID</p>
+                        <strong>{{ rider.rider_code }}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="further-details">
+                  <div class="grid-item">
+                    <div class="current-bal">
+                      <div class="img">
+                        <img
+                          src="assets/images/wallet.png"
+                          alt="wallet"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <div class="count">
+                        <p>Current Balance</p>
+                        <div>
+                          <span>GHC</span>
+                          <strong>276.</strong><span>80</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-item">
+                    <h5 class="fw-bold">Documents</h5>
+                    <div class="documents">
+                      <div>
+                        <div class="current-bal">
+                          <div class="img">
+                            <img
+                              src="assets/images/pdf-file.png"
+                              alt="wallet"
+                              class="img-fluid"
+                            />
+                          </div>
+                          <div class="count">
+                            <p>Business Certificate</p>
+                            <small>Businesslicense.pdf</small>
+                          </div>
+                          <div class="icon">
+                            <svg-icons name="download"></svg-icons>
+                          </div>
+                        </div>
+                      </div>
+                      <div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </cus-tab>
+
+          <cus-tab label="Deliveries">
+            <div class="table-responsive padded">
+              <div
+                class="btn-header m-2 w-100 d-flex justify-content-between align-items-center"
+              >
+                <app-h1 text="Riders" />
+                <div class="w-25">
+                  <label title="Search By Order Name">
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input
+                      type="text"
+                      name="searchTerm"
+                      [(ngModel)]="searchTerm"
+                      placeholder="Search"
+                    />
+                  </label>
+                </div>
+              </div>
+              <div class="mini-tabs-container">
+                <cus-tabs>
+                  <cus-tab *ngFor="let branch of branches" [label]="branch">
+                    <table class="table table-hover mt-4">
+                      <thead>
+                        <tr>
+                          <th class="checkbox">
+                            <input
+                              type="checkbox"
+                              [checked]="allChecked(branch)"
+                              (change)="toggleSelectAll(branch)"
+                            />
+                          </th>
+                          <th>Order ID</th>
+                          <th>Restaurant</th>
+                          <th>Date</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let order of getOrdersByBranch(branch);
+                            index as i
+                          "
+                        >
+                          <td class="checkbox">
+                            <input
+                              type="checkbox"
+                              [checked]="order.checked"
+                              (change)="toggleSelection(order)"
+                            />
+                          </td>
+                          <td>{{ order.order_id }}</td>
+                          <td>{{ order.restaurant }}</td>
+                          <td>{{ order.date | date : "MMM d, y" }}</td>
+                          <td class="span-container">
+                            <span
+                              class="status-badge"
+                              [ngClass]="getStatusClass(order.status)"
+                            >
+                              {{ order.status }}
+                            </span>
+                          </td>
+                          <td>
+                            <app-dropdown
+                              [ellipsis]="true"
+                              [options]="[
+                                {
+                                  label: 'View Details',
+                                  value: 'view',
+                                  icon: 'eye',
+                                  iconPosition: 'left'
+                                },
+                                {
+                                  label: 'Cancel',
+                                  value: 'cancel',
+                                  icon: 'times',
+                                  iconPosition: 'left'
+                                }
+                              ]"
+                            ></app-dropdown>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </cus-tab>
+                </cus-tabs>
+              </div>
+            </div>
+          </cus-tab>
+          <cus-tab label="Fav Restaurants"></cus-tab>
+          <cus-tab label="Review & Rating"></cus-tab>
+          <cus-tab label="Reward Point"></cus-tab>
+        </cus-tabs>
+      </div>
+    </div>
+  </div>
+</div>

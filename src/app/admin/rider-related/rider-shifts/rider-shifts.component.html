@@ -63,7 +63,7 @@
           <tr
             *ngFor="let customer of filtered; index as i"
             [class.checked]="customer.checked"
-            [routerLink]="['/admin/riders', customer.customer_id]"
+            [routerLink]="['/admin/riders', customer.rider_code]"
           >
             <td>
               <input

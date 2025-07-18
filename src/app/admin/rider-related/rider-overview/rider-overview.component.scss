@@ -213,7 +213,6 @@ label {
   background: transparent;
   border: 1px solid $gray;
   padding: 8px;
-  max-width: 100px;
 
   span {
     width: 10%;
@@ -284,6 +283,58 @@ label {
             color: #fff;
           }
         }
+      }
+    }
+  }
+}
+
+.further-details {
+  margin-top: 16px;
+  .grid-item {
+    border-radius: 5px;
+    padding: 24px;
+    background-color: #fff;
+    height: 100%;
+    margin-bottom: 16px;
+    .current-bal {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      .count {
+        p {
+          color: $secondary;
+          font-size: 16px;
+        }
+        strong {
+          font-size: 24px;
+          font-weight: bold;
+          line-height: 24px;
+        }
+        div {
+          display: flex;
+          align-items: end;
+          gap: 5px;
+          span {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+    .documents {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid $gray;
+      .icon {
+        flex-grow: 1;
+        display: flex;
+        justify-content: end;
+      }
+      p {
+        margin-bottom: 0 !important;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 34px;
+        color: #000 !important;
       }
     }
   }

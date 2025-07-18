@@ -1,23 +1,23 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CustomersService } from '../../../shared/services/customers.service';
-import { CustomerStateService } from '../../../shared/services/customer-state.service';
+import { RiderStateService } from '../../../shared/services/rider-state.service';
+import { RiderService } from '../../../shared/services/rider.service';
 
 @Component({
-  selector: 'app-customers-overview',
+  selector: 'app-rider-overview',
   standalone: false,
-  templateUrl: './customers-overview.component.html',
-  styleUrl: './customers-overview.component.scss',
+  templateUrl: './rider-overview.component.html',
+  styleUrl: './rider-overview.component.scss'
 })
-export class CustomersOverviewComponent implements OnInit {
-  private customerService = inject(CustomersService);
-  private customerState = inject(CustomerStateService);
+export class RiderOverviewComponent implements OnInit {
+private riderService = inject(RiderService);
+  private riderState = inject(RiderStateService);
   searchTerm: string = '';
 
-  customers: any[] = [];
+  riders: any[] = [];
   isLoading = false;
   isEnabled = false;
   isActive = true;
-  customer: any = null;
+  rider: any = null;
   branches: string[] = [];
   activeBranch: string = '';
   checkedOrders: Set<number> = new Set();
@@ -25,7 +25,7 @@ export class CustomersOverviewComponent implements OnInit {
   MOCK_CUSTOMER_ORDERS = [
     {
       order_id: 'B0013789',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      restaurant: 'Sun Vally Restaurant',
       date: '2021-11-28',
       status: 'Pending',
       branch: 'Dindiridu',
@@ -33,7 +33,7 @@ export class CustomersOverviewComponent implements OnInit {
     },
     {
       order_id: 'B0013790',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      restaurant: 'Sun Vally Restaurant',
       date: '2021-11-28',
       status: 'Cancelled',
       branch: 'Dindiridu',
@@ -41,7 +41,7 @@ export class CustomersOverviewComponent implements OnInit {
     },
     {
       order_id: 'B0013791',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      restaurant: 'Sun Vally Restaurant',
       date: '2021-11-28',
       status: 'Preparing',
       branch: 'Damn',
@@ -49,7 +49,7 @@ export class CustomersOverviewComponent implements OnInit {
     },
     {
       order_id: 'B0013792',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      restaurant: 'Sun Vally Restaurant',
       date: '2021-11-28',
       status: 'Delivered',
       branch: 'Damn',
@@ -57,7 +57,7 @@ export class CustomersOverviewComponent implements OnInit {
     },
     {
       order_id: 'B0013793',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      restaurant: 'Sun Vally Restaurant',
       date: '2021-11-28',
       status: 'On the way',
       branch: 'Jalingo',
@@ -65,7 +65,7 @@ export class CustomersOverviewComponent implements OnInit {
     },
     {
       order_id: 'B0013794',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      restaurant: 'Sun Vally Restaurant',
       date: '2021-11-28',
       status: 'Cancelled',
       branch: 'Jalingo',
@@ -94,18 +94,18 @@ export class CustomersOverviewComponent implements OnInit {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('auth_token');
       if (token) {
-        this.loadCustomers();
+        this.loadRiders();
       } else {
         console.warn(
-          '❌ Token not found in localStorage. Skipping customer fetch.'
+          '❌ Token not found in localStorage. Skipping rider fetch.'
         );
       }
     } else {
       console.warn('⚠️ Running in SSR mode: skipping localStorage access.');
     }
 
-    this.customerState.selectedCustomer$.subscribe((data) => {
-      this.customer = data;
+    this.riderState.selectedRider$.subscribe((data) => {
+      this.rider = data;
     });
 
     this.branches = [
@@ -141,33 +141,33 @@ export class CustomersOverviewComponent implements OnInit {
     }
   }
 
-  loadCustomers() {
+  loadRiders() {
     this.isLoading = true;
 
-    this.customerService.getCustomers().subscribe({
+    this.riderService.getRiders().subscribe({
       next: (res: any) => {
-        this.customers =
-          res.results?.map((customer: any) => ({
-            ...customer,
+        this.riders =
+          res.results?.map((rider: any) => ({
+            ...rider,
             checked: false,
           })) || [];
 
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('❌ Failed to fetch customers:', err);
+        console.error('❌ Failed to fetch riders:', err);
         this.isLoading = false;
       },
     });
   }
 
-  selectCustomer(customer: any) {
-    this.customerState.setCustomer(customer);
+  selectCustomer(rider: any) {
+    this.riderState.setCustomer(rider);
   }
 
-  isSelected(customer: any): boolean {
-    const selected = this.customerState.getSelectedCustomerValue?.();
-    return selected && selected.customer_id === customer.customer_id;
+  isSelected(rider: any): boolean {
+    const selected = this.riderState.getSelectedCustomerValue?.();
+    return selected && selected.rider_id === rider.rider_id;
   }
 
   onToggle(state: boolean) {

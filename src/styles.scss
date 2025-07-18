@@ -16,6 +16,15 @@ app-root {
   display: block;
 }
 
+.checkbox {
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    cursor: pointer !important;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -66,7 +75,7 @@ app-dynamic-tooltip {
 span.active {
   color: $primary !important;
 }
-.active{
+.active {
   color: $primary !important;
 }
 

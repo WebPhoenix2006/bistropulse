@@ -24,6 +24,9 @@ import { FoodDetailsComponent } from './food-related/food-details/food-details.c
 import { RestaurantOverviewComponent } from './restarants/restaurant-overview/restaurant-overview.component';
 import { CategoriesComponent } from './food-related/categories/categories.component';
 import { ExtraComponent } from './food-related/extra/extra.component';
+import { RidersComponent } from './rider-related/riders/riders.component';
+import { AddRiderComponent } from './rider-related/add-rider/add-rider.component';
+import { RiderShiftsComponent } from './rider-related/rider-shifts/rider-shifts.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,9 @@ import { ExtraComponent } from './food-related/extra/extra.component';
     RestaurantOverviewComponent,
     CategoriesComponent,
     ExtraComponent,
+    RidersComponent,
+    AddRiderComponent,
+    RiderShiftsComponent
   ],
 
   imports: [

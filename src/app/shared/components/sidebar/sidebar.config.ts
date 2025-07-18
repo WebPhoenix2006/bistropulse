@@ -42,6 +42,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: 'bike',
     route: '/',
     roles: ['admin'],
+    collapseId: 'riderNav',
+    children: [
+      { label: 'Rider List', route: '/admin/riders' },
+      // { label: 'New Rider Request', route: '/admin/riders/add-rider' },
+      { label: 'Rider Shifts', route: '/admin/riders/shifts' },
+    ],
   },
   {
     label: 'Order Management',

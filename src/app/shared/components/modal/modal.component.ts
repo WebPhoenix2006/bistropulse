@@ -3,16 +3,18 @@ import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-modal',
-  standalone: false,
   templateUrl: './modal.component.html',
-  styleUrl: './modal.component.scss',
+  styleUrls: ['./modal.component.scss'],
+  standalone: false,
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0 }),
         animate('200ms ease-in', style({ opacity: 1 })),
       ]),
-      transition(':leave', [animate('200ms ease-out', style({ opacity: 0 }))]),
+      transition(':leave', [
+        animate('200ms ease-out', style({ opacity: 0 })),
+      ]),
     ]),
     trigger('scaleInOut', [
       transition(':enter', [
@@ -20,35 +22,42 @@ import { trigger, style, animate, transition } from '@angular/animations';
         animate('200ms ease-in', style({ transform: 'scale(1)', opacity: 1 })),
       ]),
       transition(':leave', [
-        animate(
-          '200ms ease-out',
-          style({ transform: 'scale(0.8)', opacity: 0 })
-        ),
+        animate('200ms ease-out', style({ transform: 'scale(0.8)', opacity: 0 })),
       ]),
     ]),
   ],
 })
 export class ModalComponent {
-  @Input() isVisible: boolean = false;
-  @Output() isVisibleChange = new EventEmitter<boolean>();
+  // Unique identifier for the modal
+  @Input() id!: string;
 
-  // Allows size customisation
+  // Shared modal ID state from parent
+  @Input() activeModalId!: string | null;
+  @Output() activeModalIdChange = new EventEmitter<string | null>();
+
+  // Modal size options
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
-  // Closes modal and emits change
-  close() {
-    this.isVisible = false;
-    this.isVisibleChange.emit(false);
+  // Modal is visible if its ID matches the active one
+  get isVisible(): boolean {
+    return this.id === this.activeModalId;
   }
-  // Close when the backdrop is clicked
+
+  // Close modal
+  close() {
+    this.activeModalIdChange.emit(null);
+  }
+
+  // Close on backdrop click
   onBackdropClick() {
     this.close();
   }
-  // Close when escape key is pressed
+
+  // Close on Escape key
   @HostListener('document:keydown.escape', ['$event'])
   handleEscape(event: KeyboardEvent) {
     if (this.isVisible) {
-      this.close;
+      this.close();
     }
   }
 }

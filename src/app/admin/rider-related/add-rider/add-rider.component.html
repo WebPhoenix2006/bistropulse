@@ -1,0 +1,106 @@
+<main>
+  <h1 class="title ms-2">Add Customers</h1>
+
+  <div class="container">
+    <!-- File Upload Preview Box -->
+    <div class="file-upload-con my-5">
+      <input type="file" (change)="onFileSelected($event)" #fileInput hidden />
+
+      <div class="preview-box" (click)="fileInput.click()">
+        <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview" />
+        <span *ngIf="!imagePreview">+ Add Photo</span>
+      </div>
+
+      <app-button
+        [buttonText]="'Upload New Picture'"
+        (click)="fileInput?.click()"
+      />
+      <app-button buttonText="Remove" color="success" (click)="removeImage()" />
+    </div>
+
+    <!-- Main Form -->
+    <form
+      class="update-Customer container"
+      (submit)="onSubmit(); $event.stopPropagation()"
+    >
+      <div class="row">
+        <!-- University Student Checkbox (outside @for) -->
+        <div class="input-wrapper university col-md-12">
+          <h2>University Student</h2>
+          <label class="d-flex align-items-center" style="gap: 8px">
+            <input
+              type="checkbox"
+              name="isStudent"
+              [(ngModel)]="formData['isStudent']"
+            />
+          </label>
+        </div>
+
+        <!-- All other inputs loop -->
+        @for (input of inputs; track $index) {
+        <div [class]="'input-wrapper ' + input.class">
+          <h2>{{ input.label }}</h2>
+
+          @if (input.type === 'text' || input.type === 'number' || input.type
+          === 'date') {
+          <input
+            [type]="input.type"
+            [name]="input.formControlName"
+            [(ngModel)]="formData[input.name]"
+            required
+          />
+          } @else if (input.type === 'file') {
+          <div class="file-input-block">
+            <input
+              type="file"
+              [name]="input.name"
+              #fileInput
+              (change)="onFileChange($event, input.name)"
+              hidden
+              accept=".pdf"
+            />
+            <div class="file-ui" (click)="fileInput.click()">
+              <span>{{ formData[input.name]?.name || "Choose file" }}</span>
+              <app-button
+                buttonText="Choose File"
+                (click)="fileInput?.click(); $event.stopPropagation()"
+                style="z-index: 100"
+              />
+            </div>
+          </div>
+          } @else if (input.type === 'select') {
+          <select
+            [(ngModel)]="formData[input.name]"
+            [name]="input.formControlName"
+          >
+            @for (option of input.options; track $index) {
+            <option [value]="option">{{ option }}</option>
+            }
+          </select>
+          } @else if (input.type === 'message') {
+          <textarea
+            [name]="input.formControlName"
+            class="form-control mb-3"
+            [(ngModel)]="formData[input.name]"
+          ></textarea>
+          }
+        </div>
+        }
+      </div>
+
+      <app-button buttonText="Add Customer" />
+    </form>
+  </div>
+</main>
+
+<!-- Loading Spinner -->
+@if (isLoading()) {
+<app-loading-spinner />
+}
+
+<!-- Success Popup -->
+<app-popup-message
+  [visible]="isSuccessfull()"
+  [messageText]="'Customer Added Successfully ✅'"
+></app-popup-message>
+

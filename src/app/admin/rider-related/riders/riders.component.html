@@ -1,0 +1,162 @@
+<div class="main">
+  <header>
+    <h1>Riders</h1>
+
+    <div class="btn-container">
+      <label title="Search By Rider Name">
+        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="text"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          placeholder="Search By Rider Name"
+        />
+      </label>
+      <app-filter-button></app-filter-button>
+
+      <app-button
+        buttonText="Add Rider"
+        routerLink="/admin/riders/add-rider"
+      ></app-button>
+
+      <select class="btn rounder-2">
+        <option value="1" selected disabled>
+          <i class="ri-file-download-line"></i> <span>Export</span>
+        </option>
+      </select>
+    </div>
+  </header>
+
+  <div
+    class="table-parent"
+    *ngIf="!isLoading && riders.length > 0; else loading"
+  >
+    <ng-container *ngIf="filteredriders as filtered">
+      <table
+        class="table table-hover"
+        *ngIf="filtered.length > 0; else noSearchResults"
+      >
+        <thead class="thead">
+          <tr>
+            <td style="width: 30px">
+              <input
+                type="checkbox"
+                (change)="toggleSelectAll()"
+                [checked]="allSelected()"
+              />
+            </td>
+            <td>
+              <strong class="d-flex align-items-center">
+                Rider Name <span><svg-icons name="reorder"></svg-icons></span>
+              </strong>
+            </td>
+            <td><strong>Photo</strong></td>
+            <td><strong>Phone</strong></td>
+            <td><strong>Shift</strong></td>
+            <td><strong>Address</strong></td>
+
+            <td><strong>Action</strong></td>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr
+            *ngFor="let customer of filtered; index as i"
+            style="cursor: pointer"
+            [class.checked]="customer.checked"
+            [routerLink]="['/admin/riders', customer.customer_id]"
+          >
+            <td>
+              <input
+                type="checkbox"
+                [checked]="customer.checked"
+                (change)="toggleSelection(i)"
+                (click)="$event.stopPropagation()"
+              />
+            </td>
+            <td>
+              <span>{{ customer.full_name }}</span>
+            </td>
+            <td>
+              <div class="profile">
+                <img
+                  [src]="
+                    customer.profile_image || 'assets/images/profile-img.png'
+                  "
+                  alt="profile-img"
+                  class="img-fluid"
+                  style="width: 50px; height: 50px; border-radius: 100%"
+                />
+              </div>
+            </td>
+            <td>
+              <span>{{ customer.phone }}</span>
+            </td>
+            <td>
+                <span>10:00 AM - 3:00 PM</span>
+            </td>
+            <td>
+              <span>{{ customer.address }}</span>
+            </td>
+
+            <td>
+              <div class="actions" (click)="$event.stopPropagation()">
+                <app-dropdown
+                  [ellipsis]="true"
+                  [options]="[
+                    {
+                      label: 'View',
+                      value: 'view',
+                      icon: 'view-eye',
+                      iconPosition: 'left'
+                    },
+                    {
+                      label: 'Edit',
+                      value: 'edit',
+                      icon: 'pencil',
+                      iconPosition: 'left'
+                    },
+                    {
+                      label: 'Disable',
+                      value: 'disable',
+                      icon: 'times',
+                      iconPosition: 'left'
+                    }
+                  ]"
+                ></app-dropdown>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noSearchResults>
+        <empty-search />
+      </ng-template>
+    </ng-container>
+
+    <div class="pages" *ngIf="filteredriders.length > 0">
+      <div class="count">
+        <span>{{ currentPage }} of {{ totalPages }}</span>
+      </div>
+
+      <app-pagination
+        *ngIf="totalPages >= 1"
+        [totalCount]="totalCount"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  </div>
+
+  <ng-template #emptyList>
+    <app-empty-list />
+  </ng-template>
+  <ng-template #loading>
+    <div class="loading-table">
+      <app-mini-loader *ngIf="isLoading"></app-mini-loader>
+      <app-empty-list
+        *ngIf="!isLoading && riders.length === 0"
+      ></app-empty-list>
+    </div>
+  </ng-template>
+</div>

@@ -19,6 +19,9 @@ import { OtpManagementComponent } from './otp-management/otp-management.componen
 import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
 import { CategoriesComponent } from './food-related/categories/categories.component';
 import { ExtraComponent } from './food-related/extra/extra.component';
+import { RidersComponent } from './rider-related/riders/riders.component';
+import { AddRiderComponent } from './rider-related/add-rider/add-rider.component';
+import { RiderShiftsComponent } from './rider-related/rider-shifts/rider-shifts.component';
 
 const routes: Routes = [
   {
@@ -54,6 +57,13 @@ const routes: Routes = [
               { path: 'extras', component: ExtraComponent },
             ],
           },
+        ],
+      },
+      {
+        path: 'riders',
+        children: [
+          { path: '', component: RidersComponent },
+          { path: 'shifts', component: RiderShiftsComponent },
         ],
       },
       {

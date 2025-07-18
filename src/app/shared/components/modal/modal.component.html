@@ -1,9 +1,11 @@
+<!-- Backdrop -->
 <div
   class="modal-backdrop"
   *ngIf="isVisible"
   @fadeInOut
   (click)="onBackdropClick()"
 >
+  <!-- Modal Content -->
   <div
     class="modal-content"
     [ngClass]="size"

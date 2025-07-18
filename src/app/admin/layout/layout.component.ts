@@ -35,29 +35,31 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   screenWidth = signal<number>(0); // Initialize with 0 or a safe default
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    this.effectRef = effect(() => {
+      const isOffline = this.offlineService.isOffline();
+      if (isOffline) {
+        this.videoEnded = false;
+        this.toastr.error(
+          'No internet connection. Waiting to reconnect...',
+          'Error',
+          {
+            timeOut: 0,
+            extendedTimeOut: 0,
+            closeButton: true,
+            disableTimeOut: true,
+          }
+        );
+      }
+      this.cdr.markForCheck();
+    });
+  }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.screenWidth.set(window.innerWidth);
-      // Setup effect for offlineService signal
-      this.effectRef = effect(() => {
-        const isOffline = this.offlineService.isOffline();
-        if (isOffline) {
-          this.videoEnded = false;
-          this.toastr.error(
-            'No internet connection. Waiting to reconnect...',
-            'Error',
-            {
-              timeOut: 0,
-              extendedTimeOut: 0,
-              closeButton: true,
-              disableTimeOut: true,
-            }
-          );
-        }
-        this.cdr.markForCheck();
-      });
+
+      // ✅ Create effect WITHIN injection context
     }
   }
 

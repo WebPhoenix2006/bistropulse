@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CustomersService } from '../../../shared/services/customers.service';
 import { CustomerStateService } from '../../../shared/services/customer-state.service';
 
@@ -8,15 +8,87 @@ import { CustomerStateService } from '../../../shared/services/customer-state.se
   templateUrl: './customers-overview.component.html',
   styleUrl: './customers-overview.component.scss',
 })
-export class CustomersOverviewComponent {
+export class CustomersOverviewComponent implements OnInit {
   private customerService = inject(CustomersService);
   private customerState = inject(CustomerStateService);
+  searchTerm: string = '';
 
   customers: any[] = [];
   isLoading = false;
   isEnabled = false;
   isActive = true;
   customer: any = null;
+  branches: string[] = [];
+  activeBranch: string = '';
+  checkedOrders: Set<number> = new Set();
+
+  MOCK_CUSTOMER_ORDERS = [
+    {
+      order_id: 'B0013789',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Pending',
+      branch: 'Dindiridu',
+      checked: false,
+    },
+    {
+      order_id: 'B0013790',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Cancelled',
+      branch: 'Dindiridu',
+      checked: false,
+    },
+    {
+      order_id: 'B0013791',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Preparing',
+      branch: 'Damn',
+      checked: false,
+    },
+    {
+      order_id: 'B0013792',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Delivered',
+      branch: 'Damn',
+      checked: false,
+    },
+    {
+      order_id: 'B0013793',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'On the way',
+      branch: 'Jalingo',
+      checked: false,
+    },
+    {
+      order_id: 'B0013794',
+      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
+      date: '2021-11-28',
+      status: 'Cancelled',
+      branch: 'Jalingo',
+      checked: false,
+    },
+  ];
+
+  allChecked(branch: string): boolean {
+    const orders = this.getOrdersByBranch(branch);
+    return orders.every((order) => order.checked);
+  }
+
+  toggleSelection(order: any): void {
+    order.checked = !order.checked;
+  }
+
+  toggleSelectAll(branch: string): void {
+    const orders = this.getOrdersByBranch(branch);
+    const shouldCheck = !this.allChecked(branch);
+    orders.forEach((order) => (order.checked = shouldCheck));
+  }
+
+  orders = this.MOCK_CUSTOMER_ORDERS;
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -35,46 +107,22 @@ export class CustomersOverviewComponent {
     this.customerState.selectedCustomer$.subscribe((data) => {
       this.customer = data;
     });
+
+    this.branches = [
+      'All',
+      ...new Set(this.orders.map((order) => order.branch)),
+    ];
+    this.activeBranch = this.branches[0]; // default to first branch
   }
 
-  MOCK_CUSTOMER_ORDERS = [
-    {
-      order_id: 'B0013789',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
-      date: '2021-11-28',
-      status: 'Pending',
-    },
-    {
-      order_id: 'B0013790',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
-      date: '2021-11-28',
-      status: 'Cancelled',
-    },
-    {
-      order_id: 'B0013791',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
-      date: '2021-11-28',
-      status: 'Preparing',
-    },
-    {
-      order_id: 'B0013792',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
-      date: '2021-11-28',
-      status: 'Delivered',
-    },
-    {
-      order_id: 'B0013793',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
-      date: '2021-11-28',
-      status: 'On the way',
-    },
-    {
-      order_id: 'B0013794',
-      details: 'Fufu (1), Banku(2), Bel-Aquat(1)',
-      date: '2021-11-28',
-      status: 'Cancelled',
-    },
-  ];
+  getOrdersByBranch(branch: string) {
+    if (branch === 'All') {
+      return this.orders;
+    }
+
+    const filtered = this.orders.filter((order) => order.branch === branch);
+    return filtered;
+  }
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {

@@ -83,12 +83,17 @@
           max-height: 0;
           opacity: 0;
           transition: all 0.3s ease-in-out;
-          margin-left: 2rem;
+          width: 100% !important;
+          padding-left: 4.45rem;
         }
 
         .reply-box.show {
           max-height: 200px;
           opacity: 1;
+
+          textarea {
+            width: 100% !important;
+          }
         }
 
         .reply {

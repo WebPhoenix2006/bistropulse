@@ -46,6 +46,10 @@ label {
   }
 }
 
+.padded {
+  padding: 24px !important;
+}
+
 .customer-overview {
   .profiles {
     padding: 28px 24px;
@@ -181,9 +185,63 @@ label {
       }
     }
   }
+  .mini-tabs-container {
+    ::ng-deep .tabs-wrapper {
+      .tab-list {
+        li {
+          border: 1px solid #efefef !important;
+          padding: 10px;
+          border-radius: 5px !important;
+          &.active {
+            border-color: $primary !important;
+            color: $primary !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+label {
+  display: flex;
+  color: $secondary;
+  font-size: 15px;
+  gap: 10px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $gray;
+  padding: 8px;
+  max-width: 100px;
+
+  span {
+    width: 10%;
+    display: flex;
+    text-align: center;
+
+    i {
+      width: 100%;
+    }
+  }
+
+  input {
+    width: 90%;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
 }
 
 .table-responsive {
+  background: white !important;
+
+  .btn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   table {
     tbody {
       tr {

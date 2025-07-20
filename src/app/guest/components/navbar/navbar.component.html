@@ -1,4 +1,14 @@
 <div class="header">
-  <img src="" alt="" srcset="" />
-  <div class="nav-links"></div>
+  <span class="span-container">
+    <svg-icons name="location" />
+    Bistropulse
+  </span>
+  <ul class="nav-links">
+    <li
+      [routerLink]="link.route"
+      *ngFor="let link of navigationItems; index as i"
+    >
+      {{ link.label }}
+    </li>
+  </ul>
 </div>

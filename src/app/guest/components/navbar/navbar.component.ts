@@ -8,10 +8,11 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
   navigationItems = [
-    { label: 'About Us', route: '/about-us' },
-    { label: 'Features', route: '/features' },
-    { label: 'Testimonials', route: '/testimonials' },
-    { label: 'Integrations', route: '/integrations' },
-    { label: 'Pricing', route: '/pricing' },
+    { label: 'Home', route: '/guest/home' },
+    { label: 'About Us', route: '/guest/about-us' },
+    { label: 'Features', route: '/guest/features' },
+    { label: 'Testimonials', route: '/guest/testimonials' },
+    { label: 'Integrations', route: '/guest/integrations' },
+    { label: 'Pricing', route: '/guest/pricing' },
   ];
 }

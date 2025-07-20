@@ -47,12 +47,16 @@
 
     <!-- Right Tabs Section -->
     <div class="col-lg-8 col-md-8 col-sm-12">
-      <div class="tabs">
-        <cus-tabs>
+      <div class="tabs" *ngIf="rider">
+        <cus-tabs
+          [customClass]="'rider-tabs'"
+          [selectedIndex]="selectedTabIndex"
+          (tabChanged)="onTabChanged($event)"
+        >
           <cus-tab label="Overview">
             <div class="row">
               <div class="col-lg-6">
-                <div class="profile-overview" *ngIf="rider">
+                <div class="profile-overview">
                   <div class="active">
                     <div class="alert">Active</div>
                     <div class="switch">
@@ -67,7 +71,8 @@
                     <div class="img">
                       <img
                         [src]="
-                          rider.photo_url || 'assets/images/profile-img-alt.png'
+                          rider.profile_image ||
+                          'assets/images/profile-img-alt.png'
                         "
                         alt="profile-img"
                         class="img-fluid object-fit-cover"
@@ -155,6 +160,62 @@
                       </div>
                       <div></div>
                     </div>
+                    <div class="documents">
+                      <div>
+                        <div class="current-bal">
+                          <div class="img">
+                            <img
+                              src="assets/images/pdf-file.png"
+                              alt="wallet"
+                              class="img-fluid"
+                            />
+                          </div>
+                          <div class="count">
+                            <p>Business Certificate</p>
+                            <small>Businesslicense.pdf</small>
+                          </div>
+                          <div class="icon">
+                            <svg-icons name="download"></svg-icons>
+                          </div>
+                        </div>
+                      </div>
+                      <div></div>
+                    </div>
+                  </div>
+
+                  <div class="monthly-stat">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="curr-month">
+                          <div class="img">
+                            <img
+                              src="assets/images/wallet-alt.png"
+                              alt="wallet"
+                              class="img-fluid"
+                            />
+                          </div>
+                          <div class="count">
+                            <p>Earning this month</p>
+                            <strong>$1276.</strong><span>80</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="curr-month">
+                          <div class="img">
+                            <img
+                              src="assets/images/coupon.png"
+                              alt="coupon"
+                              class="img-fluid"
+                            />
+                          </div>
+                          <div class="count">
+                            <p>Total Order (Dec, 21)</p>
+                            <strong>102</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -205,6 +266,12 @@
                             let order of getOrdersByBranch(branch);
                             index as i
                           "
+                          [routerLink]="[
+                            '/admin/riders/',
+                            order.order_id,
+                            'delivery'
+                          ]"
+                          style="cursor: pointer"
                         >
                           <td class="checkbox">
                             <input
@@ -251,9 +318,8 @@
               </div>
             </div>
           </cus-tab>
-          <cus-tab label="Fav Restaurants"></cus-tab>
+          <cus-tab label="Earnings"></cus-tab>
           <cus-tab label="Review & Rating"></cus-tab>
-          <cus-tab label="Reward Point"></cus-tab>
         </cus-tabs>
       </div>
     </div>

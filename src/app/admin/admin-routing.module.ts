@@ -24,6 +24,7 @@ import { AddRiderComponent } from './rider-related/add-rider/add-rider.component
 import { RiderShiftsComponent } from './rider-related/rider-shifts/rider-shifts.component';
 import { AddExtraComponent } from './food-related/add-extra/add-extra.component';
 import { RiderOverviewComponent } from './rider-related/rider-overview/rider-overview.component';
+import { RiderDeliveryComponent } from './rider-related/rider-delivery/rider-delivery.component';
 
 const routes: Routes = [
   {
@@ -67,8 +68,16 @@ const routes: Routes = [
         children: [
           { path: '', component: RidersComponent },
           { path: 'shifts', component: RiderShiftsComponent },
-          { path: ':id', component: RiderOverviewComponent }, // 👈 dynamic
-
+          {
+            path: ':id',
+            children: [
+              { path: '', redirectTo: 'overview', pathMatch: 'full' },
+              { path: 'overview', component: RiderOverviewComponent },
+              { path: 'delivery', component: RiderDeliveryComponent },
+              { path: 'earnings', component: RiderDeliveryComponent },
+              { path: 'reviews', component: RiderDeliveryComponent },
+            ],
+          }, // 👈 dynamic
         ],
       },
       {

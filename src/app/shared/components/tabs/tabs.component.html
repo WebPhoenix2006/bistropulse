@@ -1,7 +1,7 @@
 <div class="tabs-wrapper" [ngClass]="customClass">
       <ul class="tab-list">
         <li
-          *ngFor="let tab of tabs; let i = index"
+          *ngFor="let tab of tabs.toArray(); let i = index"
           [class.active]="tab.active"
           (click)="selectTab(i)"
         >

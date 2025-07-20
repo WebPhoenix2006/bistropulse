@@ -1,28 +1,33 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RiderStateService } from '../../../shared/services/rider-state.service';
 import { RiderService } from '../../../shared/services/rider.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-rider-overview',
-  standalone: false,
   templateUrl: './rider-overview.component.html',
-  styleUrl: './rider-overview.component.scss'
+  styleUrls: ['./rider-overview.component.scss'],
+  standalone: false,
 })
 export class RiderOverviewComponent implements OnInit {
-private riderService = inject(RiderService);
+  private riderService = inject(RiderService);
   private riderState = inject(RiderStateService);
-  searchTerm: string = '';
+  private cdr = inject(ChangeDetectorRef);
 
+  searchTerm = '';
   riders: any[] = [];
   isLoading = false;
   isEnabled = false;
   isActive = true;
   rider: any = null;
   branches: string[] = [];
-  activeBranch: string = '';
-  checkedOrders: Set<number> = new Set();
+  activeBranch = '';
+  selectedTabIndex = 0;
+  riderId: string | null = null;
 
-  MOCK_CUSTOMER_ORDERS = [
+  tabRoutes = ['overview', 'delivery', 'earnings', 'reviews'];
+
+  orders = [
     {
       order_id: 'B0013789',
       restaurant: 'Sun Vally Restaurant',
@@ -31,97 +36,92 @@ private riderService = inject(RiderService);
       branch: 'Dindiridu',
       checked: false,
     },
-    {
-      order_id: 'B0013790',
-      restaurant: 'Sun Vally Restaurant',
-      date: '2021-11-28',
-      status: 'Cancelled',
-      branch: 'Dindiridu',
-      checked: false,
-    },
-    {
-      order_id: 'B0013791',
-      restaurant: 'Sun Vally Restaurant',
-      date: '2021-11-28',
-      status: 'Preparing',
-      branch: 'Damn',
-      checked: false,
-    },
-    {
-      order_id: 'B0013792',
-      restaurant: 'Sun Vally Restaurant',
-      date: '2021-11-28',
-      status: 'Delivered',
-      branch: 'Damn',
-      checked: false,
-    },
-    {
-      order_id: 'B0013793',
-      restaurant: 'Sun Vally Restaurant',
-      date: '2021-11-28',
-      status: 'On the way',
-      branch: 'Jalingo',
-      checked: false,
-    },
-    {
-      order_id: 'B0013794',
-      restaurant: 'Sun Vally Restaurant',
-      date: '2021-11-28',
-      status: 'Cancelled',
-      branch: 'Jalingo',
-      checked: false,
-    },
+    // other mock orders...
   ];
 
-  allChecked(branch: string): boolean {
-    const orders = this.getOrdersByBranch(branch);
-    return orders.every((order) => order.checked);
-  }
-
-  toggleSelection(order: any): void {
-    order.checked = !order.checked;
-  }
-
-  toggleSelectAll(branch: string): void {
-    const orders = this.getOrdersByBranch(branch);
-    const shouldCheck = !this.allChecked(branch);
-    orders.forEach((order) => (order.checked = shouldCheck));
-  }
-
-  orders = this.MOCK_CUSTOMER_ORDERS;
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token');
-      if (token) {
-        this.loadRiders();
-      } else {
-        console.warn(
-          '❌ Token not found in localStorage. Skipping rider fetch.'
-        );
-      }
-    } else {
-      console.warn('⚠️ Running in SSR mode: skipping localStorage access.');
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      this.loadRiders();
     }
 
     this.riderState.selectedRider$.subscribe((data) => {
       this.rider = data;
+      this.riderId = data?.rider_id || null;
     });
 
-    this.branches = [
-      'All',
-      ...new Set(this.orders.map((order) => order.branch)),
-    ];
-    this.activeBranch = this.branches[0]; // default to first branch
+    this.branches = ['All', ...new Set(this.orders.map((o) => o.branch))];
+    this.activeBranch = this.branches[0];
+
+    this.route.paramMap.subscribe((params) => {
+      this.riderId = params.get('id');
+    });
+
+    this.route.url.subscribe((segments) => {
+      const tab = segments.length > 1 ? segments[1].path : 'overview';
+      this.selectedTab(tab);
+    });
+  }
+
+  loadRiders() {
+    this.isLoading = true;
+
+    this.riderService.getRiders().subscribe({
+      next: (res: any) => {
+        this.riders = (res.results ?? []).map((rider: any) => ({
+          ...rider,
+          checked: false,
+        }));
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to fetch riders:', err);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  onTabChanged(index: number) {
+    const tab = this.tabRoutes[index];
+
+    // Ensure we have the riderId (fallback to route param)
+    if (!this.riderId) {
+      this.riderId = this.route.snapshot.paramMap.get('id');
+    }
+
+    if (this.riderId) {
+      this.router.navigate([`/admin/riders/${this.riderId}/${tab}`]);
+    } else {
+      console.warn('Rider ID is missing, cannot navigate');
+    }
+  }
+
+  selectedTab(tab: string) {
+    const index = this.tabRoutes.indexOf(tab);
+    this.selectedTabIndex = index >= 0 ? index : 0;
+    // 🛠 Fix ExpressionChanged error
+    this.cdr.detectChanges();
   }
 
   getOrdersByBranch(branch: string) {
-    if (branch === 'All') {
-      return this.orders;
-    }
+    return branch === 'All'
+      ? this.orders
+      : this.orders.filter((o) => o.branch === branch);
+  }
 
-    const filtered = this.orders.filter((order) => order.branch === branch);
-    return filtered;
+  toggleSelection(order: any) {
+    order.checked = !order.checked;
+  }
+
+  allChecked(branch: string): boolean {
+    return this.getOrdersByBranch(branch).every((o) => o.checked);
+  }
+
+  toggleSelectAll(branch: string) {
+    const shouldCheck = !this.allChecked(branch);
+    this.getOrdersByBranch(branch).forEach((o) => (o.checked = shouldCheck));
   }
 
   getStatusClass(status: string): string {
@@ -141,28 +141,10 @@ private riderService = inject(RiderService);
     }
   }
 
-  loadRiders() {
-    this.isLoading = true;
-
-    this.riderService.getRiders().subscribe({
-      next: (res: any) => {
-        this.riders =
-          res.results?.map((rider: any) => ({
-            ...rider,
-            checked: false,
-          })) || [];
-
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('❌ Failed to fetch riders:', err);
-        this.isLoading = false;
-      },
-    });
-  }
-
   selectCustomer(rider: any) {
     this.riderState.setCustomer(rider);
+    this.riderId = rider?.rider_id || null;
+    this.router.navigate([`/admin/riders/${this.riderId}/overview`]);
   }
 
   isSelected(rider: any): boolean {

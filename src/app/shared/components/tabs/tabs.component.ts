@@ -1,26 +1,53 @@
-import { Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
+import {
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  AfterContentInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 
 @Component({
   selector: 'cus-tabs',
-  standalone: false,
   templateUrl: './tabs.component.html',
-  styleUrl: './tabs.component.scss'
+  styleUrls: ['./tabs.component.scss'],
+  standalone: false,
 })
-export class TabsComponent {
- @ContentChildren(TabComponent) tabs!: QueryList<TabComponent>;
-  @Input() customClass = '';
+export class TabsComponent implements AfterContentInit, OnChanges {
+  @ContentChildren(TabComponent) tabs!: QueryList<TabComponent>;
+
+  @Input() customClass: string = '';
+  @Input() selectedIndex: number = 0;
   @Output() tabChanged = new EventEmitter<number>();
 
+  private hasInitialized = false;
+
   ngAfterContentInit() {
-    const activeTabs = this.tabs.filter(tab => tab.active);
-    if (activeTabs.length === 0 && this.tabs.length > 0) {
-      this.selectTab(0);
+    this.hasInitialized = true;
+    this.selectTab(this.selectedIndex, false); // avoid emitting on init
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      this.hasInitialized &&
+      changes['selectedIndex'] &&
+      !changes['selectedIndex'].firstChange
+    ) {
+      this.selectTab(this.selectedIndex, false); // avoid emitting on route changes
     }
   }
 
-  selectTab(index: number) {
+  selectTab(index: number, emit: boolean = true) {
+    if (!this.tabs || index < 0 || index >= this.tabs.length) return;
+
     this.tabs.forEach((tab, i) => (tab.active = i === index));
-    this.tabChanged.emit(index);
+
+    if (emit) {
+      this.tabChanged.emit(index);
+    }
   }
 }

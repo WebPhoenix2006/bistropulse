@@ -10,4 +10,5 @@ export interface Customer {
   photo_url: string;
   created_at: string;
   checked: boolean;
+  favorite_restaurant_ids: string[];
 }

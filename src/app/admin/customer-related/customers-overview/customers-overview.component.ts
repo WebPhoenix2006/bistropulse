@@ -1,6 +1,10 @@
+import { RESTAURANT_DUMMY_DATA } from './../../../mock-data/restaurant.dummy';
 import { Component, inject, OnInit } from '@angular/core';
 import { CustomersService } from '../../../shared/services/customers.service';
 import { CustomerStateService } from '../../../shared/services/customer-state.service';
+import { Observable, of } from 'rxjs';
+import { CustomerReview } from '../../../interfaces/customer-review.interface';
+import { MOCK_CUSTOMER_REVIEWS } from '../../../mock-data/customer.review';
 
 @Component({
   selector: 'app-customers-overview',
@@ -21,6 +25,9 @@ export class CustomersOverviewComponent implements OnInit {
   branches: string[] = [];
   activeBranch: string = '';
   checkedOrders: Set<number> = new Set();
+
+  favRestuarants: any[] = [];
+  customerReviews: CustomerReview[] = [];
 
   MOCK_CUSTOMER_ORDERS = [
     {
@@ -73,6 +80,14 @@ export class CustomersOverviewComponent implements OnInit {
     },
   ];
 
+  getDummyDate(): Observable<any[]> {
+    return of(RESTAURANT_DUMMY_DATA);
+  }
+
+  getDummyReviews(): Observable<CustomerReview[]> {
+    return of(MOCK_CUSTOMER_REVIEWS);
+  }
+
   allChecked(branch: string): boolean {
     const orders = this.getOrdersByBranch(branch);
     return orders.every((order) => order.checked);
@@ -103,6 +118,13 @@ export class CustomersOverviewComponent implements OnInit {
     } else {
       console.warn('⚠️ Running in SSR mode: skipping localStorage access.');
     }
+
+    this.getDummyDate().subscribe((res) => {
+      this.favRestuarants = res;
+    });
+    this.getDummyReviews().subscribe((res) => {
+      this.customerReviews = res;
+    });
 
     this.customerState.selectedCustomer$.subscribe((data) => {
       this.customer = data;

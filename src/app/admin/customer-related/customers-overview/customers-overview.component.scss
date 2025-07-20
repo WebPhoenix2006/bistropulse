@@ -542,7 +542,25 @@ label {
 }
 
 .reward-points-container {
-  padding: 2rem;
+  margin-top: 10px;
+  #left-column,
+  #right-column {
+    background: white !important;
+    padding: 24px;
+  }
+
+  .row {
+    gap: 10px;
+    flex-wrap: nowrap !important;
+
+    @media (max-width: 768px) {
+      flex-wrap: wrap !important;
+
+      > div {
+        flex-basis: 100%;
+      }
+    }
+  }
 }
 
 .reward-point-block {

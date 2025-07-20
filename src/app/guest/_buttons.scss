@@ -1,0 +1,61 @@
+@use "./_variables" as *; // import your variables file
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 9999px; // pill shape
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+// Primary button – filled with gradient
+.button--primary {
+  background: linear-gradient(90deg, #3056d3, #13c1dd);
+  color: white;
+
+  &:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Outline button – white border (used on dark backgrounds)
+.button--outline {
+  background: transparent;
+  color: var(--color-text);
+  border: 2px solid var(--color-text);
+
+  &:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+}
+
+// Ghost button – no border, just text
+.button--ghost {
+  background: transparent;
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Responsive sizing variants
+.button--sm {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.button--lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}

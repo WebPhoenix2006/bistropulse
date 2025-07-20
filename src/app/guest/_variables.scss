@@ -1,0 +1,15 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #364050;
+  --color-primary: #2f80ed;
+  --color-button-bg: #2f80ed;
+  --color-button-text: #ffffff;
+}
+
+.dark {
+  --color-bg: #121212;
+  --color-text: #ffffff;
+  --color-primary: #2f80ed; // Keep blue consistent
+  --color-button-bg: #ffffff;
+  --color-button-text: #2f80ed;
+}

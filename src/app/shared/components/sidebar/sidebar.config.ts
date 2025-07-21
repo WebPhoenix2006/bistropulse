@@ -101,4 +101,25 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       },
     ],
   },
+  {
+    label: 'Order',
+    icon: 'books',
+    collapseId: 'orderMenu',
+    roles: ['admin', 'manager'],
+    children: [
+      { label: 'Menu List', route: '/admin/restaurants/:id/food-list' },
+      {
+        label: 'Add New Food',
+        route: '/admin/restaurants/:id/food-list/add-food',
+      },
+      {
+        label: 'Categories',
+        route: '/admin/restaurants/:id/categories',
+      },
+      {
+        label: 'Extras',
+        route: '/admin/restaurants/:id/extras',
+      },
+    ],
+  },
 ];

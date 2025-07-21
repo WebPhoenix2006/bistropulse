@@ -37,8 +37,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
     this.effectRef = effect(() => {
-      const isOffline = this.offlineService.isOffline();
-      if (isOffline) {
+      if (this.offlineService.isOffline()) {
         this.videoEnded = false;
         this.toastr.error(
           'No internet connection. Waiting to reconnect...',

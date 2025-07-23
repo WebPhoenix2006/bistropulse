@@ -141,9 +141,9 @@ export class RiderOverviewComponent implements OnInit {
     }
   }
 
-  selectCustomer(rider: any) {
+  selectRider(rider: any) {
     this.riderState.setCustomer(rider);
-    this.riderId = rider?.rider_id || null;
+    this.riderId = rider?.rider_code || null;
     this.router.navigate([`/admin/riders/${this.riderId}/overview`]);
   }
 

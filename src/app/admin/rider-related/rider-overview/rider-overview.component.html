@@ -21,7 +21,7 @@
             <li
               class="customer"
               *ngFor="let rider of riders"
-              (click)="selectCustomer(rider)"
+              (click)="selectRider(rider)"
               [class.selected]="isSelected(rider)"
             >
               <div class="customer-content">

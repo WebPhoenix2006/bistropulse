@@ -28,7 +28,6 @@ export class RestaurantOverviewComponent implements OnInit {
     this.restaurantId = this.route.snapshot.paramMap.get('id');
     this.restaurantService.getRestaurant(this.restaurantId).subscribe({
       next: (data: Restaurant) => {
-        console.log('restaurant fetched: ', data);
         this.toastr.success('restaurant fetched!');
         this.isLoading.set(false);
         this.restaurant = data;

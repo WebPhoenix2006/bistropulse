@@ -102,12 +102,19 @@ const routes: Routes = [
           { path: 'order-history', component: OrderHistoryComponent, data: { animation: 'OrderHistory' } },
         ],
       },
-      { path: 'chat', component: ChatComponent },
-      { path: 'otp', component: OtpManagementComponent },
+      {
+        path: 'franchises',
+        children: [
+          { path: '', pathMatch: 'full', component: FranchiseListComponent },
+          { path: 'add-franchise', component: AddFranchiseComponent },
+          { path: ':franchiseId', component: FranchiseOverviewComponent },
+          { path: ':franchiseId/branches', component: BranchListComponent },
+        ],
+      },
+      { path: 'chat', component: ChatComponent, data: { animation: 'Chat' } },
+      { path: 'otp', component: OtpManagementComponent, data: { animation: 'OtpManagement' } },
     ],
   },
-  // Remove this line:
-  // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({

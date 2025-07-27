@@ -222,8 +222,6 @@ const routes: Routes = [
           },
         ],
       },
-      { path: 'chat', component: ChatComponent },
-      { path: 'otp', component: OtpManagementComponent },
       { path: 'chat', component: ChatComponent, data: { animation: 'Chat' } },
       {
         path: 'otp',

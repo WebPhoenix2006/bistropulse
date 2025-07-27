@@ -13,6 +13,7 @@ body {
   font-style: normal;
   overflow-x: hidden;
   margin: 0;
+  scroll-behavior: smooth;
 }
 ::-webkit-scrollbar {
   width: 8px;

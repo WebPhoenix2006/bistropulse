@@ -11,6 +11,8 @@ export interface Restaurant {
   business_license: string;
   owner_nid: string;
   established_date: string;
+  branches?: Restaurant[] | 'No Branches';
+  isBranch?: boolean;
   working_period: string;
   large_option: string;
   location: string;

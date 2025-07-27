@@ -28,12 +28,20 @@
 
           <div class="img-container">
             <img
-              [src]="
-                restaurant?.restaurant_image_url ||
-                'assets/images/restaurant-picture.jpeg'
-              "
+              *ngIf="restaurant?.restaurant_image_url; else noImage"
+              [src]="restaurant.restaurant_image_url"
               alt="Restaurant Image"
             />
+
+            <ng-template #noImage>
+              <div class="no-image-con">
+                <img
+                  class="no-image"
+                  src="assets/illustrations/noimage.png"
+                  alt="no image"
+                />
+              </div>
+            </ng-template>
           </div>
 
           <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
@@ -80,13 +88,17 @@
           >
             <h2>Representative Info</h2>
             <div class="img-con">
-              <img
-                [src]="
-                  restaurant?.representative?.photo_url ||
-                  'assets/images/profile-img.png'
-                "
-                alt="Profile"
-              />
+              <ng-container
+                *ngIf="restaurant?.representative?.photo_url; else noRepImg"
+              >
+                <img
+                  [src]="restaurant?.representative?.photo_url"
+                  alt="Profile"
+                />
+              </ng-container>
+              <ng-template #noRepImg>
+                <img src="assets/illustrations/noimage.png" alt="no rep img" />
+              </ng-template>
               <h3>{{ restaurant?.representative.full_name }}</h3>
             </div>
             <div class="info-con">

@@ -1,9 +1,21 @@
 <div class="loading-container">
-  <div class="img-con">
-    <img
-      src="assets\images\pending-restaurants.png"
-      alt="Loading..."
-      class="logo-spinner"
-    />
+  <div class="spinner-wrapper">
+    <div class="orbit-ring orbit-ring-1"></div>
+    <div class="orbit-ring orbit-ring-2"></div>
+    <div class="orbit-ring orbit-ring-3"></div>
+    <div class="img-con">
+      <img
+        src="assets/images/pending-restaurants.png"
+        alt="Loading..."
+        class="logo-spinner"
+      />
+    </div>
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
+    <div class="particle particle-5"></div>
+    <div class="particle particle-6"></div>
   </div>
+  <div class="loading-text" *ngIf="loadingText">{{ loadingText }}</div>
 </div>

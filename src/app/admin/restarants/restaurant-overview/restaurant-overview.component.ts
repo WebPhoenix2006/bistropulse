@@ -3,6 +3,7 @@ import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { ActivatedRoute } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
 import { ToastrService } from 'ngx-toastr';
+import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 
 @Component({
   selector: 'app-restaurant-overview',
@@ -14,7 +15,7 @@ export class RestaurantOverviewComponent implements OnInit {
   constructor(
     private restaurantService: RestaurantService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: BootstrapToastService
   ) {}
 
   isLoading = signal<boolean>(false);
@@ -28,13 +29,13 @@ export class RestaurantOverviewComponent implements OnInit {
     this.restaurantId = this.route.snapshot.paramMap.get('id');
     this.restaurantService.getRestaurant(this.restaurantId).subscribe({
       next: (data: Restaurant) => {
-        this.toastr.success('restaurant fetched!');
+        this.toastr.showSuccess('restaurant fetched!');
         this.isLoading.set(false);
         this.restaurant = data;
       },
       error: (err) => {
         console.error('FETCH ERROR', err);
-        this.toastr.error('failed to fetch', '', { timeOut: 2000 });
+        this.toastr.showError('failed to fetch', 2000);
         this.isLoading.set(false);
       },
     });

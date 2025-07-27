@@ -5,11 +5,16 @@ import {
   EventEmitter,
   inject,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subject, takeUntil, filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { SIDEBAR_ITEMS, SidebarItem } from './sidebar.config';
-import { RestaurantContextService } from '../../services/restaurant-context.service';
+import {
+  RestaurantContextService,
+  ContextState,
+} from '../../services/restaurant-context.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,12 +22,15 @@ import { RestaurantContextService } from '../../services/restaurant-context.serv
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   @Input() isSidebarCollapsed!: boolean;
   @Output() sidebarCollapse = new EventEmitter<boolean>();
 
   sidebarItems: SidebarItem[] = [];
+  currentContext: ContextState['currentContext'] = 'none';
+  currentUrl: string = '';
 
+  private destroy$ = new Subject<void>();
   private authService = inject(AuthService);
   private router = inject(Router);
   private restaurantContext = inject(RestaurantContextService);
@@ -30,39 +38,175 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     const role = this.authService.getUserRole() || 'admin';
 
-    const restaurantId = this.restaurantContext.getRestaurantId(); // safe fallback
-    if (!restaurantId) {
-      console.warn(
-        '⚠️ No restaurant ID found, sidebar may not show all routes'
-      );
-    }
+    // Get initial URL
+    this.currentUrl = this.router.url;
 
-    this.restaurantContext.selectedRestaurantId$.subscribe((restaurantId) => {
-      const filtered = SIDEBAR_ITEMS.filter(
-        (item) => !item.roles || item.roles.includes(role)
-      );
+    // Subscribe to route changes
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.currentUrl = event.urlAfterRedirects;
+        // Rebuild sidebar when URL changes
+        const contextState = this.restaurantContext.getCurrentContextState();
+        this.sidebarItems = this.buildSidebarItems(role, contextState);
+      });
 
-      this.sidebarItems = filtered
-        .map((item) => {
-          if (item.label === 'Food Menu') {
-            if (!restaurantId) return null;
-
-            const updatedChildren = item.children?.map((child) => ({
-              ...child,
-              route: child.route?.replace(':id', restaurantId),
-            }));
-
-            return {
-              ...item,
-              children: updatedChildren,
-            };
-          }
-          return item;
-        })
-        .filter((item): item is SidebarItem => item !== null);
-    });
+    // Subscribe to context changes
+    this.restaurantContext.contextState$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((contextState) => {
+        this.currentContext = contextState.currentContext;
+        this.sidebarItems = this.buildSidebarItems(role, contextState);
+      });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private buildSidebarItems(
+    role: string,
+    contextState: ContextState
+  ): SidebarItem[] {
+    // Filter items by role first
+    const roleFilteredItems = SIDEBAR_ITEMS.filter(
+      (item) => !item.roles || item.roles.includes(role)
+    );
+
+    // Then filter and process based on display conditions
+    return roleFilteredItems
+      .map((item) => this.processMenuItem(item, contextState))
+      .filter((item): item is SidebarItem => item !== null);
+  }
+
+  private processMenuItem(
+    item: SidebarItem,
+    contextState: ContextState
+  ): SidebarItem | null {
+    // Check if item should be displayed based on current context
+    if (
+      item.displayCondition &&
+      !this.shouldShowItem(item.displayCondition, contextState)
+    ) {
+      return null;
+    }
+
+    // Process the item
+    const processedItem: SidebarItem = { ...item };
+
+    // Handle dynamic routes
+    if (item.routeType === 'dynamic' && item.route) {
+      const dynamicRoute = this.buildDynamicRoute(item.route, contextState);
+      if (!dynamicRoute) {
+        // If we can't build the dynamic route, don't show the item
+        return null;
+      }
+      processedItem.route = dynamicRoute;
+    }
+
+    // Process children recursively
+    if (item.children) {
+      const processedChildren = item.children
+        .map((child) => this.processMenuItem(child, contextState))
+        .filter((child): child is SidebarItem => child !== null);
+
+      // If no children are visible, don't show the parent
+      if (processedChildren.length === 0 && item.children.length > 0) {
+        return null;
+      }
+
+      processedItem.children = processedChildren;
+    }
+
+    return processedItem;
+  }
+
+  private shouldShowItem(
+    displayCondition: string,
+    contextState: ContextState
+  ): boolean {
+    switch (displayCondition) {
+      case 'always':
+        return true;
+      case 'restaurant-selected':
+        return contextState.currentContext === 'restaurant';
+      case 'franchise-selected':
+        return contextState.currentContext === 'franchise';
+      case 'branch-selected':
+        return contextState.currentContext === 'branch';
+      case 'franchise-list-page':
+        return this.isFranchiseListPage();
+      default:
+        return true;
+    }
+  }
+
+  private isFranchiseListPage(): boolean {
+    // Only show on the main franchise list page, not on sub-pages
+    const franchiseListPatterns = [
+      '/admin/franchises', // Exact match
+      '/admin/franchises/', // With trailing slash
+      '/admin/franchises/add-franchise', // Add franchise page
+    ];
+
+    return (
+      franchiseListPatterns.some(
+        (pattern) =>
+          this.currentUrl === pattern || this.currentUrl.startsWith(pattern)
+      ) && !this.isNestedFranchisePage()
+    );
+  }
+
+  private isNestedFranchisePage(): boolean {
+    // Check if we're in a nested franchise page that should NOT show the Order Management
+    const nestedPatterns = [
+      '/admin/franchises/', // Any franchise detail page
+    ];
+
+    // If URL contains a franchise ID (UUID pattern or number after /franchises/)
+    const franchiseDetailRegex = /\/admin\/franchises\/[^\/]+(?:\/|$)/;
+
+    return (
+      franchiseDetailRegex.test(this.currentUrl) &&
+      this.currentUrl !== '/admin/franchises/add-franchise'
+    );
+  }
+
+  private buildDynamicRoute(
+    routeTemplate: string,
+    contextState: ContextState
+  ): string | null {
+    let route = routeTemplate;
+
+    // Replace restaurant ID
+    if (route.includes(':id') && contextState.restaurantId) {
+      route = route.replace(':id', contextState.restaurantId);
+    }
+
+    // Replace franchise ID
+    if (route.includes(':franchiseId') && contextState.franchiseId) {
+      route = route.replace(':franchiseId', contextState.franchiseId);
+    }
+
+    // Replace branch ID
+    if (route.includes(':branchId') && contextState.branchId) {
+      route = route.replace(':branchId', contextState.branchId);
+    }
+
+    // Check if all required parameters were replaced
+    if (route.includes(':')) {
+      console.warn(`⚠️ Route still contains unresolved parameters: ${route}`);
+      return null;
+    }
+
+    return route;
+  }
+
+  // ============= EVENT HANDLERS =============
   logout() {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
@@ -74,5 +218,25 @@ export class SidebarComponent implements OnInit {
 
   collapseSidebar() {
     this.sidebarCollapse.emit(true);
+  }
+
+  // ============= HELPER METHODS FOR TEMPLATE =============
+  getContextInfo(): string {
+    const contextState = this.restaurantContext.getCurrentContextState();
+
+    switch (contextState.currentContext) {
+      case 'restaurant':
+        return `Restaurant: ${contextState.restaurantId}`;
+      case 'franchise':
+        return `Franchise: ${contextState.franchiseId}`;
+      case 'branch':
+        return `Branch: ${contextState.branchId} (Franchise: ${contextState.franchiseId})`;
+      default:
+        return 'No context selected';
+    }
+  }
+
+  clearCurrentContext() {
+    this.restaurantContext.clearAllContext();
   }
 }

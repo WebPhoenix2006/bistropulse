@@ -33,6 +33,8 @@ import { AddFranchiseComponent } from './franchises/add-franchise/add-franchise.
 import { BranchListComponent } from './franchises/branch-list/branch-list.component';
 import { FranchiseOverviewComponent } from './franchises/franchise-overview/franchise-overview.component';
 import { OrderTrackingComponent } from './order-related/order-tracking/order-tracking.component';
+import { FranchiseOrderListComponent } from './franchise-order-related/franchise-order-list/franchise-order-list.component';
+import { FranchiseOrderHistoryComponent } from './franchise-order-related/franchise-order-history/franchise-order-history.component';
 
 const routes: Routes = [
   {
@@ -191,8 +193,33 @@ const routes: Routes = [
         children: [
           { path: '', pathMatch: 'full', component: FranchiseListComponent },
           { path: 'add-franchise', component: AddFranchiseComponent },
+          { path: 'orders', component: OrdersComponent },
           { path: ':franchiseId', component: FranchiseOverviewComponent },
           { path: ':franchiseId/branches', component: BranchListComponent },
+          {
+            path: ':franchiseId/branches/:branchId/food-list',
+            component: BranchListComponent,
+          },
+          {
+            path: ':franchiseId/branches/:branchId/food-list/:foodId',
+            component: BranchListComponent,
+          },
+          {
+            path: ':franchiseId/branches/:branchId/extras',
+            component: BranchListComponent,
+          },
+          {
+            path: ':franchiseId/branches/:branchId/categories',
+            component: BranchListComponent,
+          },
+          {
+            path: ':franchiseId/branches/:branchId/orders',
+            component: FranchiseOrderListComponent,
+          },
+          {
+            path: ':franchiseId/branches/:branchId/order-history',
+            component: FranchiseOrderHistoryComponent,
+          },
         ],
       },
       { path: 'chat', component: ChatComponent },

@@ -1,3 +1,4 @@
+import { BootstrapToastService } from './../../../shared/services/bootstrap-toast.service';
 import {
   Component,
   HostListener,
@@ -38,7 +39,7 @@ export class RestaurantListComponent implements OnInit {
 
   private restaurantService = inject(RestaurantService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
+  private toastr = inject(BootstrapToastService);
   private slowNetwork = inject(SlowNetworkService);
   private restaurantContext = inject(RestaurantContextService);
   private filterPipe = inject(FilterByPipe);
@@ -49,7 +50,7 @@ export class RestaurantListComponent implements OnInit {
     if (isBrowser) {
       const token = localStorage.getItem('auth_token');
       if (token) this.getRestaurants();
-      else this.toastr.error('You are not authorized to view this page');
+      else this.toastr.showError('You are not authorized to view this page');
     }
 
     const isFromRestaurant = this.router.url.includes('/restaurants/');
@@ -62,7 +63,7 @@ export class RestaurantListComponent implements OnInit {
     this.isLoading.set(true);
     this.slowNetwork.start(() => {
       if (this.isLoading()) {
-        this.toastr.warning('Hmm... this is taking longer than usual.');
+        this.toastr.showWarning('Hmm... this is taking longer than usual.');
       }
     });
 
@@ -74,12 +75,12 @@ export class RestaurantListComponent implements OnInit {
           isToolbarOpen: false,
         }));
         this.applyFilters();
-        this.toastr.success('Loaded successfully');
+        this.toastr.showSuccess('Loaded successfully');
         this.isLoading.set(false);
         this.slowNetwork.clear();
       },
       error: (err) => {
-        this.toastr.error('Failed to fetch restaurants');
+        this.toastr.showError('Failed to fetch restaurants');
         this.isLoading.set(false);
         this.slowNetwork.clear();
       },

@@ -28,6 +28,10 @@ import { RiderDeliveryComponent } from './rider-related/rider-delivery/rider-del
 import { OrderListComponent } from './order-related/order-overviews/order-list/order-list.component';
 import { ExampleMenuComponent } from './order-related/order-overviews/example-menu/example-menu.component';
 import { OrderHistoryComponent } from './order-related/order-overviews/order-history/order-history.component';
+import { FranchiseListComponent } from './franchises/franchise-list/franchise-list.component';
+import { AddFranchiseComponent } from './franchises/add-franchise/add-franchise.component';
+import { BranchListComponent } from './franchises/branch-list/branch-list.component';
+import { FranchiseOverviewComponent } from './franchises/franchise-overview/franchise-overview.component';
 import { OrderTrackingComponent } from './order-related/order-tracking/order-tracking.component';
 
 const routes: Routes = [
@@ -98,10 +102,12 @@ const routes: Routes = [
           { path: 'order-history', component: OrderHistoryComponent, data: { animation: 'OrderHistory' } },
         ],
       },
-      { path: 'chat', component: ChatComponent, data: { animation: 'Chat' } },
-      { path: 'otp', component: OtpManagementComponent, data: { animation: 'OtpManagement' } },
+      { path: 'chat', component: ChatComponent },
+      { path: 'otp', component: OtpManagementComponent },
     ],
   },
+  // Remove this line:
+  // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -3,35 +3,199 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  background: radial-gradient(
+    circle at center,
+    rgba(3, 171, 255, 0.1) 0%,
+    transparent 70%
+  );
+  flex-direction: column;
+}
+
+.spinner-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
 }
 
 .img-con {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   overflow: hidden;
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  animation: pulse 1.5s linear infinite;
+  z-index: 10;
+  animation: logoFloat 3s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(3, 171, 255, 0.5);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(3, 171, 255, 0.3),
+      rgba(0, 212, 255, 0.3)
+    );
+    border-radius: 50%;
+    z-index: 1;
+    animation: logoGlow 2s ease-in-out infinite alternate;
+  }
 }
 
 .logo-spinner {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 2;
+  filter: brightness(0) saturate(100%) invert(47%) sepia(96%) saturate(1352%)
+    hue-rotate(184deg) brightness(101%) contrast(101%);
+  // This filter makes the image blue (#03abff). Adjust if needed for your specific image.
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0px 0 rgba(#03abff, 0.7);
+.orbit-ring {
+  position: absolute;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  animation: rotate 3s linear infinite;
+}
+
+.orbit-ring-1 {
+  width: 90px;
+  height: 90px;
+  top: 15px;
+  left: 15px;
+  border-top: 2px solid #03abff;
+  border-right: 2px solid transparent;
+  animation-duration: 2s;
+}
+
+.orbit-ring-2 {
+  width: 110px;
+  height: 110px;
+  top: 5px;
+  left: 5px;
+  border-left: 2px solid #00d4ff;
+  border-bottom: 2px solid transparent;
+  animation-duration: 3s;
+  animation-direction: reverse;
+}
+
+.orbit-ring-3 {
+  width: 130px;
+  height: 130px;
+  top: -5px;
+  left: -5px;
+  border-right: 2px solid rgba(3, 171, 255, 0.5);
+  border-top: 2px solid transparent;
+  animation-duration: 4s;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #03abff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 2s ease-in-out infinite;
+}
+
+.particle-1 {
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+}
+.particle-2 {
+  top: 20%;
+  right: 20%;
+  animation-delay: 0.3s;
+}
+.particle-3 {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 0.6s;
+}
+.particle-4 {
+  bottom: 20%;
+  right: 20%;
+  animation-delay: 0.9s;
+}
+.particle-5 {
+  top: 50%;
+  left: 10%;
+  animation-delay: 1.2s;
+}
+.particle-6 {
+  top: 50%;
+  right: 10%;
+  animation-delay: 1.5s;
+}
+
+.loading-text {
+  position: absolute;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #03abff;
+  animation: textPulse 2s ease-in-out infinite;
+  margin-top: 20px;
+}
+
+// Animations
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0px);
   }
   50% {
-    transform: scale(1.2);
-    opacity: 0.5;
-    box-shadow: 0 0 15px 5px rgba(#03abff, 0.6);
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+}
+
+@keyframes logoGlow {
+  0% {
+    opacity: 0.3;
   }
   100% {
-    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes particleFloat {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0px) scale(0.5);
+  }
+  50% {
     opacity: 1;
-    box-shadow: 0 0 0px 0 rgba(#03abff, 0.7);
+    transform: translateY(-20px) scale(1);
+  }
+}
+
+@keyframes textPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
   }
 }

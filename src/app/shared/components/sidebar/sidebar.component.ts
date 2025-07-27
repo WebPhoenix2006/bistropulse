@@ -30,18 +30,21 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     const role = this.authService.getUserRole() || 'admin';
 
-    // Subscribe to restaurant ID and update sidebar accordingly
+    const restaurantId = this.restaurantContext.getRestaurantId(); // safe fallback
+    if (!restaurantId) {
+      console.warn(
+        '⚠️ No restaurant ID found, sidebar may not show all routes'
+      );
+    }
+
     this.restaurantContext.selectedRestaurantId$.subscribe((restaurantId) => {
-      // Filter by role first
       const filtered = SIDEBAR_ITEMS.filter(
         (item) => !item.roles || item.roles.includes(role)
       );
 
-      // Inject restaurant ID into food menu routes
       this.sidebarItems = filtered
         .map((item) => {
           if (item.label === 'Food Menu') {
-            // Only include Food Menu if we have a valid restaurantId
             if (!restaurantId) return null;
 
             const updatedChildren = item.children?.map((child) => ({
@@ -56,7 +59,7 @@ export class SidebarComponent implements OnInit {
           }
           return item;
         })
-        .filter((item): item is SidebarItem => item !== null); // remove null items
+        .filter((item): item is SidebarItem => item !== null);
     });
   }
 

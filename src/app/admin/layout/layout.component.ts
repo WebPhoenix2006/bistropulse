@@ -15,12 +15,15 @@ import {
 } from '@angular/core';
 import { OfflineService } from '../../shared/services/offline-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { RouterOutlet } from '@angular/router';
+import { routeAnimations } from '../../shared/animation/animations.service';
 
 @Component({
   selector: 'app-layout',
   standalone: false,
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
+  animations: [routeAnimations],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private effectRef?: EffectRef;
@@ -83,4 +86,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   changeSidebarState(state: boolean): void {
     this.isLeftSidebarCollapsed.set(state);
   }
+
+  prepareRoute(outlet: RouterOutlet) {
+  return outlet?.activatedRouteData?.['animation'];
+}
+
 }

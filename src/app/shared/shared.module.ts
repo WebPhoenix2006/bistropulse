@@ -22,6 +22,7 @@ import { NoSearchResultComponent } from './components/no-search-result/no-search
 import { OfflineBannerComponent } from './components/offline-banner/offline-banner.component';
 import { DesignedH1Component } from './components/designed-h1/designed-h1.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { AnimateComponent } from './components/animate/animate.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ModalComponent } from './components/modal/modal.component';
     NoSearchResultComponent,
     OfflineBannerComponent,
     DesignedH1Component,
-    ModalComponent
+    ModalComponent,
+    AnimateComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -67,7 +69,8 @@ import { ModalComponent } from './components/modal/modal.component';
     FilterByPipe,
     NoSearchResultComponent,
     OfflineBannerComponent,
-    ModalComponent
+    ModalComponent,
+    AnimateComponent
 
   ],
 })

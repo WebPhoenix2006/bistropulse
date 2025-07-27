@@ -1,0 +1,31 @@
+<div *ngIf="orderData as order; else loading">
+  <div class="order-header">
+    <h3>Order #{{ order.order_id }}</h3>
+    <span>Status: {{ order.status }}</span>
+    <span [class.paid]="order.paymentStatus === 'Paid'">
+      {{ order.paymentStatus }}
+    </span>
+  </div>
+
+  <div *ngFor="let item of order.items">
+    <img [src]="item.imageUrl || 'https://via.placeholder.com/40'" width="40" />
+    {{ item.name }} x{{ item.quantity }} - ₵{{ item.price }}
+  </div>
+
+  <p><strong>Pickup:</strong> {{ order.pickupAddress }}</p>
+  <p><strong>Dropoff:</strong> {{ order.dropoffAddress }}</p>
+
+  <p>Subtotal: ₵{{ order.subtotal }}</p>
+  <p>Delivery: ₵{{ order.deliveryFee }}</p>
+  <p>Tax: ₵{{ order.tax }}</p>
+  <h4>Total: ₵{{ order.total }}</h4>
+
+  <div class="courier" *ngIf="order.courier">
+    <img [src]="order.courier.imageUrl || 'https://via.placeholder.com/40'" width="40" />
+    {{ order.courier.name }} - {{ order.courier.phone }}
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading order data...</p>
+</ng-template>

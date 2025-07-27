@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './rider-delivery.component.scss'
 })
 export class RiderDeliveryComponent {
+orderId = 'R8795';
 
 }

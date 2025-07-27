@@ -32,75 +32,158 @@ import { FranchiseListComponent } from './franchises/franchise-list/franchise-li
 import { AddFranchiseComponent } from './franchises/add-franchise/add-franchise.component';
 import { BranchListComponent } from './franchises/branch-list/branch-list.component';
 import { FranchiseOverviewComponent } from './franchises/franchise-overview/franchise-overview.component';
+import { OrderTrackingComponent } from './order-related/order-tracking/order-tracking.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
     children: [
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [authGuard],
+        data: { animation: 'DashboardPage' },
       },
       {
         path: 'restaurants',
+        data: { animation: 'Restaurants' },
         children: [
-          { path: '', component: RestaurantListComponent },
-          { path: 'add-restaurant', component: AddRestaurantComponent },
+          {
+            path: '',
+            component: RestaurantListComponent,
+            data: { animation: 'RestaurantList' },
+          },
+          {
+            path: 'add-restaurant',
+            component: AddRestaurantComponent,
+            data: { animation: 'AddRestaurant' },
+          },
           {
             path: ':id',
             children: [
-              { path: '', component: RestaurantOverviewComponent },
-              { path: 'food-list', component: FoodListComponent },
-              { path: 'food-list/add-food', component: AddFoodComponent },
+              {
+                path: '',
+                component: RestaurantOverviewComponent,
+                data: { animation: 'RestaurantOverview' },
+              },
+              {
+                path: 'food-list',
+                component: FoodListComponent,
+                data: { animation: 'FoodList' },
+              },
+              {
+                path: 'food-list/add-food',
+                component: AddFoodComponent,
+                data: { animation: 'AddFood' },
+              },
               {
                 path: 'food-list/:foodId/food-details',
                 component: FoodDetailsComponent,
+                data: { animation: 'FoodDetails' },
               },
-              { path: 'categories', component: CategoriesComponent },
-              { path: 'extras', component: ExtraComponent },
-              { path: 'extras/add', component: AddExtraComponent },
+              {
+                path: 'categories',
+                component: CategoriesComponent,
+                data: { animation: 'Categories' },
+              },
+              {
+                path: 'extras',
+                component: ExtraComponent,
+                data: { animation: 'Extras' },
+              },
+              {
+                path: 'extras/add',
+                component: AddExtraComponent,
+                data: { animation: 'AddExtra' },
+              },
             ],
           },
         ],
       },
       {
         path: 'riders',
+        data: { animation: 'Riders' },
         children: [
-          { path: '', component: RidersComponent },
-          { path: 'shifts', component: RiderShiftsComponent },
+          {
+            path: '',
+            component: RidersComponent,
+            data: { animation: 'RidersList' },
+          },
+          {
+            path: 'shifts',
+            component: RiderShiftsComponent,
+            data: { animation: 'RiderShifts' },
+          },
           {
             path: ':id',
             children: [
               { path: '', redirectTo: 'overview', pathMatch: 'full' },
-              { path: 'overview', component: RiderOverviewComponent },
-              { path: 'delivery', component: RiderDeliveryComponent },
-              { path: 'earnings', component: RiderDeliveryComponent },
-              { path: 'reviews', component: RiderDeliveryComponent },
+              {
+                path: 'overview',
+                component: RiderOverviewComponent,
+                data: { animation: 'RiderOverview' },
+              },
+              {
+                path: 'delivery',
+                component: OrderTrackingComponent,
+                data: { animation: 'RiderDelivery' },
+              },
+              {
+                path: 'earnings',
+                component: RiderDeliveryComponent,
+                data: { animation: 'RiderEarnings' },
+              },
+              {
+                path: 'reviews',
+                component: RiderDeliveryComponent,
+                data: { animation: 'RiderReviews' },
+              },
             ],
-          }, // 👈 dynamic
+          },
         ],
       },
       {
         path: 'customers',
+        data: { animation: 'Customers' },
         children: [
-          { path: '', component: CustomersComponent },
-          { path: 'add-customer', component: AddCustomerComponent },
-          { path: ':id', component: CustomersOverviewComponent }, // 👈 dynamic
+          {
+            path: '',
+            component: CustomersComponent,
+            data: { animation: 'CustomerList' },
+          },
+          {
+            path: 'add-customer',
+            component: AddCustomerComponent,
+            data: { animation: 'AddCustomer' },
+          },
+          {
+            path: ':id',
+            component: CustomersOverviewComponent,
+            data: { animation: 'CustomerOverview' },
+          },
         ],
       },
       {
         path: 'orders',
+        data: { animation: 'Orders' },
         children: [
-          { path: '', component: OrderListComponent },
-          { path: 'example-menu', component: ExampleMenuComponent },
-          { path: 'order-history', component: OrderHistoryComponent },
+          {
+            path: '',
+            component: OrderListComponent,
+            data: { animation: 'OrderList' },
+          },
+          {
+            path: 'example-menu',
+            component: ExampleMenuComponent,
+            data: { animation: 'ExampleMenu' },
+          },
+          {
+            path: 'order-history',
+            component: OrderHistoryComponent,
+            data: { animation: 'OrderHistory' },
+          },
         ],
       },
       {
@@ -114,10 +197,14 @@ const routes: Routes = [
       },
       { path: 'chat', component: ChatComponent },
       { path: 'otp', component: OtpManagementComponent },
+      { path: 'chat', component: ChatComponent, data: { animation: 'Chat' } },
+      {
+        path: 'otp',
+        component: OtpManagementComponent,
+        data: { animation: 'OtpManagement' },
+      },
     ],
   },
-  // Remove this line:
-  // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({

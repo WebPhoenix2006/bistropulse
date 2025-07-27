@@ -1,18 +1,23 @@
 <div class="layout-wrapper" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <!-- Sidebar -->
   <app-sidebar
     [isSidebarCollapsed]="isSidebarCollapsed"
     (sidebarCollapse)="isSidebarCollapsed = $event"
   ></app-sidebar>
 
+  <!-- Main Content -->
   <div class="main-content">
+    <!-- Navbar -->
     <app-navbar></app-navbar>
+
+    <!-- Main -->
     <main>
+      <!-- Offline UI -->
       <ng-container *ngIf="offlineService.isOffline(); else onlineContent">
         <div class="offline-wrapper text-center">
-          <!-- 🔸 Video: autoplay once, no loop -->
           <video
             class="offline-video"
-            [attr.autoplay]="true"
+            autoplay
             muted
             playsinline
             (ended)="videoEnded = true"
@@ -28,8 +33,11 @@
         </div>
       </ng-container>
 
+      <!-- Online UI -->
       <ng-template #onlineContent>
-        <router-outlet></router-outlet>
+        <section [@routeAnimations]="prepareRoute(routerOutlet)">
+          <router-outlet #routerOutlet="outlet"></router-outlet>
+        </section>
       </ng-template>
     </main>
   </div>

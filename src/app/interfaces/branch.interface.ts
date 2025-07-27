@@ -3,7 +3,7 @@ import { FoodCategory } from './foodCategory.interface';
 import { Representative } from './representative.interface';
 import { Review } from './review.interface';
 
-export interface Restaurant {
+export interface Branch {
   id: string;
   name: string;
   representative: Representative | null;
@@ -11,13 +11,14 @@ export interface Restaurant {
   business_license: string;
   owner_nid: string;
   established_date: string;
+  parentFranchiseId: string; // Links to parent franchise
   working_period: string;
   large_option: string;
   location: string;
   restaurant_image: string | null;
   restaurant_image_url: string | null;
   rating: string;
-  status: 'Open' | 'Closed'; // Add more if needed
+  status: 'Open' | 'Closed';
   categories: FoodCategory[];
   foods: Food[];
   reviews: Review[];

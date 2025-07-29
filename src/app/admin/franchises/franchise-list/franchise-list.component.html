@@ -9,6 +9,7 @@
           type="text"
           name="searchTerm"
           [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
           placeholder="Search By Franchise Name"
         />
       </label>
@@ -151,7 +152,9 @@
                   >{{ franchise.overall_rating }}
                 </td>
                 <td
-                  [style.color]="franchise.status === 'Active' ? 'green' : 'red'"
+                  [style.color]="
+                    franchise.status === 'Active' ? 'green' : 'red'
+                  "
                 >
                   {{ franchise.status }}
                 </td>
@@ -181,7 +184,10 @@
                     </li>
                     <li
                       class="toggle-container"
-                      (click)="toggleFranchiseStatus(franchise.id); $event.stopPropagation()"
+                      (click)="
+                        toggleFranchiseStatus(franchise.id);
+                        $event.stopPropagation()
+                      "
                     >
                       <button class="status-toggle">
                         <i
@@ -192,7 +198,11 @@
                           "
                         ></i>
                       </button>
-                      {{ franchise.status === 'Active' ? 'Deactivate' : 'Activate' }}
+                      {{
+                        franchise.status === "Active"
+                          ? "Deactivate"
+                          : "Activate"
+                      }}
                     </li>
                   </ul>
                 </td>

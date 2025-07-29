@@ -372,3 +372,24 @@ input:checked + .slider:before {
   }
 }
 
+input, textarea, select {
+  box-shadow: 0 0 0 1.5px $primary, 0 0 25px -17px #000;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  cursor: text;
+
+  &:hover {
+    box-shadow: 0 0 0 2.5px $primary, 0px 0px 25px -15px #000;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2.5px $primary;
+  }
+  &[type="checkbox"] {
+    box-shadow: none;
+  }
+}

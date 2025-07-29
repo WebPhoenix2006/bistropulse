@@ -17,15 +17,15 @@ export interface ContextState {
 export class RestaurantContextService {
   // Individual subjects for each ID type
   private selectedRestaurantId = new BehaviorSubject<string | null>(
-    localStorage.getItem(RESTAURANT_STORAGE_KEY)
+    this.getValidStorageValue(RESTAURANT_STORAGE_KEY)
   );
 
   private selectedFranchiseId = new BehaviorSubject<string | null>(
-    localStorage.getItem(FRANCHISE_STORAGE_KEY)
+    this.getValidStorageValue(FRANCHISE_STORAGE_KEY)
   );
 
   private selectedBranchId = new BehaviorSubject<string | null>(
-    localStorage.getItem(BRANCH_STORAGE_KEY)
+    this.getValidStorageValue(BRANCH_STORAGE_KEY)
   );
 
   // Individual observables
@@ -59,8 +59,24 @@ export class RestaurantContextService {
     })
   );
 
+  // Helper method to get valid storage values (not null strings)
+  private getValidStorageValue(key: string): string | null {
+    const value = localStorage.getItem(key);
+    if (!value || value === 'null' || value === 'undefined') {
+      // Clean up invalid values
+      localStorage.removeItem(key);
+      return null;
+    }
+    return value;
+  }
+
   // ============= RESTAURANT METHODS =============
   setRestaurantId(id: string) {
+    if (!id || id === 'null' || id === 'undefined') {
+      console.warn('⚠️ Attempted to set invalid restaurant ID:', id);
+      return;
+    }
+    
     this.selectedRestaurantId.next(id);
     localStorage.setItem(RESTAURANT_STORAGE_KEY, id);
     // Clear franchise/branch when restaurant is selected
@@ -69,7 +85,8 @@ export class RestaurantContextService {
   }
 
   getRestaurantId(): string | null {
-    return this.selectedRestaurantId.getValue();
+    const value = this.selectedRestaurantId.getValue();
+    return (value && value !== 'null') ? value : null;
   }
 
   clearRestaurantId() {
@@ -79,6 +96,11 @@ export class RestaurantContextService {
 
   // ============= FRANCHISE METHODS =============
   setFranchiseId(id: string) {
+    if (!id || id === 'null' || id === 'undefined') {
+      console.warn('⚠️ Attempted to set invalid franchise ID:', id);
+      return;
+    }
+
     this.selectedFranchiseId.next(id);
     localStorage.setItem(FRANCHISE_STORAGE_KEY, id);
     // Clear restaurant and branch when franchise is selected
@@ -87,7 +109,8 @@ export class RestaurantContextService {
   }
 
   getFranchiseId(): string | null {
-    return this.selectedFranchiseId.getValue();
+    const value = this.selectedFranchiseId.getValue();
+    return (value && value !== 'null') ? value : null;
   }
 
   clearFranchiseId() {
@@ -99,6 +122,12 @@ export class RestaurantContextService {
 
   // ============= BRANCH METHODS =============
   setBranchId(branchId: string, franchiseId: string) {
+    if (!branchId || branchId === 'null' || branchId === 'undefined' ||
+        !franchiseId || franchiseId === 'null' || franchiseId === 'undefined') {
+      console.warn('⚠️ Attempted to set invalid branch/franchise IDs:', { branchId, franchiseId });
+      return;
+    }
+
     // Set both franchise and branch
     this.selectedFranchiseId.next(franchiseId);
     this.selectedBranchId.next(branchId);
@@ -109,7 +138,8 @@ export class RestaurantContextService {
   }
 
   getBranchId(): string | null {
-    return this.selectedBranchId.getValue();
+    const value = this.selectedBranchId.getValue();
+    return (value && value !== 'null') ? value : null;
   }
 
   clearBranchId() {
@@ -150,17 +180,29 @@ export class RestaurantContextService {
     let route = routeTemplate;
 
     // Replace restaurant ID
-    if (route.includes(':id') && context.restaurantId) {
+    if (route.includes(':id')) {
+      if (!context.restaurantId) {
+        console.warn(`⚠️ Missing restaurantId for route: ${routeTemplate}`);
+        return null;
+      }
       route = route.replace(':id', context.restaurantId);
     }
 
     // Replace franchise ID
-    if (route.includes(':franchiseId') && context.franchiseId) {
+    if (route.includes(':franchiseId')) {
+      if (!context.franchiseId) {
+        console.warn(`⚠️ Missing franchiseId for route: ${routeTemplate}`);
+        return null;
+      }
       route = route.replace(':franchiseId', context.franchiseId);
     }
 
     // Replace branch ID
-    if (route.includes(':branchId') && context.branchId) {
+    if (route.includes(':branchId')) {
+      if (!context.branchId) {
+        console.warn(`⚠️ Missing branchId for route: ${routeTemplate}`);
+        return null;
+      }
       route = route.replace(':branchId', context.branchId);
     }
 
@@ -187,6 +229,33 @@ export class RestaurantContextService {
         return currentContext === 'branch';
       default:
         return true;
+    }
+  }
+
+  // ============= VALIDATION HELPERS =============
+  isValidId(id: string | null): boolean {
+    return !!(id && id !== 'null' && id !== 'undefined' && id.trim() !== '');
+  }
+
+  // Clean up any invalid stored values
+  cleanupInvalidStorage() {
+    const restaurantId = localStorage.getItem(RESTAURANT_STORAGE_KEY);
+    const franchiseId = localStorage.getItem(FRANCHISE_STORAGE_KEY);
+    const branchId = localStorage.getItem(BRANCH_STORAGE_KEY);
+
+    if (!this.isValidId(restaurantId)) {
+      localStorage.removeItem(RESTAURANT_STORAGE_KEY);
+      this.selectedRestaurantId.next(null);
+    }
+
+    if (!this.isValidId(franchiseId)) {
+      localStorage.removeItem(FRANCHISE_STORAGE_KEY);
+      this.selectedFranchiseId.next(null);
+    }
+
+    if (!this.isValidId(branchId)) {
+      localStorage.removeItem(BRANCH_STORAGE_KEY);
+      this.selectedBranchId.next(null);
     }
   }
 }

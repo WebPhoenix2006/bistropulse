@@ -95,6 +95,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
       return null;
     }
 
+    // For dynamic route items, check if we have all required parameters
+    if (item.routeType === 'dynamic' && item.route) {
+      if (!this.hasRequiredParameters(item.route, contextState)) {
+        return null; // Don't show if we don't have required parameters
+      }
+    }
+
     // Process the item
     const processedItem: SidebarItem = { ...item };
 
@@ -133,16 +140,62 @@ export class SidebarComponent implements OnInit, OnDestroy {
       case 'always':
         return true;
       case 'restaurant-selected':
-        return contextState.currentContext === 'restaurant';
+        // Only show if we have a valid restaurant ID
+        return !!(contextState.restaurantId && 
+                 contextState.restaurantId !== 'null' && 
+                 contextState.restaurantId.trim() !== '');
       case 'franchise-selected':
-        return contextState.currentContext === 'franchise';
+        // Only show if we have a valid franchise ID
+        return !!(contextState.franchiseId && 
+                 contextState.franchiseId !== 'null' && 
+                 contextState.franchiseId.trim() !== '');
       case 'branch-selected':
-        return contextState.currentContext === 'branch';
+        // Only show if we have both valid franchise ID and branch ID
+        return !!(contextState.branchId && 
+                 contextState.branchId !== 'null' && 
+                 contextState.branchId.trim() !== '' &&
+                 contextState.franchiseId && 
+                 contextState.franchiseId !== 'null' && 
+                 contextState.franchiseId.trim() !== '');
       case 'franchise-list-page':
         return this.isFranchiseListPage();
       default:
         return true;
     }
+  }
+
+  private hasRequiredParameters(
+    routeTemplate: string,
+    contextState: ContextState
+  ): boolean {
+    // Check if route has :id parameter and we have restaurantId
+    if (routeTemplate.includes(':id')) {
+      if (!contextState.restaurantId || 
+          contextState.restaurantId === 'null' || 
+          contextState.restaurantId.trim() === '') {
+        return false;
+      }
+    }
+
+    // Check if route has :franchiseId parameter and we have franchiseId
+    if (routeTemplate.includes(':franchiseId')) {
+      if (!contextState.franchiseId || 
+          contextState.franchiseId === 'null' || 
+          contextState.franchiseId.trim() === '') {
+        return false;
+      }
+    }
+
+    // Check if route has :branchId parameter and we have branchId
+    if (routeTemplate.includes(':branchId')) {
+      if (!contextState.branchId || 
+          contextState.branchId === 'null' || 
+          contextState.branchId.trim() === '') {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   private isFranchiseListPage(): boolean {
@@ -182,18 +235,36 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ): string | null {
     let route = routeTemplate;
 
-    // Replace restaurant ID
-    if (route.includes(':id') && contextState.restaurantId) {
+    // Replace restaurant ID - only if it exists and is valid
+    if (route.includes(':id')) {
+      if (!contextState.restaurantId || 
+          contextState.restaurantId === 'null' || 
+          contextState.restaurantId.trim() === '') {
+        console.warn(`⚠️ Missing or invalid restaurantId for route: ${routeTemplate}`);
+        return null;
+      }
       route = route.replace(':id', contextState.restaurantId);
     }
 
-    // Replace franchise ID
-    if (route.includes(':franchiseId') && contextState.franchiseId) {
+    // Replace franchise ID - only if it exists and is valid
+    if (route.includes(':franchiseId')) {
+      if (!contextState.franchiseId || 
+          contextState.franchiseId === 'null' || 
+          contextState.franchiseId.trim() === '') {
+        console.warn(`⚠️ Missing or invalid franchiseId for route: ${routeTemplate}`);
+        return null;
+      }
       route = route.replace(':franchiseId', contextState.franchiseId);
     }
 
-    // Replace branch ID
-    if (route.includes(':branchId') && contextState.branchId) {
+    // Replace branch ID - only if it exists and is valid
+    if (route.includes(':branchId')) {
+      if (!contextState.branchId || 
+          contextState.branchId === 'null' || 
+          contextState.branchId.trim() === '') {
+        console.warn(`⚠️ Missing or invalid branchId for route: ${routeTemplate}`);
+        return null;
+      }
       route = route.replace(':branchId', contextState.branchId);
     }
 

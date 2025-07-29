@@ -5,6 +5,10 @@ $secondary: #6f767e;
 $gray: #e9e9e9;
 $background: #f4f4f4;
 
+table {
+  table-layout: fixed !important;
+}
+
 body {
   background-color: $background !important;
   height: 100vh;

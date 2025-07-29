@@ -34,6 +34,7 @@ import { ExampleMenuComponent } from './order-related/order-overviews/example-me
 import { OrderHistoryComponent } from './order-related/order-overviews/order-history/order-history.component';
 import { OrderListComponent } from './order-related/order-overviews/order-list/order-list.component';
 import { OrderTrackingComponent } from './order-related/order-tracking/order-tracking.component';
+import { FranchiseListComponent } from './franchises/franchise-list/franchise-list.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { OrderTrackingComponent } from './order-related/order-tracking/order-tra
     RiderShiftsComponent,
     AddExtraComponent,
     RiderOverviewComponent,
-    RiderDeliveryComponent
+    RiderDeliveryComponent,
+    FranchiseListComponent,
   ],
 
   imports: [

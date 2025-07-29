@@ -23,6 +23,7 @@ import { OfflineBannerComponent } from './components/offline-banner/offline-bann
 import { DesignedH1Component } from './components/designed-h1/designed-h1.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { AnimateComponent } from './components/animate/animate.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AnimateComponent } from './components/animate/animate.component';
     OfflineBannerComponent,
     DesignedH1Component,
     ModalComponent,
-    AnimateComponent
+    AnimateComponent,
+    BreadcrumbsComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -70,8 +72,8 @@ import { AnimateComponent } from './components/animate/animate.component';
     NoSearchResultComponent,
     OfflineBannerComponent,
     ModalComponent,
-    AnimateComponent
-
+    AnimateComponent,
+    BreadcrumbsComponent,
   ],
 })
 export class SharedModule {}

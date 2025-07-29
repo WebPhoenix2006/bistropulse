@@ -1,0 +1,28 @@
+@use '../../../../styles.scss' as *;
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 32px;
+  padding: 10px 0;
+  color: $secondary;
+  ::before{
+    height: 10px;
+    width: 7px;
+    background-color: $primary;
+    border-radius: 5px;
+  }
+  a {
+    color: $primary;
+    text-decoration: none;
+  }
+  .blue-pill{
+    width: 7px;
+    height: 15px;
+    border-radius: 3px;
+    background-color: $primary;
+    margin-right: 6px;
+  }
+}

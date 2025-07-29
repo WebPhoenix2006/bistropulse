@@ -46,59 +46,63 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [authGuard],
-        data: { animation: 'DashboardPage' },
+        data: { animation: 'DashboardPage', breadcrumb: 'Dashboard' },
       },
       {
         path: 'restaurants',
-        data: { animation: 'Restaurants' },
+        data: { animation: 'Restaurants', breadcrumb: 'Restaurants' },
         children: [
           {
             path: '',
             component: RestaurantListComponent,
-            data: { animation: 'RestaurantList' },
+            data: { animation: 'RestaurantList', breadcrumb: 'List' },
           },
           {
             path: 'add-restaurant',
             component: AddRestaurantComponent,
-            data: { animation: 'AddRestaurant' },
+            data: { animation: 'AddRestaurant', breadcrumb: 'Add Restaurant' },
           },
           {
             path: ':id',
+            // data: { breadcrumb: 'Restaurant' },
             children: [
               {
                 path: '',
                 component: RestaurantOverviewComponent,
-                data: { animation: 'RestaurantOverview' },
+                data: {
+                  animation: 'RestaurantOverview',
+                  breadcrumb: 'Overview',
+                },
               },
               {
                 path: 'food-list',
                 component: FoodListComponent,
-                data: { animation: 'FoodList' },
+                data: { animation: 'FoodList', breadcrumb: 'Food List' },
               },
               {
                 path: 'food-list/add-food',
                 component: AddFoodComponent,
-                data: { animation: 'AddFood' },
+                data: { animation: 'AddFood', breadcrumb: 'Add Food' },
               },
               {
                 path: 'food-list/:foodId/food-details',
                 component: FoodDetailsComponent,
-                data: { animation: 'FoodDetails' },
+                data: { animation: 'FoodDetails', breadcrumb: 'Food Details' },
               },
               {
                 path: 'categories',
                 component: CategoriesComponent,
-                data: { animation: 'Categories' },
+                data: { animation: 'Categories', breadcrumb: 'Categories' },
               },
               {
                 path: 'extras',
                 component: ExtraComponent,
-                data: { animation: 'Extras' },
+                data: { animation: 'Extras', breadcrumb: 'Extras' },
               },
               {
                 path: 'extras/add',
                 component: AddExtraComponent,
-                data: { animation: 'AddExtra' },
+                data: { animation: 'AddExtra', breadcrumb: 'Add Extra' },
               },
             ],
           },
@@ -106,17 +110,17 @@ const routes: Routes = [
       },
       {
         path: 'riders',
-        data: { animation: 'Riders' },
+        data: { animation: 'Riders', breadcrumb: 'Riders' },
         children: [
           {
             path: '',
             component: RidersComponent,
-            data: { animation: 'RidersList' },
+            data: { animation: 'RidersList', breadcrumb: 'List' },
           },
           {
             path: 'shifts',
             component: RiderShiftsComponent,
-            data: { animation: 'RiderShifts' },
+            data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },
           },
           {
             path: ':id',
@@ -125,22 +129,22 @@ const routes: Routes = [
               {
                 path: 'overview',
                 component: RiderOverviewComponent,
-                data: { animation: 'RiderOverview' },
+                data: { animation: 'RiderOverview', breadcrumb: 'Overview' },
               },
               {
                 path: 'delivery',
                 component: OrderTrackingComponent,
-                data: { animation: 'RiderDelivery' },
+                data: { animation: 'RiderDelivery', breadcrumb: 'Delivery' },
               },
               {
                 path: 'earnings',
                 component: RiderDeliveryComponent,
-                data: { animation: 'RiderEarnings' },
+                data: { animation: 'RiderEarnings', breadcrumb: 'Earnings' },
               },
               {
                 path: 'reviews',
                 component: RiderDeliveryComponent,
-                data: { animation: 'RiderReviews' },
+                data: { animation: 'RiderReviews', breadcrumb: 'Reviews' },
               },
             ],
           },
@@ -148,85 +152,117 @@ const routes: Routes = [
       },
       {
         path: 'customers',
-        data: { animation: 'Customers' },
+        data: { animation: 'Customers', breadcrumb: 'Customers' },
         children: [
           {
             path: '',
             component: CustomersComponent,
-            data: { animation: 'CustomerList' },
+            data: { animation: 'CustomerList', breadcrumb: 'List' },
           },
           {
             path: 'add-customer',
             component: AddCustomerComponent,
-            data: { animation: 'AddCustomer' },
+            data: { animation: 'AddCustomer', breadcrumb: 'Add Customer' },
           },
           {
             path: ':id',
             component: CustomersOverviewComponent,
-            data: { animation: 'CustomerOverview' },
+            data: { animation: 'CustomerOverview', breadcrumb: 'Overview' },
           },
         ],
       },
       {
         path: 'orders',
-        data: { animation: 'Orders' },
+        data: { animation: 'Orders', breadcrumb: 'Orders' },
         children: [
           {
             path: '',
             component: OrderListComponent,
-            data: { animation: 'OrderList' },
+            data: { animation: 'OrderList', breadcrumb: 'List' },
           },
           {
             path: 'example-menu',
             component: ExampleMenuComponent,
-            data: { animation: 'ExampleMenu' },
+            data: { animation: 'ExampleMenu', breadcrumb: 'Example Menu' },
           },
           {
             path: 'order-history',
             component: OrderHistoryComponent,
-            data: { animation: 'OrderHistory' },
+            data: { animation: 'OrderHistory', breadcrumb: 'Order History' },
           },
         ],
       },
       {
         path: 'franchises',
+        data: { breadcrumb: 'Franchises' },
         children: [
-          { path: '', pathMatch: 'full', component: FranchiseListComponent },
-          { path: 'add-franchise', component: AddFranchiseComponent },
-          { path: 'orders', component: OrdersComponent },
-          { path: ':franchiseId', component: FranchiseOverviewComponent },
-          { path: ':franchiseId/branches', component: BranchListComponent },
+          {
+            path: '',
+            pathMatch: 'full',
+            component: FranchiseListComponent,
+            data: { breadcrumb: 'List' },
+          },
+          {
+            path: 'add-franchise',
+            component: AddFranchiseComponent,
+            data: { breadcrumb: 'Add Franchise' },
+          },
+          {
+            path: 'orders',
+            component: OrdersComponent,
+            data: { breadcrumb: 'Orders' },
+          },
+          {
+            path: ':franchiseId',
+            component: FranchiseOverviewComponent,
+            data: { breadcrumb: 'Overview' },
+          },
+          {
+            path: ':franchiseId/branches',
+            component: BranchListComponent,
+            data: { breadcrumb: 'Branches' },
+          },
           {
             path: ':franchiseId/branches/:branchId/food-list',
             component: BranchListComponent,
+            data: { breadcrumb: 'Food List' },
           },
           {
             path: ':franchiseId/branches/:branchId/food-list/:foodId',
             component: BranchListComponent,
+            data: { breadcrumb: 'Food Details' },
           },
           {
             path: ':franchiseId/branches/:branchId/extras',
             component: BranchListComponent,
+            data: { breadcrumb: 'Extras' },
           },
           {
             path: ':franchiseId/branches/:branchId/categories',
             component: BranchListComponent,
+            data: { breadcrumb: 'Categories' },
           },
           {
             path: ':franchiseId/branches/:branchId/orders',
             component: FranchiseOrderListComponent,
+            data: { breadcrumb: 'Branch Orders' },
           },
           {
             path: ':franchiseId/branches/:branchId/order-history',
             component: FranchiseOrderHistoryComponent,
+            data: { breadcrumb: 'Order History' },
           },
         ],
       },
-      { path: 'chat', component: ChatComponent, data: { animation: 'Chat' } },
+      {
+        path: 'chat',
+        component: ChatComponent,
+        data: { animation: 'Chat', breadcrumb: 'Chat' },
+      },
       {
         path: 'otp',
         component: OtpManagementComponent,
-        data: { animation: 'OtpManagement' },
+        data: { animation: 'OtpManagement', breadcrumb: 'OTP' },
       },
     ],
   },

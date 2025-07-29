@@ -2,8 +2,9 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+
 import { SlowNetworkService } from '../../shared/services/slow-nerwork.service';
+import { BootstrapToastService } from '../../shared/services/bootstrap-toast.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    public toastr: ToastrService,
+    public toastr: BootstrapToastService,
     private slowNetwork: SlowNetworkService
   ) {}
 
@@ -50,9 +51,8 @@ export class LoginComponent implements OnInit {
 
     this.slowNetwork.start(() => {
       if (this.isLoading()) {
-        this.toastr.warning(
-          'Hmm... this is taking longer than usual. Please check your connection.',
-          'Slow Network'
+        this.toastr.showWarning(
+          'Hmm... this is taking longer than usual. Please check your connection.'
         );
       }
     });
@@ -62,14 +62,14 @@ export class LoginComponent implements OnInit {
         this.auth.saveToken(res.token);
         this.isLoading.set(false);
         this.slowNetwork.clear();
-        this.toastr.success('Success!', 'Login Successfull');
+        this.toastr.showSuccess('Success!, Login successful!');
         this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
         // console.error('Login error:', err);
         this.isLoading.set(false);
         this.slowNetwork.clear();
-        this.toastr.error('Error', err.error?.message || 'Unknown Error');
+        this.toastr.showError('Error', err.error?.message || 'Unknown Error');
       },
     });
   }

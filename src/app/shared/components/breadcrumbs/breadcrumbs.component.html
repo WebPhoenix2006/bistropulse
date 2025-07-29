@@ -1,0 +1,13 @@
+<div class="breadcrumb">
+  <div class="blue-pill"></div>
+  <ng-container *ngFor="let breadcrumb of breadcrumbs; let last = last">
+    <a
+      [routerLink]="['/admin', cleanUrl(breadcrumb.url)]"
+      *ngIf="!last"
+    >
+      {{ breadcrumb.label }}
+    </a>
+    <span *ngIf="last">{{ breadcrumb.label }}</span>
+    <span *ngIf="!last">/</span>
+  </ng-container>
+</div>

@@ -1,4 +1,11 @@
-import { Component, HostListener, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { FranchisesService } from '../../../shared/services/franchises.service';
 import { Router } from '@angular/router';
@@ -50,6 +57,8 @@ export class FranchiseListComponent implements OnInit {
     if (!isFromFranchise) {
       this.restaurantContext.setRestaurantId(null);
     }
+
+    this.applyFilters;
   }
 
   getFranchises(): void {
@@ -117,7 +126,7 @@ export class FranchiseListComponent implements OnInit {
   }
 
   toggleFranchiseStatus(id: number): void {
-    const franchise = this.franchises.find(f => f.id === id);
+    const franchise = this.franchises.find((f) => f.id === id);
     if (franchise) {
       franchise.status = franchise.status === 'Active' ? 'Inactive' : 'Active';
       this.toastr.showSuccess(`Franchise ${franchise.status.toLowerCase()}`);
@@ -135,7 +144,8 @@ export class FranchiseListComponent implements OnInit {
     const isInsideToolbar = clickedElement.closest('.toolbar') !== null;
     const isToolbarToggle = clickedElement.closest('.toolbar-toggle') !== null;
     const isInsideFilter = clickedElement.closest('#filter-modal') !== null;
-    const isFilterButton = clickedElement.closest('#filter-modal-button') !== null;
+    const isFilterButton =
+      clickedElement.closest('#filter-modal-button') !== null;
 
     if (!isInsideToolbar && !isToolbarToggle) {
       this.closeAll();

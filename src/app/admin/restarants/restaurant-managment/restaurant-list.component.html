@@ -8,6 +8,7 @@
         <input
           type="text"
           name="searchTerm"
+          (input)="applyFilters()"
           [(ngModel)]="searchTerm"
           placeholder="Search By Restaurant Name"
         />
@@ -99,103 +100,112 @@
     <ng-container *ngIf="!isLoading(); else loading">
       <ng-container *ngIf="restaurants.length > 0; else emptyList">
         <ng-container *ngIf="filteredRestaurants as filtered">
-          <table
-            class="table mt-3 table-hover"
-            *ngIf="filteredRestaurants.length > 0; else noSearchResults"
-          >
-            <thead>
-              <tr>
-                <td>
-                  <input
-                    type="checkbox"
-                    style="cursor: pointer"
-                    [checked]="allChecked()"
-                    (change)="toggleSelectAll()"
-                  />
-                  Name <span><i class="ri-arrow-up-down-line"></i></span>
-                </td>
-                <td>Representative</td>
-                <td>Location</td>
-                <td>Phone Number</td>
-                <td>Ratings</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-            </thead>
-            <!-- BREAKPOINT -->
-            <tbody>
-              <tr
-                *ngFor="let restaurant of filtered; index as i"
-                class="mb-3"
-                [class.checked]="restaurant.checked"
-                style="cursor: pointer"
-                tabindex="0"
-                (click)="selectRestaurant(restaurant.id)"
-                role="button"
-              >
-                <td>
-                  <input
-                    type="checkbox"
-                    style="cursor: pointer"
-                    [checked]="restaurant.checked"
-                    (change)="toggleSelection(i)"
-                    (click)="$event.stopPropagation()"
-                  />
-                  {{ restaurant.name }}
-                </td>
-                <td>{{ restaurant.representative?.full_name || "No Rep" }}</td>
-                <td>{{ restaurant.location }}</td>
-                <td>{{ restaurant.phone }}</td>
-                <td class="img-con">
-                  <span><img src="assets/images/Vector.png" /></span
-                  >{{ restaurant.rating }}
-                </td>
-                <td
-                  [style.color]="restaurant.status === 'Open' ? 'green' : 'red'"
+          <div class="table-container">
+            <table
+              class="table mt-3 table-hover"
+              *ngIf="filteredRestaurants.length > 0; else noSearchResults"
+            >
+              <thead>
+                <tr>
+                  <td>
+                    <input
+                      type="checkbox"
+                      style="cursor: pointer"
+                      [checked]="allChecked()"
+                      (change)="toggleSelectAll()"
+                    />
+                    Name <span><i class="ri-arrow-up-down-line"></i></span>
+                  </td>
+                  <td>Representative</td>
+                  <td>Location</td>
+                  <td>Phone Number</td>
+                  <td>Ratings</td>
+                  <td>Status</td>
+                  <td>Action</td>
+                </tr>
+              </thead>
+              <!-- BREAKPOINT -->
+              <tbody>
+                <tr
+                  *ngFor="let restaurant of filtered; index as i"
+                  class="mb-3"
+                  [class.checked]="restaurant.checked"
+                  style="cursor: pointer"
+                  tabindex="0"
+                  (click)="selectRestaurant(restaurant.id)"
+                  role="button"
                 >
-                  {{ restaurant.status }}
-                </td>
-                <td class="position-relative" id="toolbar-container">
-                  <button
-                    class="toolbar-toggle rounded-3"
-                    [class.active]="restaurant.isToolbarOpen"
-                    (click)="
-                      toggleVisibility(restaurant.id); $event.stopPropagation()
+                  <td>
+                    <input
+                      type="checkbox"
+                      style="cursor: pointer"
+                      [checked]="restaurant.checked"
+                      (change)="toggleSelection(i)"
+                      (click)="$event.stopPropagation()"
+                    />
+                    {{ restaurant.name }}
+                  </td>
+                  <td>
+                    {{ restaurant.representative?.full_name || "No Rep" }}
+                  </td>
+                  <td>{{ restaurant.location }}</td>
+                  <td>{{ restaurant.phone }}</td>
+                  <td class="img-con">
+                    <span><img src="assets/images/Vector.png" /></span
+                    >{{ restaurant.rating }}
+                  </td>
+                  <td
+                    [style.color]="
+                      restaurant.status === 'Open' ? 'green' : 'red'
                     "
                   >
-                    <i class="ri-more-2-fill"></i>
-                  </button>
-                  <ul
-                    class="toolbar shadow visible"
-                    [ngClass]="restaurant.isToolbarOpen ? 'visible' : 'hidden'"
-                    (click)="$event.stopPropagation()"
-                  >
-                    <li (click)="selectRestaurant(restaurant.id)">
-                      <span><i class="ri-eye-line"></i></span> View
-                    </li>
-                    <li>
-                      <span><i class="ri-pencil-line"></i></span> Delete
-                    </li>
-                    <li
-                      class="toggle-container"
-                      (click)="toggleSelection(i); $event.stopPropagation()"
+                    {{ restaurant.status }}
+                  </td>
+                  <td class="position-relative" id="toolbar-container">
+                    <button
+                      class="toolbar-toggle rounded-3"
+                      [class.active]="restaurant.isToolbarOpen"
+                      (click)="
+                        toggleVisibility(restaurant.id);
+                        $event.stopPropagation()
+                      "
                     >
-                      <button class="status-toggle">
-                        <i
-                          [class]="
-                            restaurant.checked
-                              ? 'fa-solid fa-toggle-on'
-                              : 'fa-solid fa-toggle-off'
-                          "
-                        ></i>
-                      </button>
-                      Deactivate
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                      <i class="ri-more-2-fill"></i>
+                    </button>
+                    <ul
+                      class="toolbar shadow visible"
+                      [ngClass]="
+                        restaurant.isToolbarOpen ? 'visible' : 'hidden'
+                      "
+                      (click)="$event.stopPropagation()"
+                    >
+                      <li (click)="selectRestaurant(restaurant.id)">
+                        <span><i class="ri-eye-line"></i></span> View
+                      </li>
+                      <li>
+                        <span><i class="ri-pencil-line"></i></span> Delete
+                      </li>
+                      <li
+                        class="toggle-container"
+                        (click)="toggleSelection(i); $event.stopPropagation()"
+                      >
+                        <button class="status-toggle">
+                          <i
+                            [class]="
+                              restaurant.checked
+                                ? 'fa-solid fa-toggle-on'
+                                : 'fa-solid fa-toggle-off'
+                            "
+                          ></i>
+                        </button>
+                        Deactivate
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div class="pages" *ngIf="filteredRestaurants.length > 0">
             <div class="count">

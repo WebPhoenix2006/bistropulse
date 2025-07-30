@@ -375,3 +375,368 @@ input:checked + .slider:before {
     transform: translateX(0);
   }
 }
+
+// ============================================
+// GLOBAL TABLE STYLES
+// ============================================
+
+// Table container for overflow control
+.table-container {
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  max-height: 600px !important; // Adjust this height as needed
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  background: white !important;
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+    border-radius: 4px !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1 !important;
+    border-radius: 4px !important;
+
+    &:hover {
+      background: #a8a8a8 !important;
+    }
+  }
+}
+
+// Base table styling
+.table {
+  width: 100% !important;
+  min-width: 800px !important; // Minimum width to prevent cramping
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  background: white !important;
+  margin-bottom: 0 !important; // Remove default margin when in container
+
+  // Table header styling
+  thead {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+
+    tr {
+      th,
+      td {
+        font-weight: 500 !important;
+        font-size: 16px !important;
+        padding: 12px 8px !important;
+        text-align: left !important;
+        border-bottom: 2px solid #f0f0f0 !important;
+        background: #fafafa !important;
+
+        // Default column widths - can be overridden per table
+        &:nth-child(1) {
+          width: 18% !important;
+        } // First column (usually name/checkbox)
+        &:nth-child(2) {
+          width: 15% !important;
+        } // Second column
+        &:nth-child(3) {
+          width: 12% !important;
+        } // Third column
+        &:nth-child(4) {
+          width: 14% !important;
+        } // Fourth column
+        &:nth-child(5) {
+          width: 12% !important;
+        } // Fifth column
+        &:nth-child(6) {
+          width: 10% !important;
+        } // Sixth column
+        &:nth-child(7) {
+          width: 10% !important;
+        } // Seventh column
+        &:nth-child(8) {
+          width: 9% !important;
+        } // Eighth column (usually actions)
+      }
+    }
+  }
+
+  // Table body styling
+  tbody {
+    tr {
+      background: white !important;
+      border-bottom: 1px solid #f5f5f5 !important;
+      transition: background-color 0.2s ease !important;
+
+      &:hover {
+        background-color: #fafafa !important;
+      }
+
+      &.checked {
+        background-color: #f0f8ff !important;
+      }
+
+      td {
+        background: transparent !important;
+        vertical-align: middle !important;
+        padding: 12px 8px !important;
+        text-align: left !important;
+        font-size: 14px !important;
+        color: #333 !important;
+
+        // Center align specific columns (ratings, status, actions)
+        &:nth-child(6),
+        &:nth-child(7),
+        &:nth-child(8) {
+          text-align: center !important;
+        }
+
+        // Button styling within table cells
+        button {
+          background: transparent !important;
+          border: none !important;
+          transition: 0.2s ease-in-out !important;
+          cursor: pointer !important;
+
+          &:active {
+            background: rgba(205, 204, 204, 0.7) !important;
+          }
+
+          &.active {
+            background: rgba(205, 204, 204, 0.7) !important;
+          }
+
+          &:hover {
+            background: rgba(205, 204, 204, 0.3) !important;
+          }
+        }
+      }
+
+      // Special styling for image containers (ratings, etc.)
+      .img-con {
+        display: flex !important;
+        gap: 5px !important;
+        background: transparent !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+    }
+  }
+}
+
+// Table hover effects
+.table-hover {
+  tbody {
+    tr {
+      &:hover {
+        background-color: #f8f9fa !important;
+      }
+    }
+  }
+}
+
+// Checkbox styling within tables
+.table {
+  input[type="checkbox"] {
+    margin-right: 8px !important;
+    height: 16px !important;
+    width: 16px !important;
+    cursor: pointer !important;
+  }
+}
+
+// Status styling within tables
+.table {
+  td {
+    &[style*="color: green"],
+    .status-active {
+      color: #28a745 !important;
+      font-weight: 500 !important;
+    }
+
+    &[style*="color: red"],
+    .status-inactive {
+      color: #dc3545 !important;
+      font-weight: 500 !important;
+    }
+  }
+}
+
+// Toggle switch styling within tables
+.table {
+  .toggle-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 14px !important;
+    justify-content: center !important;
+
+    .status-toggle {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      font-size: 18px !important;
+      color: #6f767e !important;
+      cursor: pointer !important;
+
+      i {
+        transition: color 0.3s ease !important;
+
+        &.fa-toggle-on {
+          color: var(--primary-color, #007bff) !important;
+        }
+
+        &.fa-toggle-off {
+          color: #6f767e !important;
+        }
+      }
+
+      &:hover i {
+        color: var(--primary-color, #007bff) !important;
+      }
+    }
+  }
+}
+
+// Toolbar/dropdown styling within tables
+.table {
+  #toolbar-container,
+  .toolbar-container {
+    position: relative !important;
+
+    .toolbar-toggle {
+      background: transparent !important;
+      border: none !important;
+      padding: 8px !important;
+      border-radius: 4px !important;
+      cursor: pointer !important;
+      transition: background-color 0.2s ease !important;
+
+      &:hover {
+        background: #f0f0f0 !important;
+      }
+
+      &.active {
+        background: rgba(205, 204, 204, 0.7) !important;
+      }
+    }
+
+    .toolbar {
+      background: white !important;
+      width: 150px !important;
+      min-height: 120px !important;
+      position: absolute !important;
+      top: 38px !important;
+      right: 0 !important;
+      padding: 8px !important;
+      border-radius: 8px !important;
+      list-style: none !important;
+      z-index: 1000 !important;
+      transition: 0.2s ease-in-out !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+      border: 1px solid #e0e0e0 !important;
+
+      &.visible {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+      }
+
+      &.hidden {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+
+      li {
+        width: 100% !important;
+        margin-bottom: 8px !important;
+        background: transparent !important;
+        color: #6f767e !important;
+        font-size: 14px !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        border-radius: 6px !important;
+        transition: 0.2s ease-in-out !important;
+        height: 36px !important;
+        gap: 12px !important;
+        padding: 8px 12px !important;
+        cursor: pointer !important;
+
+        &:hover {
+          background: #f5f5f5 !important;
+        }
+
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+
+        span {
+          display: flex !important;
+          align-items: center !important;
+        }
+      }
+    }
+  }
+}
+
+// Responsive table behavior
+@media (max-width: 768px) {
+  .table {
+    font-size: 12px !important;
+
+    thead {
+      tr {
+        th,
+        td {
+          font-size: 14px !important;
+          padding: 8px 4px !important;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          font-size: 12px !important;
+          padding: 8px 4px !important;
+        }
+      }
+    }
+  }
+}
+
+// Pagination styling (if used with tables)
+.pages {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  padding: 15px 0 !important;
+
+  .count {
+    font-size: 14px !important;
+    color: #6f767e !important;
+  }
+}
+
+// Empty state styling
+.empty-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 200px !important;
+  color: #6f767e !important;
+  font-size: 16px !important;
+}

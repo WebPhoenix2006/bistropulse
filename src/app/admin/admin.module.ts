@@ -35,6 +35,7 @@ import { OrderHistoryComponent } from './order-related/order-overviews/order-his
 import { OrderListComponent } from './order-related/order-overviews/order-list/order-list.component';
 import { OrderTrackingComponent } from './order-related/order-tracking/order-tracking.component';
 import { FranchiseListComponent } from './franchises/franchise-list/franchise-list.component';
+import { BranchListComponent } from './franchises/branch-list/branch-list.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { FranchiseListComponent } from './franchises/franchise-list/franchise-li
     RiderOverviewComponent,
     RiderDeliveryComponent,
     FranchiseListComponent,
+    BranchListComponent,
   ],
 
   imports: [

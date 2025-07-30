@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { Franchise } from '../../interfaces/franchise.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FranchisesService {
-  base_url: string = 'https://bistropulse-backend.onrender.com/api/franchises/';
+  base_url: string = 'https://bistropulse-backend.onrender.com/api/franchises';
 
-    private getAuthHeaders(isFormData: boolean = false): HttpHeaders {
+  private getAuthHeaders(isFormData: boolean = false): HttpHeaders {
     let headers = new HttpHeaders();
 
     if (!isFormData) {
@@ -32,7 +32,14 @@ export class FranchisesService {
   getFranchises(): Observable<Franchise[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Franchise[]>(this.base_url, {
-      headers
+      headers,
+    });
+  }
+
+  getBranches(id: string): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.base_url}/${id}/branches`, {
+      headers,
     });
   }
 }

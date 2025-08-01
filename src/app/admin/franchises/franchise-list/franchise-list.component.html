@@ -9,6 +9,7 @@
           type="text"
           name="searchTerm"
           [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
           placeholder="Search By Franchise Name"
         />
       </label>
@@ -103,7 +104,7 @@
           >
             <thead>
               <tr>
-                <td>
+                <th>
                   <input
                     type="checkbox"
                     style="cursor: pointer"
@@ -111,14 +112,14 @@
                     (change)="toggleSelectAll()"
                   />
                   Name <span><i class="ri-arrow-up-down-line"></i></span>
-                </td>
-                <td>Owner</td>
-                <td>Location</td>
-                <td>Phone Number</td>
-                <td>Franchise ID</td>
-                <td>Ratings</td>
-                <td>Status</td>
-                <td>Action</td>
+                </th>
+                <th>Owner</th>
+                <th>Location</th>
+                <th>Phone Number</th>
+                <th>Franchise ID</th>
+                <th>Ratings</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <!-- BREAKPOINT -->
@@ -151,7 +152,9 @@
                   >{{ franchise.overall_rating }}
                 </td>
                 <td
-                  [style.color]="franchise.status === 'Active' ? 'green' : 'red'"
+                  [style.color]="
+                    franchise.status === 'Active' ? 'green' : 'red'
+                  "
                 >
                   {{ franchise.status }}
                 </td>
@@ -181,7 +184,10 @@
                     </li>
                     <li
                       class="toggle-container"
-                      (click)="toggleFranchiseStatus(franchise.id); $event.stopPropagation()"
+                      (click)="
+                        toggleFranchiseStatus(franchise.id);
+                        $event.stopPropagation()
+                      "
                     >
                       <button class="status-toggle">
                         <i
@@ -192,7 +198,11 @@
                           "
                         ></i>
                       </button>
-                      {{ franchise.status === 'Active' ? 'Deactivate' : 'Activate' }}
+                      {{
+                        franchise.status === "Active"
+                          ? "Deactivate"
+                          : "Activate"
+                      }}
                     </li>
                   </ul>
                 </td>

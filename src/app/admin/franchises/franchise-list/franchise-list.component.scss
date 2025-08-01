@@ -47,12 +47,43 @@
   .body {
     table {
       width: 100%;
-      
+      table-layout: fixed; // This ensures consistent column widths
+      border-collapse: collapse;
+
       thead {
         tr {
-          td {
+          th {
             font-weight: 500;
             font-size: 16px;
+            padding: 12px 8px;
+            text-align: left; // Left align headers
+            border-bottom: 2px solid #f0f0f0;
+
+            // Define specific column widths
+            &:nth-child(1) {
+              width: 18%;
+            } // Name + checkbox
+            &:nth-child(2) {
+              width: 15%;
+            } // Owner
+            &:nth-child(3) {
+              width: 12%;
+            } // Location
+            &:nth-child(4) {
+              width: 14%;
+            } // Phone
+            &:nth-child(5) {
+              width: 12%;
+            } // Franchise ID
+            &:nth-child(6) {
+              width: 10%;
+            } // Ratings
+            &:nth-child(7) {
+              width: 10%;
+            } // Status
+            &:nth-child(8) {
+              width: 9%;
+            } // Action
           }
         }
       }
@@ -60,6 +91,11 @@
       tbody {
         tr {
           background: white;
+          border-bottom: 1px solid #f5f5f5;
+
+          &:hover {
+            background-color: #fafafa;
+          }
 
           &.checked {
             background-color: color.adjust($gray, $lightness: 5%);
@@ -67,7 +103,25 @@
 
           td {
             background: transparent;
-            align-content: flex-start;
+            vertical-align: middle;
+            padding: 12px 8px;
+            text-align: left; // Left align content by default
+
+            // Specific alignments for certain columns
+            &:nth-child(6) {
+              // Ratings column
+              text-align: center;
+            }
+
+            &:nth-child(7) {
+              // Status column
+              text-align: center;
+            }
+
+            &:nth-child(8) {
+              // Action column
+              text-align: center;
+            }
 
             button {
               background: transparent;
@@ -87,7 +141,9 @@
           .img-con {
             display: flex;
             gap: 5px;
-            align-items: flex-start;
+            background: transparent !important;
+            align-items: center;
+            justify-content: center;
           }
         }
       }
@@ -102,8 +158,8 @@
 
 input[type="checkbox"] {
   margin-right: 8px;
-  height: 20px;
-  width: 20px;
+  height: 16px;
+  width: 16px;
 }
 
 /* Toggle switch */
@@ -149,6 +205,7 @@ input[type="checkbox"] {
     list-style: none;
     z-index: 1000 !important;
     transition: 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
     &.visible {
       display: block;
@@ -230,6 +287,7 @@ label {
   border: 1px solid $gray;
   padding: 8px;
   max-width: 600px;
+  border-radius: 4px;
 
   span {
     width: 10%;

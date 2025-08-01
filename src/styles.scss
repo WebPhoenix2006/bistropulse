@@ -380,24 +380,57 @@ input:checked + .slider:before {
   }
 }
 
+// ============================================
+// GLOBAL TABLE STYLES
+// ============================================
+
+// Table container for overflow control
+.table-container {
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  max-height: 600px !important; // Adjust this height as needed
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  background: white !important;
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+    border-radius: 4px !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1 !important;
+    border-radius: 4px !important;
 // input, textarea, select {
 //   box-shadow: 0 0 0 1.5px $primary, 0 0 25px -17px #000;
 //   outline: none;
 //   transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
 //   cursor: text;
 
-//   &:hover {
-//     box-shadow: 0 0 0 2.5px $primary, 0px 0px 25px -15px #000;
-//   }
+  &:hover {
+    box-shadow: 0 0 0 2.5px $primary, 0px 0px 25px -15px #000;
+  }
 
-//   &:active {
-//     transform: scale(0.95);
-//   }
+  &:active {
+    transform: scale(0.95);
+  }
 
-//   &:focus {
-//     box-shadow: 0 0 0 2.5px $primary;
-//   }
-//   &[type="checkbox"] {
-//     box-shadow: none;
-//   }
-// }
+  &:focus {
+    box-shadow: 0 0 0 2.5px $primary;
+  }
+  &[type="checkbox"] {
+    box-shadow: none;
+  }
+}

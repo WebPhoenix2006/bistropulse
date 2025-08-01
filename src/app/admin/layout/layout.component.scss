@@ -11,6 +11,9 @@
     top: 0;
     z-index: 1000;
     transition: width 0.3s ease;
+    @media (max-width: 720px) {
+      width: 0;
+    }
   }
 
   &.sidebar-collapsed {
@@ -31,6 +34,9 @@
       flex: 1;
       padding: 1.5rem;
       overflow-y: auto;
+      @media (max-width: 720px) {
+        padding: 16px;
+      }
     }
   }
 }

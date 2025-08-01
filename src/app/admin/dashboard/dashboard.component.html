@@ -1,7 +1,7 @@
 <div class="dashboard-main">
   <div class="order-states">
     <div class="row w-100">
-      <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="col-lg-3 col-md-6 col-sm-12 px-md-0 m-auto">
         <app-animate>
           <div class="active-orders order-stat">
             <div class="img">
@@ -14,7 +14,7 @@
           </div>
         </app-animate>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="col-lg-3 col-md-6 col-sm-12 px-md-0 m-auto">
         <div class="pending-orders order-stat">
           <div class="img">
             <img src="assets/images/pending-orders.png" alt="pending-orders" />
@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="col-lg-3 col-md-6 col-sm-12 px-md-0 m-auto">
         <div class="delivered-orders order-stat">
           <div class="img">
             <img
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="col-lg-3 col-md-6 col-sm-12 px-md-0 m-auto">
         <div class="returned-orders order-stat">
           <div class="img">
             <img
@@ -62,33 +62,33 @@
         <h5>Recent order request</h5>
       </div>
     </div>
-    <div class="table-parent">
-      <table class="table">
+    <div class="table-parent table-responsive">
+      <table class="table table-responsive">
         <thead class="thead">
           <tr>
             <td></td>
             <td>
-              <strong>Order ID</strong>
+              <strong class="truncate-text">Order ID</strong>
             </td>
             <td>
-              <strong>Date</strong>
+              <strong class="truncate-text">Date</strong>
             </td>
             <td>
-              <strong>Customer</strong>
+              <strong class="truncate-text">Customer</strong>
             </td>
             <td>
-              <strong>Restaurant</strong>
+              <strong class="truncate-text">Restaurant</strong>
             </td>
             <td>
-              <strong class="d-flex align-items-center"
+              <strong class="truncate-text" class="d-flex align-items-center"
                 >Price <span><svg-icons name="reorder"></svg-icons></span
               ></strong>
             </td>
             <td>
-              <strong>Status</strong>
+              <strong class="truncate-text">Status</strong>
             </td>
             <td>
-              <strong>Action</strong>
+              <strong class="truncate-text">Action</strong>
             </td>
           </tr>
         </thead>
@@ -98,10 +98,10 @@
               <input type="checkbox" class="" />
             </td>
             <td>
-              <span>B13789</span>
+              <span class="truncate-text">B13789</span>
             </td>
             <td>
-              <span>Feb 08, 2022</span>
+              <span class="truncate-text">Feb 08, 2022</span>
             </td>
             <td>
               <div class="customer d-flex align-items-center" style="gap: 8px">
@@ -116,10 +116,10 @@
               </div>
             </td>
             <td>
-              <span>Louis Vuitton</span>
+              <span class="truncate-text">Louis Vuitton</span>
             </td>
             <td>
-              <span>$90.00</span>
+              <span class="truncate-text">$90.00</span>
             </td>
             <td>
               <span class="text-warning"> Pending </span>
@@ -136,7 +136,7 @@
   </div>
   <div class="total-revs">
     <div class="row w-100">
-      <div class="col-lg-7 col-md-12 col-sm-12">
+      <div class="col-lg-7 col-md-12 col-sm-12 px-md-0 px-md-0">
         <div class="total-revenue">
           <div class="heading">
             <div class="title">
@@ -193,7 +193,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-5 col-md-12 col-sm-12">
+      <div class="col-lg-5 col-md-12 col-sm-12 px-md-0">
         <div class="sales">
           <div class="heading">
             <div class="title">
@@ -251,7 +251,7 @@
 
   <div class="restaurants-row">
     <div class="row w-100">
-      <div class="col-lg-7 col-md-12 col-sm-12">
+      <div class="col-lg-7 col-md-12 col-sm-12 px-md-0 px-md-0">
         <div class="restaurants">
           <div class="heading">
             <div class="title">
@@ -305,7 +305,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-5 col-md-12 col-sm-12">
+      <div class="col-lg-5 col-md-12 col-sm-12 px-md-0">
         <div class="ranked-restaurants">
           <div class="heading">
             <div class="title">
@@ -393,7 +393,7 @@
           <h5>Reviews</h5>
         </div>
       </div>
-      <div class="table-parent">
+      <div class="table-parent table-responsive">
         <table class="table">
           <thead class="thead">
             <tr>
@@ -445,31 +445,30 @@
             </tr>
           </tbody>
         </table>
-
-        <div class="pages">
-          <div class="count">
-            <span>1 of 2</span>
+      </div>
+      <div class="pages">
+        <div class="count">
+          <span>1 of 2</span>
+        </div>
+        <div class="pagination">
+          <div class="left">
+            <i class="fa fa-angle-left"></i>
           </div>
-          <div class="pagination">
-            <div class="left">
-              <i class="fa fa-angle-left"></i>
-            </div>
-            <div class="nav-pages">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a routerLink="/" class="active"><span>1</span></a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="/" class=""><span>2</span></a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="/" class=""><span>3</span></a>
-                </li>
-              </ul>
-            </div>
-            <div class="right">
-              <i class="fa fa-angle-right"></i>
-            </div>
+          <div class="nav-pages">
+            <ul class="nav">
+              <li class="nav-item">
+                <a routerLink="/" class="active"><span>1</span></a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/" class=""><span>2</span></a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="/" class=""><span>3</span></a>
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <i class="fa fa-angle-right"></i>
           </div>
         </div>
       </div>
@@ -487,7 +486,7 @@
           </div>
 
           <div class="table-parent">
-            <table class="table">
+            <table class="table table-responsive">
               <thead class="thead">
                 <tr>
                   <td>

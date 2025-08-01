@@ -220,11 +220,12 @@
     .restaurants {
       border-radius: 5px;
       padding: 28px 24px 60px 24px;
+      background-color: #fff;
+      height: 100%;
+
       @media (max-width: 720px) {
         padding: 16px;
       }
-      background-color: #fff;
-      height: 100%;
 
       .tabs {
         ::ng-deep .tabs-wrapper {

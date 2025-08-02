@@ -1,23 +1,28 @@
 import { Representative } from './representative.interface';
 
 export interface Franchise {
-  id: number;                    // API returns number
-  franchise_id: string;          // API has this field
+  id: number;
+  franchise_id: string;
   name: string;
-  owner: Representative;         // API calls this "owner"
   phone: string;
-  business_license: string;
-  owner_nid: string;
-  established_date: string;
+  business_license: string; // URL to PDF
+  owner_nid: string; // URL to PDF
+  established_date: string; // e.g., "2010-03-15"
   franchise_image: string | null;
-  overall_rating: string;
+  overall_rating: string; // e.g., "0.0"
   status: 'Active' | 'Inactive';
-  created_at: string;
-  updated_at: string;
-  created_by: number | null;     // API has this
-  // Frontend-only properties
-  totalBranches?: number;        // Calculate from separate API call
-  branchIds?: string[];          // Calculate from separate API call
-  isToolbarOpen?: boolean;
+  created_at: string; // ISO timestamp
+  updated_at: string; // ISO timestamp
+  created_by: number;
   checked?: boolean;
+  isToolbarOpen: boolean;
+  location: string;
+
+  owner: {
+    id: number;
+    full_name: string;
+    phone: string;
+    location: string;
+    representative_image: string | null;
+  };
 }

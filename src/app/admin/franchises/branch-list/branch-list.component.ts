@@ -3,11 +3,12 @@ import {
   Component,
   HostListener,
   inject,
+  OnInit,
   PLATFORM_ID,
   signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Franchise } from '../../../interfaces/franchise.interface';
+import { Branch } from '../../../interfaces/branch.interface'; // Update import path as needed
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 import { FranchisesService } from '../../../shared/services/franchises.service';
@@ -21,14 +22,14 @@ import { SlowNetworkService } from '../../../shared/services/slow-nerwork.servic
   styleUrl: './branch-list.component.scss',
   providers: [FilterByPipe],
 })
-export class BranchListComponent {
+export class BranchListComponent implements OnInit {
   isFilterModalOpen = signal<boolean>(false);
   buttonText = signal<string>('Filter');
   searchTerm = signal<string>('');
   isLoading = signal<boolean>(false);
 
-  franchises: Array<Franchise> = [];
-  filteredList: Array<Franchise> = [];
+  branches: Array<Branch> = [];
+  filteredList: Array<Branch> = [];
 
   currentPage = 1;
   itemsPerPage = 10;
@@ -44,23 +45,31 @@ export class BranchListComponent {
   private filterPipe = inject(FilterByPipe);
   private platformId = inject(PLATFORM_ID);
 
-  branchId = signal<string>('');
-  branches: Array<any> = [];
+  franchiseId = signal<string>('');
 
-  getBranch(): void {
-    this.franchisesService.getBranches(this.branchId()).subscribe({
+  getBranches(): void {
+    this.isLoading.set(true);
+    this.slowNetwork.start(() => {
+      if (this.isLoading()) {
+        this.toastr.showWarning('Hmm this is taking longer than expected');
+      }
+    });
+
+    this.franchisesService.getBranches(this.franchiseId()).subscribe({
       next: (data: any) => {
-        this.franchises = data.results.map((branch: any) => ({
+        this.branches = data.results.map((branch: any) => ({
           ...branch,
           checked: false,
           isToolbarOpen: false,
         }));
-        this.toastr.showSuccess('Franchises loaded successfully');
+        this.toastr.showSuccess('Branches loaded successfully');
         this.isLoading.set(false);
+        console.log(this.branches);
         this.slowNetwork.clear();
+        this.applyFilters();
       },
       error: (err) => {
-        this.toastr.showError(err.message || 'Failed to fetch franchises');
+        this.toastr.showError(err.message || 'Failed to fetch branches');
         this.isLoading.set(false);
         this.slowNetwork.clear();
       },
@@ -68,14 +77,11 @@ export class BranchListComponent {
   }
 
   ngOnInit() {
-    // Get the franchise ID from route first
     const id = this.route.snapshot.paramMap.get('franchiseId');
 
     if (id) {
-      this.branchId.set(id);
-      console.log('Set branchId to:', id); // Debug log
+      this.franchiseId.set(id);
     } else {
-      console.log('No franchiseId found in route params');
       this.toastr.showError('Invalid franchise ID in URL');
       return;
     }
@@ -84,7 +90,7 @@ export class BranchListComponent {
     if (isBrowser) {
       const token = localStorage.getItem('auth_token');
       if (token) {
-        this.getBranch(); // Now called after branchId is set
+        this.getBranches();
       } else {
         this.toastr.showError('You are not authorized to view this page');
       }
@@ -95,13 +101,11 @@ export class BranchListComponent {
     if (!isFromFranchise) {
       this.restaurantContext.setRestaurantId(null);
     }
-
-    this.applyFilters();
   }
 
   applyFilters(): void {
     const filtered = this.filterPipe.transform(
-      this.franchises,
+      this.branches,
       this.searchTerm(),
       'name'
     );
@@ -116,30 +120,35 @@ export class BranchListComponent {
     this.applyFilters();
   }
 
-  get filteredFranchises(): any[] {
+  get filteredBranches(): Branch[] {
     return this.filteredList;
   }
 
-  viewFranchiseBranches(franchiseId: string): void {
-    // Navigate to branches page for this franchise
-    this.router.navigate(['/admin/franchises', franchiseId, 'branches']);
+  viewBranchDetails(branchId: string): void {
+    // Navigate to branch details page
+    this.router.navigate(['/admin/branches', branchId, 'details']);
   }
 
-  editFranchise(id: number): void {
-    this.router.navigate(['/admin/franchises', id, 'edit']);
+  viewBranchMenu(branchId: string): void {
+    // Navigate to branch menu page
+    this.router.navigate(['/admin/branches', branchId, 'menu']);
   }
 
-  deleteFranchise(id: number): void {
+  editBranch(id: number): void {
+    this.router.navigate(['/admin/branches', id, 'edit']);
+  }
+
+  deleteBranch(id: number): void {
     // Implement delete functionality
-    console.log('Delete franchise:', id);
+    console.log('Delete branch:', id);
     this.toastr.showWarning('Delete functionality coming soon!');
   }
 
-  toggleFranchiseStatus(id: number): void {
-    const franchise = this.franchises.find((f) => f.id === id);
-    if (franchise) {
-      franchise.status = franchise.status === 'Active' ? 'Inactive' : 'Active';
-      this.toastr.showSuccess(`Franchise ${franchise.status.toLowerCase()}`);
+  toggleBranchStatus(id: number): void {
+    const branch = this.branches.find((b) => b.id === id);
+    if (branch) {
+      branch.status = branch.status === 'Open' ? 'Closed' : 'Open';
+      this.toastr.showSuccess(`Branch ${branch.status.toLowerCase()}`);
     }
   }
 
@@ -171,27 +180,27 @@ export class BranchListComponent {
 
   toggleSelectAll(): void {
     const newState = !this.allChecked();
-    this.filteredList.forEach((f) => (f.checked = newState));
+    this.filteredList.forEach((b) => (b.checked = newState));
   }
 
   allChecked(): boolean {
-    return this.filteredList.every((f) => f.checked);
+    return this.filteredList.every((b) => b.checked);
   }
 
   toggleVisibility(id: number): void {
-    const currentOpenState = this.franchises.find(
-      (f) => f.id === id
+    const currentOpenState = this.branches.find(
+      (b) => b.id === id
     )?.isToolbarOpen;
 
-    this.franchises.forEach((f) => (f.isToolbarOpen = false));
+    this.branches.forEach((b) => (b.isToolbarOpen = false));
     if (!currentOpenState) {
-      const match = this.franchises.find((f) => f.id === id);
+      const match = this.branches.find((b) => b.id === id);
       if (match) match.isToolbarOpen = true;
     }
   }
 
   closeAll(): void {
-    this.franchises.forEach((f) => (f.isToolbarOpen = false));
+    this.branches.forEach((b) => (b.isToolbarOpen = false));
   }
 
   get totalPages(): number {

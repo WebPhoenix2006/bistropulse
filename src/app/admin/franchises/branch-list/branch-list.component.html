@@ -3,14 +3,14 @@
     <app-h1 text="Branches" />
 
     <div class="btn-container">
-      <label title="Search By Franchise Name">
+      <label title="Search By Branch Name">
         <span><i class="fa-solid fa-magnifying-glass"></i></span>
         <input
           type="text"
           name="searchTerm"
           [(ngModel)]="searchTerm"
           (input)="applyFilters()"
-          placeholder="Search By Franchise Name"
+          placeholder="Search By Branch Name"
         />
       </label>
 
@@ -58,8 +58,9 @@
               <h1>Status</h1>
               <select name="status">
                 <option value="">Select Status</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Under Maintenance">Under Maintenance</option>
               </select>
             </div>
             <!-- Buttons -->
@@ -81,8 +82,8 @@
       </div>
 
       <app-button
-        buttonText="Add Franchise"
-        routerLink="/admin/franchises/add-franchise"
+        buttonText="Add Branch"
+        [routerLink]="`/admin/franchises/${franchiseId()}/branches/add-branch`"
       />
       <select class="btn rounder-2">
         <option value="1" selected disabled>
@@ -96,11 +97,11 @@
 
   <div class="body">
     <ng-container *ngIf="!isLoading(); else loading">
-      <ng-container *ngIf="franchises.length > 0; else emptyList">
-        <ng-container *ngIf="filteredFranchises as filtered">
+      <ng-container *ngIf="branches.length > 0; else emptyList">
+        <ng-container *ngIf="filteredBranches as filtered">
           <table
             class="table mt-3 table-hover"
-            *ngIf="filteredFranchises.length > 0; else noSearchResults"
+            *ngIf="filteredBranches.length > 0; else noSearchResults"
           >
             <thead>
               <tr>
@@ -111,13 +112,13 @@
                     [checked]="allChecked()"
                     (change)="toggleSelectAll()"
                   />
-                  Name <span><i class="ri-arrow-up-down-line"></i></span>
+                  Branch Name <span><i class="ri-arrow-up-down-line"></i></span>
                 </th>
-                <th>Owner</th>
+                <th>Representative</th>
                 <th>Location</th>
                 <th>Phone Number</th>
-                <th>Franchise ID</th>
-                <th>Ratings</th>
+                <th>Branch ID</th>
+                <th>Rating</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -125,83 +126,91 @@
             <!-- BREAKPOINT -->
             <tbody>
               <tr
-                *ngFor="let franchise of filtered; index as i"
+                *ngFor="let branch of filtered; index as i"
                 class="mb-3"
-                [class.checked]="franchise.checked"
+                [class.checked]="branch.checked"
                 style="cursor: pointer"
                 tabindex="0"
-                (click)="viewFranchiseBranches(franchise.franchise_id)"
+                (click)="viewBranchDetails(branch.branch_id)"
                 role="button"
               >
                 <td>
                   <input
                     type="checkbox"
                     style="cursor: pointer"
-                    [checked]="franchise.checked"
+                    [checked]="branch.checked"
                     (change)="toggleSelection(i)"
                     (click)="$event.stopPropagation()"
                   />
-                  {{ franchise.name }}
+                  {{ branch.name }}
                 </td>
-                <td>{{ franchise.owner?.full_name || "No Owner" }}</td>
-                <td>{{ franchise.owner?.location || "N/A" }}</td>
-                <td>{{ franchise.phone }}</td>
-                <td>{{ franchise.franchise_id }}</td>
-                <td class="img-con">
+                <td>
+                  {{ branch.representative?.full_name || "No Representative" }}
+                </td>
+                <td>{{ branch.location || "N/A" }}</td>
+                <td>{{ branch.phone }}</td>
+                <td>{{ branch.branch_id }}</td>
+                <td>
                   <span><img src="assets/images/Vector.png" /></span
-                  >{{ franchise.overall_rating }}
+                  >{{ branch.rating }}
                 </td>
                 <td
                   [style.color]="
-                    franchise.status === 'Active' ? 'green' : 'red'
+                    branch.status === 'Open'
+                      ? 'green'
+                      : branch.status === 'Closed'
+                      ? 'red'
+                      : 'orange'
                   "
                 >
-                  {{ franchise.status }}
+                  {{ branch.status }}
                 </td>
                 <td class="position-relative" id="toolbar-container">
                   <button
                     class="toolbar-toggle rounded-3"
-                    [class.active]="franchise.isToolbarOpen"
+                    [class.active]="branch.isToolbarOpen"
                     (click)="
-                      toggleVisibility(franchise.id); $event.stopPropagation()
+                      toggleVisibility(branch.id); $event.stopPropagation()
                     "
                   >
                     <i class="ri-more-2-fill"></i>
                   </button>
                   <ul
                     class="toolbar shadow visible"
-                    [ngClass]="franchise.isToolbarOpen ? 'visible' : 'hidden'"
+                    [ngClass]="branch.isToolbarOpen ? 'visible' : 'hidden'"
                     (click)="$event.stopPropagation()"
                   >
-                    <li (click)="viewFranchiseBranches(franchise.franchise_id)">
-                      <span><i class="ri-eye-line"></i></span> View Branches
+                    <li (click)="viewBranchDetails(branch.branch_id)">
+                      <span><i class="ri-eye-line"></i></span> View Details
                     </li>
-                    <li (click)="editFranchise(franchise.id)">
+                    <li (click)="viewBranchMenu(branch.branch_id)">
+                      <span><i class="ri-restaurant-line"></i></span> View Menu
+                    </li>
+                    <li (click)="editBranch(branch.id)">
                       <span><i class="ri-pencil-line"></i></span> Edit
                     </li>
-                    <li (click)="deleteFranchise(franchise.id)">
+                    <li (click)="deleteBranch(branch.id)">
                       <span><i class="ri-delete-bin-line"></i></span> Delete
                     </li>
                     <li
                       class="toggle-container"
                       (click)="
-                        toggleFranchiseStatus(franchise.id);
-                        $event.stopPropagation()
+                        toggleBranchStatus(branch.id); $event.stopPropagation()
                       "
                     >
                       <button class="status-toggle">
                         <i
                           [class]="
-                            franchise.status === 'Active'
+                            branch.status === 'Open'
                               ? 'fa-solid fa-toggle-on'
                               : 'fa-solid fa-toggle-off'
                           "
                         ></i>
                       </button>
                       {{
-                        franchise.status === "Active"
-                          ? "Deactivate"
-                          : "Activate"
+                        branch.status === "Open"
+                          ? "Close Branch"
+                          : "Open Branch"
                       }}
                     </li>
                   </ul>
@@ -210,7 +219,7 @@
             </tbody>
           </table>
 
-          <div class="pages" *ngIf="filteredFranchises.length > 0">
+          <div class="pages" *ngIf="filteredBranches.length > 0">
             <div class="count">
               <span>{{ currentPage }} of {{ totalPages }}</span>
             </div>
@@ -233,7 +242,7 @@
     </ng-container>
 
     <ng-template #loading>
-      <app-mini-loader loadingText="getting franchises" />
+      <app-mini-loader loadingText="getting branches" />
     </ng-template>
 
     <ng-template #emptyList>

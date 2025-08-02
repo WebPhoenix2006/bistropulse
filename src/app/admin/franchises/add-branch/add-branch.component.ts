@@ -1,17 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BranchSubmit } from '../../../interfaces/branchsubmit.interface';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 import { FranchisesService } from '../../../shared/services/franchises.service';
+import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 
 @Component({
-  selector: 'app-add-franchise',
+  selector: 'app-add-branch',
   standalone: false,
-  templateUrl: './add-franchise.component.html',
-  styleUrl: './add-franchise.component.scss',
+  templateUrl: './add-branch.component.html',
+  styleUrl: './add-branch.component.scss',
 })
-export class AddFranchiseComponent {
+export class AddBranchComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   formData: { [key: string]: any } = {};
   franchisesService = inject(FranchisesService);
@@ -21,7 +20,19 @@ export class AddFranchiseComponent {
   isSuccessful = signal<boolean>(false);
   isDropdownOpen = signal<boolean>(false);
 
+  franchiseId = signal<string>('');
+
   constructor(private router: Router) {}
+
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('franchiseId');
+    if (id) {
+      this.franchiseId.set(id);
+    } else {
+      this.toastr.showError('Invalid franchise ID in URL');
+      this.router.navigate(['/admin/franchises']);
+    }
+  }
 
   onFileChange(event: Event, name: string): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
@@ -52,61 +63,68 @@ export class AddFranchiseComponent {
   }
 
   onSubmit(): void {
+    const franchiseId = this.franchiseId();
+
+    if (!franchiseId) {
+      this.toastr.showError('No franchise ID found');
+      return;
+    }
+
     this.isLoading.set(true);
 
-    // Create FormData object
     const formData = new FormData();
 
-    // Main franchise fields
     formData.append('name', this.formData['branchName']);
     formData.append('phone', this.formData['phoneNumber']);
+    formData.append('location', this.formData['location']);
+    formData.append('business_license', this.formData['businessLicense']);
+    formData.append('owner_nid', this.formData['ownerNID']);
     formData.append('established_date', this.formData['establishedDate']);
     formData.append('working_period', this.formData['workingPeriod']);
     formData.append('large_option', this.formData['largeOption']);
-    formData.append('location', this.formData['location']);
+    formData.append('franchise', franchiseId); // string is fine here
 
-    // File uploads for franchise
-    if (this.formData['branchImage']) {
-      formData.append('restaurant_image', this.formData['branchImage']); // Note: using 'restaurant_image' based on Postman
+    // Representative info — flattened
+    formData.append(
+      'representative.full_name',
+      this.formData['representativeName']
+    );
+    formData.append(
+      'representative.phone',
+      this.formData['representativeNumber']
+    );
+    formData.append(
+      'representative.location',
+      this.formData['representativeLocation']
+    );
+    formData.append(
+      'representative.profile_img',
+      this.formData['representativeImage']
+    );
+
+    // ✅ representative ID must be sent if required by backend
+    if (this.formData['representative']) {
+      formData.append('representative', this.formData['representative']);
     }
 
-    if (this.formData['businessLicense']) {
-      formData.append('owner_nid', this.formData['businessLicense']); // File
-    }
-
-    // Owner fields (separate fields, not JSON)
-    formData.append('owner.full_name', this.formData['representativeName']);
-    formData.append('owner.phone', this.formData['representativeNumber']);
-    formData.append('owner.location', this.formData['representativeLocation']);
-
-    // Owner image
-    if (this.formData['representativeImage']) {
-      formData.append(
-        'owner.profile_img',
-        this.formData['representativeImage']
-      ); // File
-    }
-
-    // Additional fields that might be required (based on Postman)
-    //This might be required
-
-    this.franchisesService.addFranchise(formData).subscribe({
+    this.franchisesService.addBranch(franchiseId, formData).subscribe({
       next: (res) => {
-        console.log('Franchise created!', res);
-        this.toastr.showSuccess('Franchise created successfully!');
+        console.log('Branch created!', res);
+        this.toastr.showSuccess('Branch created successfully!');
         this.isLoading.set(false);
         this.isSuccessful.set(true);
         setTimeout(() => {
-          this.router.navigate(['/admin/franchises']);
+          this.router.navigate(['/admin/franchises', franchiseId, 'branches']);
         }, 2000);
       },
       error: (err) => {
-        console.warn('Franchise creation failed', err);
-        this.toastr.showError(err.message || 'Failed to create franchise');
+        console.warn('Branch creation failed', err);
+        this.toastr.showError(err.message || 'Failed to create branch');
         this.isLoading.set(false);
       },
     });
   }
+
   // REP IMAGE PREVIEW LOGIC
   repImagePreview: string | null = null;
 
@@ -135,7 +153,7 @@ export class AddFranchiseComponent {
       class: 'col-md-12',
     },
     {
-      label: 'Franchise Name',
+      label: 'Branch Name',
       type: 'text',
       formControlName: 'branchName',
       name: 'branchName',
@@ -213,21 +231,21 @@ export class AddFranchiseComponent {
       name: 'representativeName',
       class: 'col-md-4',
       formControlName: 'representativeName',
-      label: 'Owner Name',
+      label: 'Representative Name',
     },
     {
       type: 'number',
       name: 'representativeNumber',
       class: 'col-md-4',
       formControlName: 'representativeNumber',
-      label: 'Owner Number',
+      label: 'Representative Number',
     },
     {
       type: 'text',
       name: 'representativeLocation',
       class: 'col-md-4',
       formControlName: 'representativeLocation',
-      label: 'Owner Location',
+      label: 'Representative Location',
     },
   ];
 }

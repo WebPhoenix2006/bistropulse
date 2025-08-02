@@ -1,5 +1,5 @@
 <main>
-  <h1 class="title ms-2">Add Franchise</h1>
+  <h1 class="title ms-2">Add Branch</h1>
 
   <div class="container" style="transition: all 0.3s ease-in-out">
     <!-- Image Upload Section -->
@@ -21,7 +21,7 @@
 
       <!-- Image Upload Buttons -->
       <app-button
-        buttonText="Franchise Image"
+        buttonText="Branch Image"
         (click)="branchImageInput.click()"
       ></app-button>
       <app-button
@@ -108,7 +108,7 @@
           (click)="isDropdownOpen.set(!isDropdownOpen())"
         >
           <div id="rep-heading" class="w-100 mb-4">
-            <span class="me-1">Owner Info</span>
+            <span class="me-1">Representative Info</span>
             <i
               class="fa-solid fa-angle-right accordion-icon"
               style="cursor: pointer"
@@ -146,7 +146,7 @@
                 </div>
 
                 <app-button
-                  [buttonText]="'Owner Image'"
+                  [buttonText]="'Representative Image'"
                   (click)="repImageInput.click()"
                 ></app-button>
                 <app-button
@@ -177,7 +177,7 @@
         </div>
       </div>
 
-      <app-button buttonText="Add Franchise" buttonType="submit"></app-button>
+      <app-button buttonText="Add Branch" buttonType="submit"></app-button>
     </form>
   </div>
 </main>

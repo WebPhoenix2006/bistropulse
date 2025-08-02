@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { Franchise } from '../../interfaces/franchise.interface';
+import { BranchSubmit } from '../../interfaces/branchsubmit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +11,20 @@ import { Franchise } from '../../interfaces/franchise.interface';
 export class FranchisesService {
   base_url: string = 'https://bistropulse-backend.onrender.com/api/franchises';
 
-  private getAuthHeaders(isFormData: boolean = false): HttpHeaders {
-    let headers = new HttpHeaders();
-
-    if (!isFormData) {
-      headers = headers.set('Content-Type', 'application/json');
-    }
-
-    headers = headers.set('Accept', 'application/json');
-
+  private getAuthHeaders(
+    useForFormData: boolean = false
+  ): HttpHeaders | undefined {
     const token = this.authService.getToken();
-    if (token) {
-      headers = headers.set('Authorization', `Token ${token.trim()}`);
-    }
+    if (!token) return undefined;
 
-    return headers;
+    const headers = new HttpHeaders({
+      Authorization: `Token ${token.trim()}`,
+    });
+
+    // Don’t add Content-Type if it's for FormData
+    return useForFormData
+      ? headers
+      : headers.set('Content-Type', 'application/json');
   }
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -40,6 +40,20 @@ export class FranchisesService {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.base_url}/${id}/branches`, {
       headers,
+    });
+  }
+
+  addBranch(id: string, data: any): Observable<any> {
+    const url = `${this.base_url}/${id}/branches/`;
+
+    const headers = this.getAuthHeaders(); // no need to set Content-Type
+    return this.http.post(url, data, { headers });
+  }
+
+  addFranchise(data: any): Observable<any> {
+    const token = this.authService.getToken();
+    return this.http.post(`${this.base_url}/`, data, {
+      headers: this.getAuthHeaders(true),
     });
   }
 }

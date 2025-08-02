@@ -35,6 +35,7 @@ import { FranchiseOverviewComponent } from './franchises/franchise-overview/fran
 import { OrderTrackingComponent } from './order-related/order-tracking/order-tracking.component';
 import { FranchiseOrderListComponent } from './franchise-order-related/franchise-order-list/franchise-order-list.component';
 import { FranchiseOrderHistoryComponent } from './franchise-order-related/franchise-order-history/franchise-order-history.component';
+import { AddBranchComponent } from './franchises/add-branch/add-branch.component';
 
 const routes: Routes = [
   {
@@ -249,6 +250,11 @@ const routes: Routes = [
           {
             path: ':franchiseId/branches/:branchId/order-history',
             component: FranchiseOrderHistoryComponent,
+            data: { breadcrumb: 'Order History' },
+          },
+          {
+            path: ':franchiseId/branches/add-branch',
+            component: AddBranchComponent,
             data: { breadcrumb: 'Order History' },
           },
         ],

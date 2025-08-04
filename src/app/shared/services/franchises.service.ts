@@ -21,7 +21,7 @@ export class FranchisesService {
       Authorization: `Token ${token.trim()}`,
     });
 
-    // Don’t add Content-Type if it's for FormData
+    // Don't add Content-Type if it's for FormData - let browser set it automatically
     return useForFormData
       ? headers
       : headers.set('Content-Type', 'application/json');
@@ -45,13 +45,12 @@ export class FranchisesService {
 
   addBranch(id: string, data: any): Observable<any> {
     const url = `${this.base_url}/${id}/branches/`;
-
-    const headers = this.getAuthHeaders(); // no need to set Content-Type
+    // FIXED: Use useForFormData=true to avoid setting Content-Type
+    const headers = this.getAuthHeaders(true);
     return this.http.post(url, data, { headers });
   }
 
   addFranchise(data: any): Observable<any> {
-    const token = this.authService.getToken();
     return this.http.post(`${this.base_url}/`, data, {
       headers: this.getAuthHeaders(true),
     });

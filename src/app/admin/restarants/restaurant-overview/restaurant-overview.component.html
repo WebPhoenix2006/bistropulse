@@ -52,23 +52,6 @@
           </div>
 
           <!-- Info section with dynamic background -->
-          <div
-            class="img-con"
-            [style.background]="
-              'linear-gradient(135deg, ' +
-              dominantColor() +
-              ', var(--complementary-color, rgba(100,100,100,0.8)))'
-            "
-          >
-            <h3>{{ restaurant?.name || "Restaurant Name" }}</h3>
-            <img
-              [src]="
-                restaurant?.restaurant_image_url ||
-                'assets/illustrations/noimage.png'
-              "
-              [alt]="restaurant?.name || 'Restaurant'"
-            />
-          </div>
 
           <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
           <p class="reviews-container">
@@ -148,7 +131,7 @@
           <div class="documents">
             <h2>Documents</h2>
 
-            <div class="pdf-container">
+            <div class="pdf-container mt-4">
               <div class="pdf-img">
                 <img src="assets/images/reward-points.png" alt="pdf icon" />
                 <div class="info">

@@ -49,7 +49,8 @@ export class AddRestaurantComponent {
 
   onSubmit(): void {
     this.isLoading.set(true);
-    const form = new FormData();
+    const rawDate = this.formData['establishedDate'];
+    const formattedDate = new Date(rawDate).toISOString().split('T')[0]; // "YYYY-MM-DD"
 
     // Create nested object
     const restaurantData: RestaurantSubmit = {
@@ -57,7 +58,7 @@ export class AddRestaurantComponent {
       restaurantNumber: this.formData['phoneNumber'], // Optional, can be string or number
       businessLicense: this.formData['businessLicense'],
       ownerNID: this.formData['ownerNID'],
-      establishedDate: this.formData['establishedDate'],
+      establishedDate: formattedDate,
       workingPeriod: this.formData['workingPeriod'],
       largeOption: this.formData['largeOption'],
       location: this.formData['location'],

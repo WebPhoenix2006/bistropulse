@@ -27,21 +27,47 @@
           </div>
 
           <div class="img-container">
+            <div
+              class="img__clip"
+              [style.background]="dominantColor()"
+              [style.box-shadow]="'0 0 14px ' + dominantColor()"
+            >
+              <i class="ri-menu-4-line"></i>
+            </div>
+            <div class="img__shadow">
+              <button class="btn btn-primary" (click)="refreshColors()">
+                Change Image
+              </button>
+            </div>
             <img
-              *ngIf="restaurant?.restaurant_image_url; else noImage"
+              #restaurantImg
+              id="restaurant-img"
+              crossorigin="anonymous"
+              *ngIf="restaurant?.restaurant_image_url"
               [src]="restaurant.restaurant_image_url"
               alt="Restaurant Image"
+              (load)="setupColorExtraction()"
+              (error)="setFallbackColor()"
             />
+          </div>
 
-            <ng-template #noImage>
-              <div class="no-image-con">
-                <img
-                  class="no-image"
-                  src="assets/illustrations/noimage.png"
-                  alt="no image"
-                />
-              </div>
-            </ng-template>
+          <!-- Info section with dynamic background -->
+          <div
+            class="img-con"
+            [style.background]="
+              'linear-gradient(135deg, ' +
+              dominantColor() +
+              ', var(--complementary-color, rgba(100,100,100,0.8)))'
+            "
+          >
+            <h3>{{ restaurant?.name || "Restaurant Name" }}</h3>
+            <img
+              [src]="
+                restaurant?.restaurant_image_url ||
+                'assets/illustrations/noimage.png'
+              "
+              [alt]="restaurant?.name || 'Restaurant'"
+            />
           </div>
 
           <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>

@@ -1,5 +1,14 @@
 @use "../../../../styles.scss" as *;
 
+// CSS Custom Properties for dynamic colors
+:host {
+  --dominant-color: rgb(17, 19, 21);
+  --dominant-color-alpha: rgba(17, 19, 21, 0.8);
+  --dominant-color-light: rgba(17, 19, 21, 0.3);
+  --dominant-color-dark: rgba(0, 0, 0, 0.9);
+  --complementary-color: rgba(100, 100, 100, 0.8);
+}
+
 .container {
   margin-top: 2rem;
   font-family: "Segoe UI", sans-serif;
@@ -22,19 +31,65 @@
 }
 
 .img-container {
-  .no-image-con {
+  position: relative;
+  overflow: hidden !important;
+  border-radius: 10px;
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+
+  &:hover .img__clip {
+    transform: rotate(-45deg);
+    // Dynamic box-shadow using CSS custom property
+    box-shadow: 0 0 20px var(--dominant-color, hsl(224, 62%, 42%));
+  }
+
+  .img__clip:hover ~ .img__shadow,
+  .img__shadow:hover {
+    clip-path: circle(100%);
+  }
+
+  .img__clip {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    z-index: 3;
+    font-size: 18px;
+    color: white; // Changed to white for better contrast
+    overflow: hidden !important;
+    width: 40px;
+    display: grid;
+    place-items: center;
+    // Dynamic background using CSS custom property
+    background: var(--dominant-color-alpha, hsl(224, 66%, 32%));
+    height: 40px;
+    border-radius: 50%;
+    // Dynamic box-shadow
+    box-shadow: 0 0 14px var(--dominant-color, hsl(224, 66%, 32%));
+    transition: all 0.3s ease;
+    font-weight: 600;
+    cursor: pointer;
+
+    // Add a subtle backdrop filter for better visibility
+    backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .img__shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
     width: 100%;
     height: 100%;
+    background: var(--dominant-color-alpha, rgba(0, 0, 0, 0.5));
+    backdrop-filter: blur(12px);
+    transition: clip-path 0.6s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    img {
-      width: 40px;
-      height: 40px;
-      opacity: 0.6;
-      backdrop-filter: blur(10px);
-    }
+    clip-path: circle(8px at 93% 10%);
   }
 }
 
@@ -43,7 +98,7 @@
   object-fit: cover;
   height: 400px;
   border-radius: 10px;
-  border: 1px solid $gray;
+  transition: transform 0.3s ease;
 }
 
 .btn-container app-button {
@@ -98,16 +153,49 @@
   flex-direction: column;
   gap: 1rem;
   margin: 1rem 0;
+  padding: 2rem;
+  border-radius: 15px;
+  // Dynamic gradient background
+  background: linear-gradient(
+    135deg,
+    var(--dominant-color-light, rgba(17, 19, 21, 0.3)),
+    var(--complementary-color, rgba(100, 100, 100, 0.8))
+  );
+  // Add subtle animation
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+
+  // Add a subtle overlay for better text readability
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(1px);
+    pointer-events: none;
+  }
 
   h3 {
     font-weight: 700;
     font-size: 20px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
   }
 
   img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -135,182 +223,34 @@
   }
 }
 
-.pdf-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.pdf-img {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background-color: white;
-  border-radius: 10px;
-  padding: 0.8rem;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-  border: 1px solid $gray;
-  transition: 0.2s ease-in-out;
-  overflow: hidden;
-}
-
-.pdf-img img {
-  width: 40px;
-  height: 40px;
-}
-
-.pdf-img .info {
-  flex-grow: 1;
-}
-
-.svg-container,
-.pdf-img svg-icons {
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.pdf-img:hover {
-  border: 1px solid $secondary;
-}
-
-.pdf-img:hover svg-icons {
-  transform: scale(1.2);
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #888;
-  transition: 0.4s;
-  border-radius: 20px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  box-shadow: 0 0 15px rgba($color: black, $alpha: 0.4);
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #4caf50;
-}
-
-input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
-#first-column,
-#second-column {
-  background: white !important;
-  padding: 24px !important;
-  border-radius: 8px !important;
-}
-
-.title-h2 {
-  position: relative;
-  margin-bottom: 18px !important;
-  font-size: 20px;
-  font-weight: 600;
-
-  &::before {
-    background: $primary;
-    width: 8px;
-    border-radius: 1.5px;
-    content: "";
-    left: -10px;
-    top: 0;
-    height: 100%;
-    position: absolute;
+// Add some nice animations for color transitions
+@keyframes colorShift {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
   }
 }
 
-.restaurant-name {
-  font-size: 24px;
-  font-weight: 700;
-  margin-block: 15px;
+.img__clip {
+  animation: colorShift 3s ease-in-out infinite;
 }
 
-p {
-  color: $secondary;
-}
-
-#second-column {
-  background: transparent !important;
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  padding: 0 !important;
-  gap: 1rem;
-
-  .representative-info {
-    background: white;
-    padding: 24px;
-
-    h2 {
-      position: relative;
-      font-size: 20px;
-      font-weight: 600;
-      text-transform: capitalize;
-      margin-left: 5px;
-
-      &::before {
-        background: $primary;
-        width: 8px;
-        border-radius: 1.5px;
-        content: "";
-        left: -14px;
-        top: 0;
-        height: 100%;
-        position: absolute;
-      }
-    }
-  }
-}
-
-.reviews-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 40%;
-
-  .divider {
-    display: inline-block;
-    width: 2px;
-    height: 20px;
-    background: #888;
-    margin: 0 8px;
-  }
-}
-
+// Responsive design
 @media (max-width: 768px) {
   .row {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     width: 100%;
+  }
+
+  .img-con {
+    padding: 1.5rem;
+    margin: 0.5rem 0;
   }
 }

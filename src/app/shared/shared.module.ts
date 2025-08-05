@@ -24,6 +24,7 @@ import { DesignedH1Component } from './components/designed-h1/designed-h1.compon
 import { ModalComponent } from './components/modal/modal.component';
 import { AnimateComponent } from './components/animate/animate.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
     ModalComponent,
     AnimateComponent,
     BreadcrumbsComponent,
+    BackToTopComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -74,6 +76,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
     ModalComponent,
     AnimateComponent,
     BreadcrumbsComponent,
+    BackToTopComponent,
   ],
 })
 export class SharedModule {}

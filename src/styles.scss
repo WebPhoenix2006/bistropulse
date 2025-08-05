@@ -6,6 +6,44 @@ $secondary: #6f767e;
 $gray: #e9e9e9;
 $background: #f4f4f4;
 
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
+}
+.orange-badge {
+  background-color: #f6913324;
+  color: #f69133;
+}
+
+.red-badge {
+  background-color: #f04d5824;
+  color: #f04d58;
+}
+
+.lightblue-badge {
+  background-color: #2796ae24;
+  color: #2796ae;
+}
+
+.green-badge {
+  background-color: #27ae6024;
+  color: #27ae60;
+}
+
+.darkblue-badge {
+  background-color: #4493fd24;
+  color: #4493fd;
+}
+
+.gray-badge {
+  background-color: #adb5bd;
+  color: #fff;
+}
+
 body {
   background-color: $background !important;
   height: 100vh;

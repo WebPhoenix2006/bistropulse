@@ -1,0 +1,228 @@
+# Back to Top Component
+
+A modern, accessible, and performant back-to-top button component for Angular applications.
+
+## Features
+
+- ✨ **Smooth scrolling** with fallback for older browsers
+- 🎨 **Glassmorphism design** with backdrop blur effect
+- 📱 **Fully responsive** across all device sizes
+- ♿ **Accessibility compliant** with ARIA labels and keyboard navigation
+- 🌙 **Dark theme support** with automatic detection
+- ⚡ **Performance optimized** using requestAnimationFrame
+- 🎭 **Smooth animations** with CSS transitions
+- 🔧 **Highly customizable** with CSS custom properties
+
+## Installation
+
+1. Add the component files to your Angular project:
+
+   - `back-to-top.component.ts`
+   - `back-to-top.component.html`
+   - `back-to-top.component.scss`
+
+2. Import the component in your module or component:
+
+```typescript
+import { BackToTopComponent } from "./back-to-top/back-to-top.component";
+
+@NgModule({
+  declarations: [BackToTopComponent],
+  // ... other module configuration
+})
+export class YourModule {}
+```
+
+## Usage
+
+### Basic Usage
+
+Simply add the component to your template:
+
+```html
+<app-back-to-top></app-back-to-top>
+```
+
+### In Layout Component
+
+For best results, place it in your main layout component:
+
+```html
+<div class="layout-wrapper">
+  <!-- Your content -->
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Back to top button -->
+  <app-back-to-top></app-back-to-top>
+</div>
+```
+
+## Configuration
+
+### Scroll Threshold
+
+You can customize when the button appears by modifying the `scrollThreshold` property:
+
+```typescript
+// In back-to-top.component.ts
+private scrollThreshold = 300; // Show after 300px (default)
+```
+
+### Styling Customization
+
+Override the default styles by targeting the component classes:
+
+```scss
+.back-to-top {
+  // Custom positioning
+  bottom: 20px;
+  right: 20px;
+
+  // Custom colors
+  background: rgba(your-color, 0.1);
+  color: your-text-color;
+
+  // Custom size
+  width: 60px;
+  height: 60px;
+}
+```
+
+## API Reference
+
+### Component Properties
+
+| Property          | Type      | Default | Description                           |
+| ----------------- | --------- | ------- | ------------------------------------- |
+| `isVisible`       | `boolean` | `false` | Controls button visibility            |
+| `scrollThreshold` | `number`  | `300`   | Scroll distance before button appears |
+
+### Component Methods
+
+| Method          | Parameters      | Description                     |
+| --------------- | --------------- | ------------------------------- |
+| `scrollToTop()` | none            | Smoothly scrolls to top of page |
+| `onKeyDown()`   | `KeyboardEvent` | Handles keyboard navigation     |
+
+### Events
+
+The component handles the following events:
+
+- `window:scroll` - Monitors scroll position
+- `click` - Triggers scroll to top
+- `keydown` - Keyboard accessibility (Enter, Space)
+
+## Browser Support
+
+- ✅ Chrome 60+
+- ✅ Firefox 55+
+- ✅ Safari 12+
+- ✅ Edge 79+
+- ✅ iOS Safari 12+
+- ✅ Android Chrome 60+
+
+## Accessibility Features
+
+### ARIA Support
+
+- `aria-label` for screen readers
+- `title` attribute for tooltips
+- Hidden decorative icons with `aria-hidden="true"`
+
+### Keyboard Navigation
+
+- **Enter** or **Space** to activate
+- Proper focus management
+- Focus indicators for keyboard users
+
+### Screen Reader Support
+
+- Screen reader only text with `.sr-only` class
+- Semantic button element
+- Descriptive labels
+
+## Performance Optimizations
+
+### Efficient Scroll Handling
+
+- Uses `requestAnimationFrame` for smooth performance
+- Debounced scroll events to prevent excessive calculations
+- Cleanup of animation frames on component destroy
+
+### CSS Optimizations
+
+- Hardware-accelerated transforms
+- Efficient transition properties
+- Minimal repaints and reflows
+
+## Customization Examples
+
+### Different Position
+
+```scss
+.back-to-top {
+  bottom: 20px;
+  left: 20px; // Move to bottom-left
+}
+```
+
+### Custom Colors
+
+```scss
+.back-to-top {
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.2);
+  }
+}
+```
+
+### Square Design
+
+```scss
+.back-to-top {
+  border-radius: 12px; // Less rounded
+  width: 48px;
+  height: 48px;
+}
+```
+
+## Troubleshooting
+
+### Button Not Appearing
+
+- Check if scroll threshold is reached
+- Verify component is imported correctly
+- Ensure CSS files are loaded
+
+### Smooth Scroll Not Working
+
+- Component includes fallback for older browsers
+- Check browser support for `scroll-behavior`
+- Verify no CSS conflicts with `html` scroll behavior
+
+### Performance Issues
+
+- Component uses optimized event handling
+- Check for conflicting scroll event listeners
+- Verify requestAnimationFrame support
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Make your changes
+4. Test across different browsers
+5. Submit a pull request
+
+## License
+
+This component is available under the MIT License.
+
+---
+
+**Made with ❤️ for better user experience**

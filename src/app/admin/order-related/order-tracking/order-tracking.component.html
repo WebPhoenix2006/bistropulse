@@ -1,31 +1,190 @@
-<div *ngIf="orderData as order; else loading">
-  <div class="order-header">
-    <h3>Order #{{ order.order_id }}</h3>
-    <span>Status: {{ order.status }}</span>
-    <span [class.paid]="order.paymentStatus === 'Paid'">
-      {{ order.paymentStatus }}
-    </span>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header__left">
+      <span id="con">
+        <h1 class="header__title">Order Id #12009</h1>
+        <span class="status-badge status-badge--pending">Pending</span>
+        <div class="header__profile">
+          <div class="header__avatar">RE</div>
+          <span class="header__name">Ralph Edwards</span>
+        </div>
+      </span>
+      <div class="btn__con">
+        <button class="btn__1">
+          <i class="fa fa-arrow-left"></i>
+        </button>
+        <button class="btn__1">
+          <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+    <div class="header__date m-1">Sat, Nov 29 • 08:30 PM</div>
+    <div class="header__actions">
+      <button class="btn btn--secondary">Assign Delivery man</button>
+      <button class="btn btn--secondary">Payment</button>
+      <button class="btn btn--primary">Status</button>
+    </div>
   </div>
 
-  <div *ngFor="let item of order.items">
-    <img [src]="item.imageUrl || 'https://via.placeholder.com/40'" width="40" />
-    {{ item.name }} x{{ item.quantity }} - ₵{{ item.price }}
-  </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="left-panel">
+      <!-- Order Status -->
+      <div class="order-status">
+        <h3 class="order-status__title">Order Status</h3>
+        <ul class="order-status__list">
+          <li class="order-status__item active">
+            <div class="order-status__icon order-status__icon--active">✓</div>
+            <span>Placed</span>
+            <span class="order-status__time">16:25 AM</span>
+          </li>
+          <li class="order-status__item active">
+            <div class="order-status__icon order-status__icon--active">✓</div>
+            <span>Accepted</span>
+            <span class="order-status__time">16:30 AM</span>
+          </li>
+          <li class="order-status__item active">
+            <div class="order-status__icon order-status__icon--active">✓</div>
+            <span>Being prepared</span>
+            <span class="order-status__time">16:35 AM</span>
+          </li>
+          <li class="order-status__item active">
+            <div class="order-status__icon order-status__icon--active">✓</div>
+            <span>On the way</span>
+            <span class="order-status__time">16:40 AM</span>
+          </li>
+          <li class="order-status__item inactive">
+            <div class="order-status__icon order-status__icon--inactive">5</div>
+            <span>Delivered</span>
+          </li>
+        </ul>
+      </div>
 
-  <p><strong>Pickup:</strong> {{ order.pickupAddress }}</p>
-  <p><strong>Dropoff:</strong> {{ order.dropoffAddress }}</p>
+      <!-- Order Tracking -->
+      <div class="order-tracking">
+        <h3 class="order-tracking__title">Order Tracking</h3>
+        <div class="order-tracking__map">Map container placeholder</div>
+      </div>
 
-  <p>Subtotal: ₵{{ order.subtotal }}</p>
-  <p>Delivery: ₵{{ order.deliveryFee }}</p>
-  <p>Tax: ₵{{ order.tax }}</p>
-  <h4>Total: ₵{{ order.total }}</h4>
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h3 class="order-summary__title">Summary</h3>
+        <div class="order-summary__restaurant">Star Valley Restaurant</div>
 
-  <div class="courier" *ngIf="order.courier">
-    <img [src]="order.courier.imageUrl || 'https://via.placeholder.com/40'" width="40" />
-    {{ order.courier.name }} - {{ order.courier.phone }}
+        <div class="order-summary__items">
+          <div class="order-summary__item">
+            <div class="order-summary__item-image"></div>
+            <div class="order-summary__item-details">
+              <div class="order-summary__item-name">Beef onion pizza</div>
+              <div class="order-summary__item-qty">2 items</div>
+            </div>
+            <div class="order-summary__item-price">₵60.00</div>
+          </div>
+
+          <div class="order-summary__item">
+            <div class="order-summary__item-image"></div>
+            <div class="order-summary__item-details">
+              <div class="order-summary__item-name">Cheese pizza</div>
+              <div class="order-summary__item-qty">1 item</div>
+            </div>
+            <div class="order-summary__item-price">₵30.00</div>
+          </div>
+
+          <div class="order-summary__item">
+            <div class="order-summary__item-image"></div>
+            <div class="order-summary__item-details">
+              <div class="order-summary__item-name">Cheese pizza</div>
+              <div class="order-summary__item-qty">1 item</div>
+            </div>
+            <div class="order-summary__item-price">₵30.00</div>
+          </div>
+
+          <div class="order-summary__item">
+            <div class="order-summary__item-image"></div>
+            <div class="order-summary__item-details">
+              <div class="order-summary__item-name">Cheese pizza</div>
+              <div class="order-summary__item-qty">1 item</div>
+            </div>
+            <div class="order-summary__item-price">₵30.00</div>
+          </div>
+        </div>
+
+        <div class="order-summary__total-section">
+          <div class="order-summary__row">
+            <span class="order-summary__row-left">Coupon Code</span>
+            <span class="order-summary__row-right">Not Applied</span>
+          </div>
+          <div class="order-summary__row">
+            <span class="order-summary__row-left">Reward Points</span>
+            <span class="order-summary__row-right">Not Used</span>
+          </div>
+          <div class="order-summary__row">
+            <span class="order-summary__row-left">Subtotal</span>
+            <span class="order-summary__row-right">150.00</span>
+          </div>
+          <div class="order-summary__row">
+            <span class="order-summary__row-left">Delivery Fee</span>
+            <span class="order-summary__row-right">₵40.00</span>
+          </div>
+          <div class="order-summary__row">
+            <span class="order-summary__row-left">Fees & Estimated Tax</span>
+            <span class="order-summary__row-right">₵0.00</span>
+          </div>
+          <div class="order-summary__row total">
+            <span class="order-summary__row-left total">Total</span>
+            <span class="order-summary__row-right">GHC 166.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Info -->
+    <div class="customer-info">
+      <h3 class="customer-info__title">Customer Info</h3>
+
+      <div class="customer-info__profile">
+        <div class="customer-info__avatar"></div>
+        <div class="customer-info__details">
+          <h3>Chelsie Jhonson</h3>
+          <p>chelsiee&#64;noreplycompany.com</p>
+          <p>Total Order 30</p>
+        </div>
+      </div>
+
+      <div class="customer-info__section">
+        <h4>Phone Number</h4>
+        <p>+98 87600-006770</p>
+      </div>
+
+      <div class="customer-info__section">
+        <h4>Location</h4>
+        <p>Asakolseo Netkey Road, Accra...</p>
+      </div>
+
+      <div class="customer-info__section">
+        <h4>Deliver To</h4>
+        <p>Current Address</p>
+        <p>G-5, Asakolseo Netkey Road</p>
+        <p>Accra, Ghana</p>
+        <p>📍 Add Direction</p>
+        <p>📍 Store distance from address</p>
+      </div>
+
+      <div class="customer-info__delivery-guy">
+        <h4>Delivery Guy</h4>
+        <div class="customer-info__delivery-guy-profile">
+          <div class="customer-info__delivery-guy-avatar"></div>
+          <div class="customer-info__delivery-guy-details">
+            <h4>Ralph Edwards</h4>
+            <p>+65 001 64 578</p>
+          </div>
+          <div class="customer-info__delivery-guy-actions">
+            <button class="customer-info__delivery-guy-btn">📞</button>
+            <button class="customer-info__delivery-guy-btn">💬</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<ng-template #loading>
-  <p>Loading order data...</p>
-</ng-template>

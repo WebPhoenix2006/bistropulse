@@ -65,7 +65,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
       // ✅ Create effect WITHIN injection context
     }
-    this.handleInitialNavbarState(); // Apply navbar-fixed on load if page is already scrolled
+    // this.handleInitialNavbarState(); // Apply navbar-fixed on load if page is already scrolled
   }
 
   ngOnDestroy(): void {
@@ -86,30 +86,30 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  @ViewChild('navbar', { static: true }) navbar!: ElementRef;
+  // @ViewChild('navbar', { static: true }) navbar!: ElementRef;
 
-  private scrollThreshold = 10; // 👈 Adds tolerance to avoid micro-scroll flicker
+  //private scrollThreshold = 10; // 👈 Adds tolerance to avoid micro-scroll flicker
 
-  @HostListener('window:scroll')
-  onScroll() {
-    this.updateNavbarFixedState();
-  }
+  // @HostListener('window:scroll')
+  // onScroll() {
+  //   this.updateNavbarFixedState();
+  // }
 
-  private updateNavbarFixedState(): void {
-    if (!this.navbar) return;
+  // private updateNavbarFixedState(): void {
+  //   if (!this.navbar) return;
 
-    const scrollY = window.scrollY || window.pageYOffset;
+  //   const scrollY = window.scrollY || window.pageYOffset;
 
-    if (scrollY > this.scrollThreshold) {
-      this.navbar.nativeElement.classList.add('navbar-fixed');
-    } else {
-      this.navbar.nativeElement.classList.remove('navbar-fixed');
-    }
-  }
+  //   if (scrollY > this.scrollThreshold) {
+  //     this.navbar.nativeElement.classList.add('navbar-fixed');
+  //   } else {
+  //     this.navbar.nativeElement.classList.remove('navbar-fixed');
+  //   }
+  // }
 
-  private handleInitialNavbarState(): void {
-    setTimeout(() => this.updateNavbarFixedState(), 10);
-  }
+  // private handleInitialNavbarState(): void {
+  //   setTimeout(() => this.updateNavbarFixedState(), 10);
+  // }
 
   changeSidebarState(state: boolean): void {
     this.isLeftSidebarCollapsed.set(state);

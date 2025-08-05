@@ -101,6 +101,8 @@ export class BranchListComponent implements OnInit {
     if (!isFromFranchise) {
       this.restaurantContext.setRestaurantId(null);
     }
+
+    // this.applyFilters();
   }
 
   applyFilters(): void {

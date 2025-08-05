@@ -1,26 +1,97 @@
-<div class="navbar">
-    <div class="nav">
-        <div class="leftside">
-            <app-breadcrumbs></app-breadcrumbs>
-            <div class="pagination">
-                <div class="current-module">
-                    <!-- <h5>Dashboard</h5> -->
-                </div>
-                <div class="current-page">
-                    
-                </div>
-            </div>
+<div class="navbar sticky-top" 
+     [class.loading]="isLoading">
+  
+  <div class="nav">
+    <!-- Left Side -->
+    <div class="leftside">
+      <!-- Breadcrumbs Component -->
+      <app-breadcrumbs></app-breadcrumbs>
+      
+      <!-- Page Navigation -->
+      <div class="pagination">
+        
+        <div class="current-page">
+          <!-- Current page indicator if needed -->
         </div>
-        <div class="rightside">
-            <div class="chats" routerLink="/admin/chat">
-                <svg-icons name="chats"></svg-icons>
-            </div>
-            <div class="notifications">
-                <svg-icons name="notifications"></svg-icons>
-            </div>
-            <div class="profile">
-                <img src="assets/images/profile-img.png" alt="profile-img">
-            </div>
-        </div>
+      </div>
     </div>
+
+    <!-- Right Side -->
+    <div class="rightside">
+      
+      <!-- Chat Navigation -->
+      <div class="chats" 
+           routerLink="/admin/chat"
+           (click)="onChatClick()"
+           [attr.data-count]="chatNotificationCount > 0 ? chatNotificationCount : null"
+           [attr.title]="'Chat Messages' + (chatNotificationCount > 0 ? ' (' + chatNotificationCount + ' unread)' : '')"
+           [attr.aria-label]="'Navigate to chat. ' + (chatNotificationCount > 0 ? chatNotificationCount + ' unread messages.' : 'No unread messages.')">
+        
+        <svg-icons name="chats" 
+                   [attr.aria-hidden]="true">
+        </svg-icons>
+        
+        <!-- Screen reader text for notifications -->
+        <span class="sr-only" *ngIf="chatNotificationCount > 0">
+          {{ chatNotificationCount }} unread chat messages
+        </span>
+      </div>
+
+      <!-- Notifications -->
+      <div class="notifications"
+           (click)="onNotificationsClick()"
+           [attr.data-count]="notificationCount > 0 ? notificationCount : null"
+           [attr.title]="'Notifications' + (notificationCount > 0 ? ' (' + notificationCount + ' unread)' : '')"
+           [attr.aria-label]="'View notifications. ' + (notificationCount > 0 ? notificationCount + ' unread notifications.' : 'No unread notifications.')"
+           tabindex="0"
+           (keydown.enter)="onNotificationsClick()"
+           (keydown.space)="onNotificationsClick()">
+        
+        <svg-icons name="notifications" 
+                   [attr.aria-hidden]="true">
+        </svg-icons>
+        
+        <!-- Screen reader text for notifications -->
+        <span class="sr-only" *ngIf="notificationCount > 0">
+          {{ notificationCount }} unread notifications
+        </span>
+      </div>
+
+      <!-- User Profile -->
+      <div class="profile"
+           (click)="onProfileClick()"
+           [attr.title]="'User Profile'"
+           [attr.aria-label]="'Open user profile menu'"
+           tabindex="0"
+           (keydown.enter)="onProfileClick()"
+           (keydown.space)="onProfileClick()">
+        
+        <img [src]="userAvatarUrl" 
+             alt="User profile picture"
+             [attr.aria-describedby]="isUserOnline ? 'user-status-online' : 'user-status-offline'"
+             onerror="this.src='assets/images/default-avatar.png'">
+        
+        <!-- Screen reader text for online status -->
+        <span class="sr-only" 
+              [id]="isUserOnline ? 'user-status-online' : 'user-status-offline'">
+          User is {{ isUserOnline ? 'online' : 'offline' }}
+        </span>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Loading Progress Bar -->
+  <div class="loading-progress" 
+       *ngIf="isLoading"
+       [attr.aria-label]="'Loading content'"
+       role="progressbar"
+       aria-valuemin="0"
+       aria-valuemax="100"
+       aria-valuenow="50">
+  </div>
+
 </div>
+
+
+

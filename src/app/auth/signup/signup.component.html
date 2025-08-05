@@ -80,6 +80,24 @@
                   <span><i class="fa fa-phone"></i></span>
                 </div>
               </div>
+              <!-- Role -->
+               <div class="form-field">
+                <div class="roles">
+                  <label for="role">
+                    Role <span class="text-danger">*</span>
+                  </label>
+                    <select
+                      id="role"
+                      class="form-select"
+                      formControlName="role"
+                      (change)="checkRole()"
+                      >
+                      <option value="default" disabled selected>Select role...</option>
+                      <option value="admin">Admin</option>
+                      <option value="user">Store Manager</option>
+                    </select>
+                </div>
+               </div>
 
               <!-- Password -->
               <div class="form-group">
@@ -112,7 +130,7 @@
               </div>
 
               <!-- OTP -->
-              <div class="form-group">
+              <div class="form-group" *ngIf="!isAdmin">
                 <label for="otp">
                   Signup OTP <span class="text-danger">*</span>
                 </label>
@@ -141,7 +159,7 @@
               </p>
 
               <div class="submit">
-                <app-button buttonText="Submit" color="primary"></app-button>
+                <app-button buttonText="Submit" buttonType="submit" color="primary"></app-button>
               </div>
             </form>
           </div>

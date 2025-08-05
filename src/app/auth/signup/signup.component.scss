@@ -2,9 +2,10 @@
 
 .signup-parent {
     display: flex;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     align-items: center;
+    padding: 100px 0;
     .signup {
         width: 100%;
         background-color: #fff;

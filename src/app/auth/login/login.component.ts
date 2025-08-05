@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
         this.auth.saveToken(res.token);
         this.isLoading.set(false);
         this.slowNetwork.clear();
-        this.toastr.showSuccess('Success!, Login successful!');
+        this.toastr.showSuccess('Success!, Login successful! Welcome back ' + res.user.username);
         this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {

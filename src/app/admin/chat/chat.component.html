@@ -1,87 +1,257 @@
 <div class="chat-app">
-  <!-- Sidebar Navigation -->
+  <!-- Enhanced Modern Sidebar Navigation -->
+  <!-- <aside class="sidebar">
+    <div class="logo">
+      <i class="fas fa-comments"></i>
+      ChatSpace
+    </div>
+    <nav class="menu">
+      <a href="#" class="active">
+        <i class="fas fa-comment-dots"></i>
+        Messages
+      </a>
+      <a href="#">
+        <i class="fas fa-users"></i>
+        Groups
+      </a>
+      <a href="#">
+        <i class="fas fa-phone"></i>
+        Calls
+      </a>
+      <a href="#">
+        <i class="fas fa-user-friends"></i>
+        Contacts
+      </a>
+      <a href="#">
+        <i class="fas fa-cog"></i>
+        Settings
+      </a>
+      <a href="#">
+        <i class="fas fa-moon"></i>
+        Dark Mode
+      </a>
+    </nav>
+  </aside> -->
  
-
-  <!-- Chat Section -->
+  <!-- Enhanced Chat Section -->
   <section class="chat-section">
-    <!-- Chat Sidebar -->
+    <!-- Modern Chat Sidebar -->
     <div class="chat-sidebar">
       <div class="header">
         <h3>Messages</h3>
-        <i class="fas fa-search"></i>
+        <i class="fas fa-search" title="Search conversations"></i>
       </div>
-      <input class="search-input" placeholder="Search People or Groups" />
+      
+      <div class="search-container">
+        <input 
+          class="search-input" 
+          placeholder="Search people or groups..."
+          style="background-image: url(''); background-repeat: no-repeat; background-position: 16px center; background-size: 16px;"
+        />
+      </div>
+      
       <ul class="contact-list">
         <li
-          *ngFor="let contact of contacts"
+          *ngFor="let contact of contacts; trackBy: trackByContactId"
           [class.active]="contact.id === selectedContact?.id"
           (click)="selectContact(contact)"
+          [attr.title]="contact.name"
         >
-          <img [src]="contact.avatar" alt="Avatar" class="avatar" />
+          <img 
+            [src]="contact.avatar" 
+            [alt]="contact.name + ' avatar'" 
+            class="avatar"
+            (error)="onImageError($event)"
+          />
           <div class="contact-info">
             <h4>{{ contact.name }}</h4>
             <p>{{ contact.lastMessage }}</p>
           </div>
           <span class="time">{{ contact.time }}</span>
+          <div class="status-indicator" [class.online]="contact.isOnline"></div>
         </li>
       </ul>
     </div>
 
-    <!-- Chat Window -->
-    <div class="chat-window" *ngIf="selectedContact">
+    <!-- Enhanced Chat Window -->
+    <div class="chat-window" *ngIf="selectedContact; else noContactSelected">
       <div class="chat-header">
-        <img [src]="selectedContact.avatar" class="avatar" />
+        <img 
+          [src]="selectedContact.avatar" 
+          [alt]="selectedContact.name + ' avatar'"
+          class="avatar" 
+        />
         <div>
           <h3>{{ selectedContact.name }}</h3>
-          <p>Online</p>
+          <p>
+            <i class="fas fa-circle" [class.online]="selectedContact.isOnline"></i>
+            {{ selectedContact.isOnline ? 'Online' : 'Last seen ' + selectedContact.lastSeen }}
+          </p>
         </div>
-        <button class="view-profile">
-          <i class="fas fa-user"></i> View Profile
+        <button class="view-profile" (click)="viewProfile(selectedContact)" [attr.aria-label]="'View ' + selectedContact.name + ' profile'">
+          <i class="fas fa-user"></i> 
+          View Profile
         </button>
       </div>
 
-      <div class="chat-history">
+      <div class="chat-history" #chatHistory>
         <div
-          *ngFor="let msg of messages"
-          [ngClass]="{ 'message': true, 'from-me': msg.fromMe }"
+          *ngFor="let msg of messages; trackBy: trackByMessageId; let i = index"
+          [ngClass]="{ 
+            'message': true, 
+            'from-me': msg.fromMe,
+            'animate-in': msg.isNew
+          }"
+          [attr.data-message-id]="msg.id"
         >
-          <ng-container *ngIf="msg.text">
-            <p>{{ msg.text }}</p>
+          <!-- Text Message -->
+          <ng-container *ngIf="msg.text && !msg.image && !msg.file">
+            <p [innerHTML]="formatMessage(msg.text)"></p>
           </ng-container>
 
+          <!-- Image Message -->
           <ng-container *ngIf="msg.image">
-            <img [src]="msg.image" class="message-img" />
+            <img 
+              [src]="msg.image" 
+              [alt]="'Image from ' + (msg.fromMe ? 'you' : selectedContact.name)"
+              class="message-img"
+              (click)="openImageModal(msg.image)"
+              (error)="onImageError($event)"
+            />
+            <p *ngIf="msg.text" [innerHTML]="formatMessage(msg.text)"></p>
           </ng-container>
 
+          <!-- File Message -->
           <ng-container *ngIf="msg.file">
             <div class="file-msg">
-              📄 {{ msg.file.name }}
-              <a href="{{ msg.file.url }}" target="_blank">Download</a>
+              <div class="file-info">
+                <i class="fas fa-file" [class]="getFileIcon(msg.file.type)"></i>
+                <span>{{ msg.file.name }}</span>
+                <small>({{ formatFileSize(msg.file.size) }})</small>
+              </div>
+              <a 
+                [href]="msg.file.url" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                [attr.aria-label]="'Download ' + msg.file.name"
+              >
+                <i class="fas fa-download"></i>
+                Download
+              </a>
             </div>
+            <p *ngIf="msg.text" [innerHTML]="formatMessage(msg.text)"></p>
           </ng-container>
 
-          <span class="msg-time">{{ msg.time }}</span>
+          <span class="msg-time">
+            {{ formatMessageTime(msg.time) }}
+            <i *ngIf="msg.fromMe && msg.status" 
+               class="fas" 
+               [class.fa-check]="msg.status === 'sent'"
+               [class.fa-check-double]="msg.status === 'delivered'"
+               [class.fa-check-double]="msg.status === 'read'"
+               [style.color]="msg.status === 'read' ? '#10b981' : '#6b7280'"
+               [attr.title]="getMessageStatusText(msg.status)">
+            </i>
+          </span>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" *ngIf="isTyping">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <p>{{ selectedContact.name }} is typing...</p>
         </div>
       </div>
 
-      <!-- Input -->
+      <!-- Enhanced Input Section -->
       <div class="chat-input">
-        <label>
+        <label for="file-input" [attr.aria-label]="'Attach file'">
           <i class="fas fa-paperclip"></i>
-          <input type="file" hidden (change)="attachFile($event)" />
+          <input 
+            id="file-input"
+            type="file" 
+            hidden 
+            (change)="attachFile($event)"
+            multiple
+            accept="image/*,application/pdf,.doc,.docx,.txt"
+          />
         </label>
+
+        <label for="emoji-picker" [attr.aria-label]="'Add emoji'">
+          <i class="fas fa-smile" (click)="toggleEmojiPicker()"></i>
+        </label>
+
         <input
           type="text"
           placeholder="Type your message..."
           [(ngModel)]="newMessage"
           (keydown.enter)="sendMessage()"
+          (input)="onTyping()"
+          (focus)="onInputFocus()"
+          (blur)="onInputBlur()"
+          [attr.aria-label]="'Message input'"
+          #messageInput
         />
-        <button class="send-btn" (click)="sendMessage()">
+
+        <button 
+          class="send-btn" 
+          (click)="sendMessage()"
+          [disabled]="!newMessage?.trim()"
+          [attr.aria-label]="'Send message'"
+          [class.disabled]="!newMessage?.trim()"
+        >
           <i class="fas fa-paper-plane"></i>
         </button>
       </div>
-    </div>
-  </section>
-</div>
 
-  
+      <!-- Emoji Picker (if implemented) -->
+      <div class="emoji-picker" *ngIf="showEmojiPicker" (clickOutside)="closeEmojiPicker()">
+        <div class="emoji-grid">
+          <span *ngFor="let emoji of popularEmojis" 
+                (click)="insertEmoji(emoji)"
+                class="emoji-item">
+            {{ emoji }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Contact Selected State -->
+    <ng-template #noContactSelected>
+      <div class="no-contact-selected">
+        <div class="empty-state">
+          <i class="fas fa-comments fa-4x"></i>
+          <h3>Welcome to ChatSpace</h3>
+          <p>Select a conversation to start messaging</p>
+          <button class="start-chat-btn" (click)="openNewChatModal()">
+            <i class="fas fa-plus"></i>
+            Start New Chat
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <p>Loading messages...</p>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="image-modal" *ngIf="selectedImage" (click)="closeImageModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeImageModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <img [src]="selectedImage" alt="Full size image" />
+    </div>
+  </div>
+</div>

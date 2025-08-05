@@ -96,7 +96,7 @@ export class BranchListComponent {
       this.restaurantContext.setRestaurantId(null);
     }
 
-    this.applyFilters();
+    // this.applyFilters();
   }
 
   applyFilters(): void {

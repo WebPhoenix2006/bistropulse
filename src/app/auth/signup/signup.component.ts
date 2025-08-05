@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   isLoading = signal<boolean>(false);
+  isAdmin = false;
 
   @ViewChild('passwordInput', { static: false }) passwordInput!: ElementRef;
 
@@ -37,8 +38,9 @@ export class SignupComponent implements OnInit {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
+      role: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      otp: ['', Validators.required], // ✅ Added OTP
+      otp: '', // ✅ Added OTP
     });
   }
 
@@ -56,9 +58,13 @@ export class SignupComponent implements OnInit {
       this.signupForm.markAllAsTouched();
       return;
     }
+    this.signupForm.get('role')?.valueChanges.subscribe((value) => {
+      this.isAdmin = value?.toLowerCase() === 'admin';
+    });
 
     this.isLoading.set(true);
     const formData = this.signupForm.value;
+    console.log(formData.role);
 
     this.slowNetwork.start(() => {
       if (this.isLoading()) {
@@ -78,7 +84,7 @@ export class SignupComponent implements OnInit {
           this.auth.saveUserData(res.user); // ✅ store role and other user info
         }
 
-        this.toastr.success('Sign up successful!', 'Welcome');
+        this.toastr.success('Sign up successful!', 'Welcome' + res.user.username);
         this.isLoading.set(false);
         this.slowNetwork.clear();
         this.router.navigate(['/auth/login']);
@@ -96,5 +102,9 @@ export class SignupComponent implements OnInit {
     });
 
     console.log('Form submitted:', formData);
+  }
+  checkRole() {
+    const role = this.signupForm.get('role')?.value;
+    this.isAdmin = role?.toLowerCase() === 'admin';
   }
 }

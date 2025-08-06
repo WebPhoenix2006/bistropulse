@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import { OrderTrackingDetails } from '../../interfaces/order.model';
+import { Order, OrderItem } from '../../interfaces/order.interface';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderTrackingService {
   private socket?: WebSocket;
-  private updates$ = new ReplaySubject<OrderTrackingDetails>(1);
+  private updates$ = new ReplaySubject<OrderItem>(1);
 
   private resetStream(): void {
-    this.updates$ = new ReplaySubject<OrderTrackingDetails>(1);
+    this.updates$ = new ReplaySubject<OrderItem>(1);
   }
 
   connect(orderId: string): void {
@@ -52,7 +53,7 @@ export class OrderTrackingService {
     };
   }
 
-  getUpdates(): Observable<OrderTrackingDetails> {
+  getUpdates(): Observable<OrderItem> {
     return this.updates$.asObservable();
   }
 

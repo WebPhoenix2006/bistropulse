@@ -5,8 +5,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { OrderTrackingDetails } from '../../../interfaces/order.model';
+
 import { OrderTrackingService } from '../../../shared/services/order-tracking.service';
+import { OrderItem } from '../../../interfaces/order.interface';
 
 @Component({
   selector: 'app-order-tracking',
@@ -16,7 +17,7 @@ import { OrderTrackingService } from '../../../shared/services/order-tracking.se
 })
 export class OrderTrackingComponent implements OnInit, OnDestroy {
   @Input() orderId!: string;
-  orderData?: OrderTrackingDetails;
+  orderData?: OrderItem;
   private subscription?: Subscription;
 
   constructor(private trackingService: OrderTrackingService) {}

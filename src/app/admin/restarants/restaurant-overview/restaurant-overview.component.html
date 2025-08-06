@@ -27,22 +27,31 @@
           </div>
 
           <div class="img-container">
+            <div
+              class="img__clip"
+              [style.background]="dominantColor()"
+              [style.box-shadow]="'0 0 14px ' + dominantColor()"
+            >
+              <i class="ri-menu-4-line"></i>
+            </div>
+            <div class="img__shadow">
+              <button class="btn btn-primary" (click)="refreshColors()">
+                Change Image
+              </button>
+            </div>
             <img
-              *ngIf="restaurant?.restaurant_image_url; else noImage"
+              #restaurantImg
+              id="restaurant-img"
+              crossorigin="anonymous"
+              *ngIf="restaurant?.restaurant_image_url"
               [src]="restaurant.restaurant_image_url"
               alt="Restaurant Image"
+              (load)="setupColorExtraction()"
+              (error)="setFallbackColor()"
             />
-
-            <ng-template #noImage>
-              <div class="no-image-con">
-                <img
-                  class="no-image"
-                  src="assets/illustrations/noimage.png"
-                  alt="no image"
-                />
-              </div>
-            </ng-template>
           </div>
+
+          <!-- Info section with dynamic background -->
 
           <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
           <p class="reviews-container">
@@ -122,7 +131,7 @@
           <div class="documents">
             <h2>Documents</h2>
 
-            <div class="pdf-container">
+            <div class="pdf-container mt-4">
               <div class="pdf-img">
                 <img src="assets/images/reward-points.png" alt="pdf icon" />
                 <div class="info">

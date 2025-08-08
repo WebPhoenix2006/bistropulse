@@ -475,7 +475,6 @@ input:checked + .slider:before {
   border-spacing: 0;
   background: #ffffff;
   border-radius: 12px;
-  overflow: hidden;
   transition: all 0.3s ease-in-out;
 
   thead {
@@ -512,7 +511,7 @@ input:checked + .slider:before {
       &:hover {
         background: #f6f9fc;
         box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.01);
-        transform: scale(1.005);
+        // transform: scale(1.005);
       }
 
       &.checked {

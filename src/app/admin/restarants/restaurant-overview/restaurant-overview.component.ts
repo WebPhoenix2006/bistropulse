@@ -11,14 +11,14 @@ import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { ActivatedRoute } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
 import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
-import ColorThief from 'color-thief-browser';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
+import { FastAverageColor } from 'fast-average-color';
 
 @Component({
   selector: 'app-restaurant-overview',
   standalone: false,
   templateUrl: './restaurant-overview.component.html',
-  styleUrl: './restaurant-overview.component.scss',
+  styleUrls: ['./restaurant-overview.component.scss'],
 })
 export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
   constructor(
@@ -32,10 +32,10 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('restaurantImg') restaurantImgRef!: ElementRef<HTMLImageElement>;
 
   isLoading = signal<boolean>(false);
-  dominantColor = signal<string>('rgba(17, 19, 21, 0.8)'); // fallback color
+  dominantColor = signal<string>('rgba(17, 19, 21, 0.8)');
   restaurant: Restaurant | null = null;
   restaurantId!: string;
-  private colorThief = new ColorThief();
+  private fac = new FastAverageColor();
 
   ngOnInit(): void {
     this.isLoading.set(true);
@@ -52,7 +52,6 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
         this.restaurant = data;
         this.isLoading.set(false);
         this.slowNetwork.clear();
-        // Trigger color extraction after restaurant data is loaded
         this.cdr.detectChanges();
         setTimeout(() => this.setupColorExtraction(), 100);
       },
@@ -66,7 +65,6 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Additional safety net for color extraction
     setTimeout(() => this.setupColorExtraction(), 300);
   }
 
@@ -78,31 +76,16 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Clear any existing event handlers
-    imgEl.onload = null;
-    imgEl.onerror = null;
-
-    // Set up error handling
-    imgEl.onerror = () => {
-      console.warn('Image failed to load, using fallback color');
-      this.setFallbackColor();
-    };
-
-    // Check if image is already loaded
     if (imgEl.complete && imgEl.naturalWidth > 0) {
       this.extractColor(imgEl);
     } else {
-      // Wait for image to load
-      imgEl.onload = () => {
-        this.extractColor(imgEl);
-      };
+      imgEl.onload = () => this.extractColor(imgEl);
+      imgEl.onerror = () => this.setFallbackColor();
 
-      // Fallback timeout in case onload never fires
       setTimeout(() => {
         if (imgEl.complete && imgEl.naturalWidth > 0) {
           this.extractColor(imgEl);
         } else {
-          console.warn('Image load timeout, using fallback');
           this.setFallbackColor();
         }
       }, 3000);
@@ -111,58 +94,29 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
 
   private extractColor(imgEl: HTMLImageElement): void {
     try {
-      // Double-check image is ready
-      if (!imgEl.complete || imgEl.naturalWidth === 0) {
-        console.warn('Image not ready for color extraction');
-        this.setFallbackColor();
-        return;
-      }
+      const color = this.fac.getColor(imgEl);
+      const rgbaColor = color.rgba;
 
-      // Extract dominant color
-      const color = this.colorThief.getColor(imgEl);
-      const rgbColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-      const rgbaColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.8)`;
-
-      // Update the signal
       this.dominantColor.set(rgbaColor);
+      this.applyCSSVariables(
+        color.value.slice(0, 3) as [number, number, number]
+      );
 
-      // Apply CSS custom properties for dynamic styling
-      this.applyCSSVariables(color as [number, number, number]);
-
-      console.log('✅ Color extracted successfully:', rgbColor);
+      console.log(`✅ Color extracted successfully:`, rgbaColor);
     } catch (error) {
-      console.error('❌ ColorThief extraction failed:', error);
+      console.error('❌ Color extraction failed:', error);
       this.setFallbackColor();
     }
   }
 
-  private applyCSSVariables(color: [number, number, number]): void {
-    const root = document.documentElement;
-    const [r, g, b] = color;
-
-    // Set various color variations
-    root.style.setProperty('--dominant-color', `rgb(${r}, ${g}, ${b})`);
-    root.style.setProperty(
+  private applyCSSVariables([r, g, b]: [number, number, number]): void {
+    document.documentElement.style.setProperty(
+      '--dominant-color',
+      `rgb(${r}, ${g}, ${b})`
+    );
+    document.documentElement.style.setProperty(
       '--dominant-color-alpha',
       `rgba(${r}, ${g}, ${b}, 0.8)`
-    );
-    root.style.setProperty(
-      '--dominant-color-light',
-      `rgba(${r}, ${g}, ${b}, 0.3)`
-    );
-    root.style.setProperty(
-      '--dominant-color-dark',
-      `rgba(${Math.max(0, r - 50)}, ${Math.max(0, g - 50)}, ${Math.max(
-        0,
-        b - 50
-      )}, 0.9)`
-    );
-
-    // Create a complementary color for variety
-    const complementary = this.getComplementaryColor([r, g, b]);
-    root.style.setProperty(
-      '--complementary-color',
-      `rgba(${complementary[0]}, ${complementary[1]}, ${complementary[2]}, 0.8)`
     );
   }
 
@@ -170,7 +124,6 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
     const fallback = 'rgba(17, 19, 21, 0.8)';
     this.dominantColor.set(fallback);
 
-    // Set fallback CSS variables
     const root = document.documentElement;
     root.style.setProperty('--dominant-color', 'rgb(17, 19, 21)');
     root.style.setProperty('--dominant-color-alpha', fallback);
@@ -184,11 +137,9 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
     number,
     number
   ] {
-    // Simple complementary color calculation
     return [255 - r, 255 - g, 255 - b];
   }
 
-  // Method to manually trigger color re-extraction (useful for image changes)
   refreshColors(): void {
     setTimeout(() => this.setupColorExtraction(), 100);
   }

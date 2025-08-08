@@ -124,6 +124,11 @@ const routes: Routes = [
             data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },
           },
           {
+            path: 'add-rider',
+            component: AddRiderComponent,
+            data: { animation: 'RiderShifts', breadcrumb: 'add' },
+          },
+          {
             path: ':id',
             children: [
               { path: '', redirectTo: 'overview', pathMatch: 'full' },

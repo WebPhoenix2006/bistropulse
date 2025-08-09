@@ -1,5 +1,5 @@
 <main>
-  <h1 class="title ms-2">Add Customers</h1>
+  <h1 class="title ms-2">Add Rider</h1>
 
   <div class="container">
     <!-- File Upload Preview Box -->
@@ -25,16 +25,6 @@
     >
       <div class="row">
         <!-- University Student Checkbox (outside @for) -->
-        <div class="input-wrapper university col-md-12">
-          <h2>University Student</h2>
-          <label class="d-flex align-items-center" style="gap: 8px">
-            <input
-              type="checkbox"
-              name="isStudent"
-              [(ngModel)]="formData['isStudent']"
-            />
-          </label>
-        </div>
 
         <!-- All other inputs loop -->
         @for (input of inputs; track $index) {
@@ -88,7 +78,7 @@
         }
       </div>
 
-      <app-button buttonText="Add Customer" />
+      <app-button buttonText="Add Rider" [buttonType]="'submit'" />
     </form>
   </div>
 </main>
@@ -103,4 +93,3 @@
   [visible]="isSuccessfull()"
   [messageText]="'Customer Added Successfully ✅'"
 ></app-popup-message>
-

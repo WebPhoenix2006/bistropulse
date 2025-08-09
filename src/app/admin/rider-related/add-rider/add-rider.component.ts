@@ -15,6 +15,8 @@ export class AddRiderComponent {
   formData: { [key: string]: any } = {
     gender: 'Male',
     isStudent: false,
+    paymentMethod: 'Via Debit',
+    attendance: '10:00 AM - 5:00 PM',
   };
 
   constructor(
@@ -44,24 +46,27 @@ export class AddRiderComponent {
   onSubmit(): void {
     this.isLoading.set(true);
     const form = new FormData();
-
     const fieldMap: Record<string, string> = {
       fullName: 'name',
       emailAddress: 'email',
       phoneNumber: 'phone',
       profileImage: 'photo',
-      date_of_birth: 'date_of_birth',
+      dateOfBirth: 'date_of_birth',
+      birthPlace: 'birth_place',
+      birthCertificate: 'birth_certificate',
+      nidCard: 'nid_card',
       address: 'address',
       isStudent: 'is_student',
       gender: 'gender',
       location: 'location',
+      paymentMethod: 'payment_method',
+      attendance: 'attendance',
     };
 
     for (const key in this.formData) {
       if (this.formData.hasOwnProperty(key)) {
         const mappedKey = fieldMap[key] || key;
         const value = this.formData[key];
-
         if (value instanceof File) {
           form.append(mappedKey, value);
         } else if (typeof value === 'boolean') {
@@ -71,6 +76,7 @@ export class AddRiderComponent {
         }
       }
     }
+
     console.log('Sending FormData:');
     for (const pair of form.entries()) {
       console.log(`${pair[0]}:`, pair[1]);
@@ -120,19 +126,61 @@ export class AddRiderComponent {
       class: 'col-md-6',
     },
     {
-      label: 'Gender',
-      type: 'select',
-      formControlName: 'gender',
-      name: 'gender',
-      class: 'col-md-12',
-      options: ['Male', 'Female'],
+      label: 'Date of Birth',
+      type: 'date',
+      formControlName: 'dateOfBirth',
+      name: 'dateOfBirth',
+      class: 'col-md-6',
     },
     {
-      label: 'Location',
-      type: 'message',
-      formControlName: 'location',
-      name: 'location',
+      label: 'Payment Method',
+      type: 'select',
+      formControlName: 'paymentMethod',
+      name: 'paymentMethod',
+      class: 'col-md-6',
+      options: ['Via Debit', 'Via Credit', 'Cash', 'Bank Transfer'],
+    },
+    {
+      label: 'Birth Place',
+      type: 'text',
+      formControlName: 'birthPlace',
+      name: 'birthPlace',
       class: 'col-md-12',
+    },
+    {
+      label: 'Birth Certificate',
+      type: 'file',
+      formControlName: 'birthCertificate',
+      name: 'birthCertificate',
+      class: 'col-md-6',
+    },
+    {
+      label: 'NID Card',
+      type: 'file',
+      formControlName: 'nidCard',
+      name: 'nidCard',
+      class: 'col-md-6',
+    },
+    {
+      label: 'Address',
+      type: 'message',
+      formControlName: 'address',
+      name: 'address',
+      class: 'col-md-12',
+    },
+    {
+      label: 'Attendance',
+      type: 'select',
+      formControlName: 'attendance',
+      name: 'attendance',
+      class: 'col-md-12',
+      options: [
+        '10:00 AM - 5:00 PM',
+        '9:00 AM - 6:00 PM',
+        '8:00 AM - 4:00 PM',
+        '11:00 AM - 7:00 PM',
+        'Flexible Hours',
+      ],
     },
   ];
 }

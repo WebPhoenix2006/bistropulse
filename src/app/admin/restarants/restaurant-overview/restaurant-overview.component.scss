@@ -1,14 +1,5 @@
 @use "../../../../styles.scss" as *;
 
-// CSS Custom Properties for dynamic colors
-:host {
-  --dominant-color: rgb(17, 19, 21);
-  --dominant-color-alpha: rgba(17, 19, 21, 0.8);
-  --dominant-color-light: rgba(17, 19, 21, 0.3);
-  --dominant-color-dark: rgba(0, 0, 0, 0.9);
-  --complementary-color: rgba(100, 100, 100, 0.8);
-}
-
 .container {
   margin-top: 2rem;
   font-family: "Segoe UI", sans-serif;
@@ -41,8 +32,8 @@
 
   &:hover .img__clip {
     transform: rotate(-45deg);
-    // Dynamic box-shadow using CSS custom property
-    box-shadow: 0 0 20px var(--dominant-color);
+    background: var(--dominant-color-alpha, hsl(224, 66%, 32%));
+    box-shadow: 0 0 20px var(--dominant-color, hsl(224, 66%, 32%));
   }
 
   .img__clip:hover ~ .img__shadow,
@@ -61,12 +52,10 @@
     width: 40px;
     display: grid;
     place-items: center;
-    // Dynamic background using CSS custom property
-    background: var(--dominant-color-alpha, hsl(224, 66%, 32%));
+    background: var(--dominant-color-alpha);
+    box-shadow: 0 0 14px var(--dominant-color);
     height: 40px;
     border-radius: 50%;
-    // Dynamic box-shadow
-    box-shadow: 0 0 14px var(--dominant-color, hsl(224, 66%, 32%));
     transition: all 0.3s ease;
     font-weight: 600;
     cursor: pointer;
@@ -219,15 +208,15 @@
   padding: 2rem;
   border-radius: 15px;
   // Dynamic gradient background
-  background: linear-gradient(
-    135deg,
-    var(--dominant-color-light, rgba(17, 19, 21, 0.3)),
-    var(--complementary-color, rgba(100, 100, 100, 0.8))
-  );
+  background: var(--dominant-color);
   // Add subtle animation
   transition: all 0.5s ease;
   position: relative;
   overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
 
   // Add a subtle overlay for better text readability
   &::before {

@@ -27,17 +27,11 @@
           </div>
 
           <div class="img-container">
-            <div
-              class="img__clip"
-              [style.background]="dominantColor()"
-              [style.box-shadow]="'0 0 14px ' + dominantColor()"
-            >
+            <div class="img__clip">
               <i class="ri-menu-4-line"></i>
             </div>
             <div class="img__shadow">
-              <button class="btn btn-primary" (click)="refreshColors()">
-                Change Image
-              </button>
+              <button class="btn btn-primary">Change Image</button>
             </div>
             <img
               #restaurantImg
@@ -46,8 +40,6 @@
               *ngIf="restaurant?.restaurant_image_url"
               [src]="restaurant.restaurant_image_url"
               alt="Restaurant Image"
-              (load)="setupColorExtraction()"
-              (error)="setFallbackColor()"
             />
           </div>
 

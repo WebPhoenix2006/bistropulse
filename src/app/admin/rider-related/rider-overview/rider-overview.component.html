@@ -262,14 +262,13 @@
                       </thead>
                       <tbody>
                         <tr
+                          tabindex="0"
                           *ngFor="
                             let order of getOrdersByBranch(branch);
                             index as i
                           "
                           [routerLink]="[
-                            '/admin/riders/',
-                            order.order_id,
-                            'delivery'
+                            `/admin/restaurants/${restaurantId}/riders/${order.order_id}/delivery`
                           ]"
                           style="cursor: pointer"
                         >

@@ -36,12 +36,14 @@ export class RiderService {
     return throwError(() => new Error(error.message || 'Server error'));
   }
 
-  uploadRiders(data: FormData) {
+  uploadRiders(data: FormData, id: string) {
     const headers = this.getAuthHeaders()
       .delete('Content-Type') // Remove for FormData
       .set('Accept', '*/*');
 
-    return this.http.post(`${this.BASE_URL}/riders/`, data, { headers });
+    return this.http.post(`${this.BASE_URL}/restaurants/${id}/riders/`, data, {
+      headers,
+    });
   }
   // Get restaurant by
   getRestaurant(id: string): Observable<any> {

@@ -187,29 +187,12 @@ export class AddRiderComponent implements OnInit, OnDestroy {
       }
     }
 
-    // Add the appropriate ID based on context
-    if (this.contextType === 'restaurant' && this.restaurantId) {
-      form.append('restaurant_id', this.restaurantId);
-      console.log('📍 Adding restaurant_id:', this.restaurantId);
-    } else if (
-      this.contextType === 'branch' &&
-      this.branchId &&
-      this.franchiseId
-    ) {
-      form.append('branch_id', this.branchId);
-      form.append('franchise_id', this.franchiseId);
-      console.log('📍 Adding branch context:', {
-        branchId: this.branchId,
-        franchiseId: this.franchiseId,
-      });
-    }
-
     console.log('📤 Sending FormData:');
     for (const pair of form.entries()) {
       console.log(`${pair[0]}:`, pair[1]);
     }
 
-    this.riderService.uploadRiders(form).subscribe({
+    this.riderService.uploadRiders(form, this.restaurantId).subscribe({
       next: (res) => {
         console.log('✅ Rider uploaded successfully!', res);
         this.isLoading.set(false);

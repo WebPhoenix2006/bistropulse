@@ -99,28 +99,28 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
 
   // ============= GLOBAL RIDER MANAGEMENT (Static - only shows when no specific context) =============
-  {
-    label: 'Global Rider Management',
-    icon: 'bike',
-    collapseId: 'globalRiderNav',
-    roles: ['admin'],
-    displayCondition: 'always', // You might want to change this to show only when no context is selected
-    routeType: 'static',
-    children: [
-      {
-        label: 'All Riders Overview',
-        route: '/admin/riders', // This would be a new route for global rider overview
-        displayCondition: 'always',
-        routeType: 'static',
-      },
-      {
-        label: 'Global Rider Shifts',
-        route: '/admin/riders/shifts',
-        displayCondition: 'always',
-        routeType: 'static',
-      },
-    ],
-  },
+  // {
+  //   label: 'Global Rider Management',
+  //   icon: 'bike',
+  //   collapseId: 'globalRiderNav',
+  //   roles: ['admin'],
+  //   displayCondition: 'always', // You might want to change this to show only when no context is selected
+  //   routeType: 'static',
+  //   children: [
+  //     {
+  //       label: 'All Riders Overview',
+  //       route: '/admin/riders', // This would be a new route for global rider overview
+  //       displayCondition: 'always',
+  //       routeType: 'static',
+  //     },
+  //     {
+  //       label: 'Global Rider Shifts',
+  //       route: '/admin/riders/shifts',
+  //       displayCondition: 'always',
+  //       routeType: 'static',
+  //     },
+  //   ],
+  // },
 
   // ============= ORDER MANAGEMENT (GLOBAL) =============
   {

@@ -24,6 +24,7 @@ export class RiderOverviewComponent implements OnInit {
   activeBranch = '';
   selectedTabIndex = 0;
   riderId: string | null = null;
+  restaurantId: string | null = null;
 
   tabRoutes = ['overview', 'delivery', 'earnings', 'reviews'];
 
@@ -63,6 +64,8 @@ export class RiderOverviewComponent implements OnInit {
       const tab = segments.length > 1 ? segments[1].path : 'overview';
       this.selectedTab(tab);
     });
+    const id = this.route.snapshot.paramMap.get('id');
+    this.restaurantId = id;
   }
 
   loadRiders() {

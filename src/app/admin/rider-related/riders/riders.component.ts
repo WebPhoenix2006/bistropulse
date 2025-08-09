@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RiderService } from '../../../shared/services/rider.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-riders',
@@ -17,7 +17,6 @@ export class RidersComponent implements OnInit {
   searchTerm = '';
   riders: any[] = [];
   filteredList: any[] = [];
-
   isLoading = false;
   currentPage = 1;
   itemsPerPage = 10;
@@ -29,8 +28,15 @@ export class RidersComponent implements OnInit {
     private toastr: ToastrService,
     public slowNetwork: SlowNetworkService,
     private filterPipe: FilterByPipe,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private router: Router
   ) {}
+
+  viewRider(): void {
+    this.router.navigateByUrl(
+      `/admin/restaurants/${this.restaurantId()}/riders/overview`
+    );
+  }
 
   ngOnInit(): void {
     const token = localStorage.getItem('auth_token');
@@ -54,6 +60,7 @@ export class RidersComponent implements OnInit {
       next: (res: any) => {
         this.riders =
           res.results.map((c: any) => ({ ...c, checked: false })) || [];
+        console.log(this.riders);
         this.applyFilters();
         this.totalCount = this.filteredList.length;
         this.isLoading = false;

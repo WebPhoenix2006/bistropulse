@@ -41,7 +41,7 @@ export class RiderService {
       .delete('Content-Type') // Remove for FormData
       .set('Accept', '*/*');
 
-    return this.http.post(`${this.BASE_URL}/riderss/`, data, { headers });
+    return this.http.post(`${this.BASE_URL}/riders/`, data, { headers });
   }
   // Get restaurant by
   getRestaurant(id: string): Observable<any> {

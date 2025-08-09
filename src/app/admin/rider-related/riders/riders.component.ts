@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RiderService } from '../../../shared/services/rider.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-riders',
@@ -11,7 +12,7 @@ import { RiderService } from '../../../shared/services/rider.service';
   templateUrl: './riders.component.html',
   styleUrl: './riders.component.scss',
 })
-export class RidersComponent {
+export class RidersComponent implements OnInit {
   riderservice = inject(RiderService);
   searchTerm = '';
   riders: any[] = [];
@@ -21,13 +22,14 @@ export class RidersComponent {
   currentPage = 1;
   itemsPerPage = 10;
   totalCount = 0;
-  
+  restaurantId = signal<string | null>(null); // starts as null
 
   openDropdownIndex: number | null = null;
   constructor(
     private toastr: ToastrService,
     public slowNetwork: SlowNetworkService,
-    private filterPipe: FilterByPipe
+    private filterPipe: FilterByPipe,
+    private activeRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,9 @@ export class RidersComponent {
     if (token) {
       this.loadRiders();
     }
+
+    const id = this.activeRoute.snapshot.paramMap.get('id');
+    this.restaurantId.set(id);
   }
 
   loadRiders(): void {

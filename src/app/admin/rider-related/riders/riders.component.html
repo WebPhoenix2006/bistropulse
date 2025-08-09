@@ -16,7 +16,7 @@
 
       <app-button
         buttonText="Add Rider"
-        routerLink="/admin/riders/add-rider"
+        [routerLink]="`/admin/restaurants/${restaurantId()}/riders/add-rider`"
       ></app-button>
 
       <select class="btn rounder-2">
@@ -92,7 +92,7 @@
               <span>{{ customer.phone }}</span>
             </td>
             <td>
-                <span>10:00 AM - 3:00 PM</span>
+              <span>10:00 AM - 3:00 PM</span>
             </td>
             <td>
               <span>{{ customer.address }}</span>

@@ -21,7 +21,7 @@
     <!-- Main Form -->
     <form
       class="update-Customer container"
-      (submit)="onSubmit(); $event.stopPropagation()"
+      (submit)="onSubmit(); $event.preventDefault()"
     >
       <div class="row">
         <!-- University Student Checkbox (outside @for) -->

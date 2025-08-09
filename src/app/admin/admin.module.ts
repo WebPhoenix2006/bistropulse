@@ -38,6 +38,9 @@ import { FranchiseListComponent } from './franchises/franchise-list/franchise-li
 import { BranchListComponent } from './franchises/branch-list/branch-list.component';
 import { AddBranchComponent } from './franchises/add-branch/add-branch.component';
 import { AddFranchiseComponent } from './franchises/add-franchise/add-franchise.component';
+import { BranchRiderShiftsComponent } from './franchise-branch-rider-related/branch-rider-shifts/branch-rider-shifts.component';
+import { BranchRidersComponent } from './franchise-branch-rider-related/branch-riders/branch-riders.component';
+import { AddBranchRiderComponent } from './franchise-branch-rider-related/add-branch-rider/add-branch-rider.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +71,9 @@ import { AddFranchiseComponent } from './franchises/add-franchise/add-franchise.
     AddBranchComponent,
     BranchListComponent,
     AddFranchiseComponent,
+    BranchRiderShiftsComponent,
+    BranchRidersComponent,
+    AddBranchRiderComponent,
   ],
 
   imports: [

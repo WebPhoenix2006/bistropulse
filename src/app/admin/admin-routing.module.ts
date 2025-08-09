@@ -119,6 +119,11 @@ const routes: Routes = [
             data: { animation: 'RidersList', breadcrumb: 'List' },
           },
           {
+            path: 'add-rider',
+            component: AddRiderComponent,
+            data: { animation: 'AddRider', breadcrumb: 'Add Rider' },
+          },
+          {
             path: 'shifts',
             component: RiderShiftsComponent,
             data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },

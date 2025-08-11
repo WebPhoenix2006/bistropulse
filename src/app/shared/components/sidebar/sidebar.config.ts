@@ -98,29 +98,29 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= RIDER MANAGEMENT =============
-  {
-    label: 'Rider Management',
-    icon: 'bike',
-    collapseId: 'riderNav',
-    roles: ['admin'],
-    displayCondition: 'always',
-    routeType: 'static',
-    children: [
-      {
-        label: 'Rider List',
-        route: '/admin/riders',
-        displayCondition: 'always',
-        routeType: 'static',
-      },
-      {
-        label: 'Rider Shifts',
-        route: '/admin/riders/shifts',
-        displayCondition: 'always',
-        routeType: 'static',
-      },
-    ],
-  },
+  // ============= GLOBAL RIDER MANAGEMENT (Static - only shows when no specific context) =============
+  // {
+  //   label: 'Global Rider Management',
+  //   icon: 'bike',
+  //   collapseId: 'globalRiderNav',
+  //   roles: ['admin'],
+  //   displayCondition: 'always', // You might want to change this to show only when no context is selected
+  //   routeType: 'static',
+  //   children: [
+  //     {
+  //       label: 'All Riders Overview',
+  //       route: '/admin/riders', // This would be a new route for global rider overview
+  //       displayCondition: 'always',
+  //       routeType: 'static',
+  //     },
+  //     {
+  //       label: 'Global Rider Shifts',
+  //       route: '/admin/riders/shifts',
+  //       displayCondition: 'always',
+  //       routeType: 'static',
+  //     },
+  //   ],
+  // },
 
   // ============= ORDER MANAGEMENT (GLOBAL) =============
   {
@@ -235,6 +235,36 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
+  // ============= RESTAURANT RIDERS (Dynamic - shows when restaurant selected) =============
+  {
+    label: 'Restaurant Riders',
+    icon: 'bike',
+    collapseId: 'restaurantRiders',
+    roles: ['admin', 'manager'],
+    displayCondition: 'restaurant-selected',
+    routeType: 'dynamic',
+    children: [
+      {
+        label: 'Riders List',
+        route: '/admin/restaurants/:id/riders',
+        displayCondition: 'restaurant-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'Add Rider',
+        route: '/admin/restaurants/:id/riders/add-rider',
+        displayCondition: 'restaurant-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'Rider Shifts',
+        route: '/admin/restaurants/:id/riders/shifts',
+        displayCondition: 'restaurant-selected',
+        routeType: 'dynamic',
+      },
+    ],
+  },
+
   // ============= BRANCH FOOD MENU (Dynamic - shows when branch selected) =============
   {
     label: 'Branch Food Menu',
@@ -259,6 +289,38 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       {
         label: 'Branch Extras',
         route: '/admin/franchises/:franchiseId/branches/:branchId/extras',
+        displayCondition: 'branch-selected',
+        routeType: 'dynamic',
+      },
+    ],
+  },
+
+  // ============= BRANCH RIDERS (Dynamic - shows when branch selected) =============
+  {
+    label: 'Branch Riders',
+    icon: 'bike',
+    collapseId: 'branchRiders',
+    roles: ['admin', 'manager'],
+    displayCondition: 'branch-selected',
+    routeType: 'dynamic',
+    children: [
+      {
+        label: 'Branch Riders List',
+        route: '/admin/franchises/:franchiseId/branches/:branchId/riders',
+        displayCondition: 'branch-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'Add Branch Rider',
+        route:
+          '/admin/franchises/:franchiseId/branches/:branchId/riders/add-rider',
+        displayCondition: 'branch-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'Branch Rider Shifts',
+        route:
+          '/admin/franchises/:franchiseId/branches/:branchId/riders/shifts',
         displayCondition: 'branch-selected',
         routeType: 'dynamic',
       },

@@ -36,6 +36,9 @@ import { OrderTrackingComponent } from './order-related/order-tracking/order-tra
 import { FranchiseOrderListComponent } from './franchise-order-related/franchise-order-list/franchise-order-list.component';
 import { FranchiseOrderHistoryComponent } from './franchise-order-related/franchise-order-history/franchise-order-history.component';
 import { AddBranchComponent } from './franchises/add-branch/add-branch.component';
+import { BranchRidersComponent } from './franchise-branch-rider-related/branch-riders/branch-riders.component';
+import { BranchRiderShiftsComponent } from './franchise-branch-rider-related/branch-rider-shifts/branch-rider-shifts.component';
+import { AddBranchRiderComponent } from './franchise-branch-rider-related/add-branch-rider/add-branch-rider.component';
 
 const routes: Routes = [
   {
@@ -65,7 +68,6 @@ const routes: Routes = [
           },
           {
             path: ':id',
-            // data: { breadcrumb: 'Restaurant' },
             children: [
               {
                 path: '',
@@ -105,57 +107,71 @@ const routes: Routes = [
                 component: AddExtraComponent,
                 data: { animation: 'AddExtra', breadcrumb: 'Add Extra' },
               },
-            ],
-          },
-        ],
-      },
-      {
-        path: 'riders',
-        data: { animation: 'Riders', breadcrumb: 'Riders' },
-        children: [
-          {
-            path: '',
-            component: RidersComponent,
-            data: { animation: 'RidersList', breadcrumb: 'List' },
-          },
-          {
+
+              // Riders under restaurants
+              {
+                path: 'riders',
+                data: { animation: 'Riders', breadcrumb: 'Riders' },
+                children: [
+                  {
+                    path: '',
+                    component: RidersComponent,
+                    data: { animation: 'RidersList', breadcrumb: 'List' },
+                  },
+                  {
             path: 'add-rider',
             component: AddRiderComponent,
             data: { animation: 'AddRider', breadcrumb: 'Add Rider' },
           },
           {
-            path: 'shifts',
-            component: RiderShiftsComponent,
-            data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },
-          },
-          {
-            path: 'add-rider',
-            component: AddRiderComponent,
-            data: { animation: 'RiderShifts', breadcrumb: 'add' },
-          },
-          {
-            path: ':id',
-            children: [
-              { path: '', redirectTo: 'overview', pathMatch: 'full' },
-              {
-                path: 'overview',
-                component: RiderOverviewComponent,
-                data: { animation: 'RiderOverview', breadcrumb: 'Overview' },
-              },
-              {
-                path: 'delivery',
-                component: OrderTrackingComponent,
-                data: { animation: 'RiderDelivery', breadcrumb: 'Delivery' },
-              },
-              {
-                path: 'earnings',
-                component: RiderDeliveryComponent,
-                data: { animation: 'RiderEarnings', breadcrumb: 'Earnings' },
-              },
-              {
-                path: 'reviews',
-                component: RiderDeliveryComponent,
-                data: { animation: 'RiderReviews', breadcrumb: 'Reviews' },
+                    path: 'shifts',
+                    component: RiderShiftsComponent,
+                    data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },
+                  },
+                  {
+                    path: 'overview',
+                    component: RiderOverviewComponent,
+                    data: {
+                      animation: 'RiderOverview',
+                      breadcrumb: 'overview',
+                    },
+                  },
+                  {
+                    path: 'add-rider',
+                    component: AddRiderComponent,
+                    data: { animation: 'AddRider', breadcrumb: 'Add' },
+                  },
+                  {
+                    path: ':riderId',
+                    children: [
+                      { path: '', redirectTo: 'overview', pathMatch: 'full' },
+                      {
+                        path: 'delivery',
+                        component: OrderTrackingComponent,
+                        data: {
+                          animation: 'RiderDelivery',
+                          breadcrumb: 'Delivery',
+                        },
+                      },
+                      {
+                        path: 'earnings',
+                        component: RiderDeliveryComponent,
+                        data: {
+                          animation: 'RiderEarnings',
+                          breadcrumb: 'Earnings',
+                        },
+                      },
+                      {
+                        path: 'reviews',
+                        component: RiderDeliveryComponent,
+                        data: {
+                          animation: 'RiderReviews',
+                          breadcrumb: 'Reviews',
+                        },
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
@@ -265,7 +281,65 @@ const routes: Routes = [
           {
             path: ':franchiseId/branches/add-branch',
             component: AddBranchComponent,
-            data: { breadcrumb: 'Order History' },
+            data: { breadcrumb: 'Add Branch' },
+          },
+
+          // Riders under franchise branches
+          {
+            path: ':franchiseId/branches/:branchId/riders',
+            data: { animation: 'BranchRiders', breadcrumb: 'Riders' },
+            children: [
+              {
+                path: '',
+                component: BranchRidersComponent,
+                data: { animation: 'RidersList', breadcrumb: 'List' },
+              },
+              {
+                path: 'shifts',
+                component: BranchRiderShiftsComponent,
+                data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },
+              },
+              {
+                path: 'add-rider',
+                component: AddBranchRiderComponent,
+                data: { animation: 'AddRider', breadcrumb: 'Add' },
+              },
+              {
+                path: ':riderId',
+                children: [
+                  { path: '', redirectTo: 'overview', pathMatch: 'full' },
+                  {
+                    path: 'overview',
+                    component: RiderOverviewComponent,
+                    data: {
+                      animation: 'RiderOverview',
+                      breadcrumb: 'Overview',
+                    },
+                  },
+                  {
+                    path: 'delivery',
+                    component: OrderTrackingComponent,
+                    data: {
+                      animation: 'RiderDelivery',
+                      breadcrumb: 'Delivery',
+                    },
+                  },
+                  {
+                    path: 'earnings',
+                    component: RiderDeliveryComponent,
+                    data: {
+                      animation: 'RiderEarnings',
+                      breadcrumb: 'Earnings',
+                    },
+                  },
+                  {
+                    path: 'reviews',
+                    component: RiderDeliveryComponent,
+                    data: { animation: 'RiderReviews', breadcrumb: 'Reviews' },
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

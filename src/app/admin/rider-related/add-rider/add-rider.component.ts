@@ -1,6 +1,8 @@
-import { Router } from '@angular/router';
-import { Component, signal } from '@angular/core';
-import { CustomersService } from '../../../shared/services/customers.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Component, signal, OnInit, OnDestroy } from '@angular/core';
+import { RiderService } from '../../../shared/services/rider.service';
+import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-rider',
@@ -8,10 +10,19 @@ import { CustomersService } from '../../../shared/services/customers.service';
   templateUrl: './add-rider.component.html',
   styleUrl: './add-rider.component.scss',
 })
-export class AddRiderComponent {
+export class AddRiderComponent implements OnInit, OnDestroy {
   imagePreview: string | ArrayBuffer | null = null;
   isLoading = signal<boolean>(false);
   isSuccessfull = signal<boolean>(false);
+
+  // Context variables
+  restaurantId: string | null = null;
+  franchiseId: string | null = null;
+  branchId: string | null = null;
+  contextType: 'restaurant' | 'branch' | null = null;
+
+  private destroy$ = new Subject<void>();
+
   formData: { [key: string]: any } = {
     gender: 'Male',
     isStudent: false,
@@ -21,8 +32,96 @@ export class AddRiderComponent {
 
   constructor(
     private router: Router,
-    private customerService: CustomersService
+    private route: ActivatedRoute,
+    private riderService: RiderService,
+    private restaurantContext: RestaurantContextService
   ) {}
+
+  ngOnInit(): void {
+    // Extract IDs from route parameters
+    this.extractRouteParameters();
+
+    // Subscribe to route parameter changes
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.extractRouteParameters();
+    });
+
+    // Also listen to context service changes
+    this.restaurantContext.contextState$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((contextState) => {
+        // Update context from service if route params are missing
+        if (!this.restaurantId && !this.franchiseId && !this.branchId) {
+          this.restaurantId = contextState.restaurantId;
+          this.franchiseId = contextState.franchiseId;
+          this.branchId = contextState.branchId;
+          this.updateContextType();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private extractRouteParameters(): void {
+    // Get the full route snapshot including parent routes
+    let currentRoute = this.route.snapshot;
+
+    // Traverse up the route tree to get all parameters
+    while (currentRoute) {
+      const params = currentRoute.params;
+
+      // Extract restaurant ID (from restaurant routes)
+      if (params['id'] && !this.restaurantId) {
+        this.restaurantId = params['id'];
+      }
+
+      // Extract franchise ID
+      if (params['franchiseId'] && !this.franchiseId) {
+        this.franchiseId = params['franchiseId'];
+      }
+
+      // Extract branch ID
+      if (params['branchId'] && !this.branchId) {
+        this.branchId = params['branchId'];
+      }
+
+      currentRoute = currentRoute.parent;
+    }
+
+    this.updateContextType();
+    this.updateContextService();
+
+    console.log('🔍 Extracted route parameters:', {
+      restaurantId: this.restaurantId,
+      franchiseId: this.franchiseId,
+      branchId: this.branchId,
+      contextType: this.contextType,
+    });
+  }
+
+  private updateContextType(): void {
+    if (this.branchId && this.franchiseId) {
+      this.contextType = 'branch';
+    } else if (this.restaurantId) {
+      this.contextType = 'restaurant';
+    } else {
+      this.contextType = null;
+    }
+  }
+
+  private updateContextService(): void {
+    // Update the context service with the extracted parameters
+    if (this.branchId && this.franchiseId) {
+      this.restaurantContext.setBranchId(this.branchId, this.franchiseId);
+    } else if (this.franchiseId) {
+      this.restaurantContext.setFranchiseId(this.franchiseId);
+    } else if (this.restaurantId) {
+      this.restaurantContext.setRestaurantId(this.restaurantId);
+    }
+  }
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -44,10 +143,20 @@ export class AddRiderComponent {
   }
 
   onSubmit(): void {
+    // Validate that we have the required context
+    if (!this.restaurantId && !this.branchId) {
+      console.error('❌ No restaurant or branch context found');
+      alert(
+        'Error: No restaurant or branch context found. Please navigate from a restaurant or branch page.'
+      );
+      return;
+    }
+
     this.isLoading.set(true);
     const form = new FormData();
+
     const fieldMap: Record<string, string> = {
-      fullName: 'name',
+      full_name: 'full_name',
       emailAddress: 'email',
       phoneNumber: 'phone',
       profileImage: 'photo',
@@ -63,6 +172,7 @@ export class AddRiderComponent {
       attendance: 'attendance',
     };
 
+    // Add form data
     for (const key in this.formData) {
       if (this.formData.hasOwnProperty(key)) {
         const mappedKey = fieldMap[key] || key;
@@ -77,25 +187,57 @@ export class AddRiderComponent {
       }
     }
 
-    console.log('Sending FormData:');
+    console.log('📤 Sending FormData:');
     for (const pair of form.entries()) {
       console.log(`${pair[0]}:`, pair[1]);
     }
 
-    this.customerService.uploadCustomer(form).subscribe({
+    this.riderService.uploadRiders(form, this.restaurantId).subscribe({
       next: (res) => {
-        console.log('Uploaded!', res);
+        console.log('✅ Rider uploaded successfully!', res);
         this.isLoading.set(false);
         this.isSuccessfull.set(true);
+
         setTimeout(() => {
-          this.router.navigateByUrl('/admin/customers');
+          // Navigate back to the appropriate riders list
+          this.navigateToRidersList();
         }, 2000);
       },
       error: (err) => {
-        console.warn('Upload failed', err);
+        console.error(
+          '❌ Upload failed:',
+          err.status,
+          err.error?.message || err.message
+        );
         this.isLoading.set(false);
+
+        // Show user-friendly error message
+        if (err.status === 400 && err.error?.message) {
+          alert(`Upload failed: ${err.error.message}`);
+        } else {
+          alert('Upload failed. Please check your data and try again.');
+        }
       },
     });
+  }
+
+  private navigateToRidersList(): void {
+    if (this.contextType === 'restaurant' && this.restaurantId) {
+      this.router.navigateByUrl(
+        `/admin/restaurants/${this.restaurantId}/riders`
+      );
+    } else if (
+      this.contextType === 'branch' &&
+      this.franchiseId &&
+      this.branchId
+    ) {
+      this.router.navigateByUrl(
+        `/admin/franchises/${this.franchiseId}/branches/${this.branchId}/riders`
+      );
+    } else {
+      // Fallback to dashboard
+      this.router.navigateByUrl('/admin/dashboard');
+    }
   }
 
   removeImage(): void {
@@ -103,12 +245,26 @@ export class AddRiderComponent {
     this.formData['profileImage'] = null;
   }
 
+  // Helper method to get context display text
+  getContextDisplayText(): string {
+    if (this.contextType === 'restaurant' && this.restaurantId) {
+      return `Restaurant: ${this.restaurantId}`;
+    } else if (
+      this.contextType === 'branch' &&
+      this.branchId &&
+      this.franchiseId
+    ) {
+      return `Branch: ${this.branchId} (Franchise: ${this.franchiseId})`;
+    }
+    return 'No context';
+  }
+
   inputs = [
     {
-      label: 'Name',
+      label: 'Full name',
       type: 'text',
-      formControlName: 'fullName',
-      name: 'fullName',
+      formControlName: 'full_name',
+      name: 'full_name',
       class: 'col-md-12',
     },
     {

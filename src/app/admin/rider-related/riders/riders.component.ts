@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RiderService } from '../../../shared/services/rider.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-riders',
@@ -11,30 +12,40 @@ import { RiderService } from '../../../shared/services/rider.service';
   templateUrl: './riders.component.html',
   styleUrl: './riders.component.scss',
 })
-export class RidersComponent {
+export class RidersComponent implements OnInit {
   riderservice = inject(RiderService);
   searchTerm = '';
   riders: any[] = [];
   filteredList: any[] = [];
-
   isLoading = false;
   currentPage = 1;
   itemsPerPage = 10;
   totalCount = 0;
-  
+  restaurantId = signal<string | null>(null); // starts as null
 
   openDropdownIndex: number | null = null;
   constructor(
     private toastr: ToastrService,
     public slowNetwork: SlowNetworkService,
-    private filterPipe: FilterByPipe
+    private filterPipe: FilterByPipe,
+    private activeRoute: ActivatedRoute,
+    private router: Router
   ) {}
+
+  viewRider(): void {
+    this.router.navigateByUrl(
+      `/admin/restaurants/${this.restaurantId()}/riders/overview`
+    );
+  }
 
   ngOnInit(): void {
     const token = localStorage.getItem('auth_token');
     if (token) {
       this.loadRiders();
     }
+
+    const id = this.activeRoute.snapshot.paramMap.get('id');
+    this.restaurantId.set(id);
   }
 
   loadRiders(): void {
@@ -49,6 +60,7 @@ export class RidersComponent {
       next: (res: any) => {
         this.riders =
           res.results.map((c: any) => ({ ...c, checked: false })) || [];
+        console.log(this.riders);
         this.applyFilters();
         this.totalCount = this.filteredList.length;
         this.isLoading = false;

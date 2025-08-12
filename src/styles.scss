@@ -446,6 +446,7 @@ input:checked + .slider:before {
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  margin-top: 30px;
 
   &::-webkit-scrollbar {
     width: 10px;

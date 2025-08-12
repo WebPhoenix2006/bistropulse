@@ -1,16 +1,16 @@
 @use "../../../../styles.scss" as *;
 
 #filter-modal-button {
-  color: #9a9fa5;
-  border: 1px solid $gray;
-  font-size: 15px;
-  padding: 8px;
-  font-weight: 600;
-  transition: 0.3s ease-in-out;
-  position: relative;
-  display: flex;
-  gap: 9px;
-  border-radius: 1.5px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer !important;
+  transition: all 0.2s;
+  display: flex !important;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
 
   i {
     width: 14.5px;

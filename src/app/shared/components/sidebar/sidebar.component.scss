@@ -21,7 +21,6 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
   z-index: 1000;
   transition: all 0.5s ease-in-out;
 
-
   &.sidebar-small {
     width: 5rem;
     align-items: center;
@@ -50,20 +49,25 @@ $sidebar-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     }
 
     .icon {
-      padding: 10px 15px;
-      border-radius: 5px;
+      padding: 12px 15px;
+      border-radius: 100%;
       position: absolute;
-      right: 20px;
+      right: 0;
+      transform: translateX(50%);
       border: none;
       i {
         color: $primary;
-        font-size: 30px !important;
+        font-size: 20px !important;
+        transition: all 0.3s linear;
       }
       transition: all 0.3s linear;
 
       &:hover {
-        background-color: #ccc;
         transition: all 0.3s linear;
+        i {
+          transform: translateX(-7px);
+          transition: all 0.3s linear;
+        }
       }
     }
   }

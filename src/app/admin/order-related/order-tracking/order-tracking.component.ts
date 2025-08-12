@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { OrderTrackingDetails } from '../../../interfaces/order.model';
 import { OrderTrackingService } from '../../../shared/services/order-tracking.service';
@@ -14,8 +9,10 @@ import { OrderTrackingService } from '../../../shared/services/order-tracking.se
   styleUrls: ['./order-tracking.component.scss'],
   standalone: false,
 })
-export class OrderTrackingComponent implements OnInit, OnDestroy {
+export class OrderTrackingComponent implements OnInit {
   @Input() orderId!: string;
+  hasProfile = signal<boolean>(true);
+
   orderData?: OrderTrackingDetails;
   private subscription?: Subscription;
 
@@ -36,11 +33,5 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
         console.error('❌ WebSocket error:', err);
       },
     });
-  }
-
-  ngOnDestroy(): void {
-    console.log('🛑 Destroying order tracking component');
-    this.trackingService.disconnect();
-    this.subscription?.unsubscribe();
   }
 }

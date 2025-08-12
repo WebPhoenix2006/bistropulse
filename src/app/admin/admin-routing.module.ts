@@ -39,6 +39,7 @@ import { AddBranchComponent } from './franchises/add-branch/add-branch.component
 import { BranchRidersComponent } from './franchise-branch-rider-related/branch-riders/branch-riders.component';
 import { BranchRiderShiftsComponent } from './franchise-branch-rider-related/branch-rider-shifts/branch-rider-shifts.component';
 import { AddBranchRiderComponent } from './franchise-branch-rider-related/add-branch-rider/add-branch-rider.component';
+import { RestaurantOrderListComponent } from './restarants/restaurant-order-list/restaurant-order-list.component';
 
 const routes: Routes = [
   {
@@ -46,29 +47,38 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+
+      // ===================== DASHBOARD SECTION =====================
       {
         path: 'dashboard',
         component: DashboardComponent,
         canActivate: [authGuard],
         data: { animation: 'DashboardPage', breadcrumb: 'Dashboard' },
       },
+
+      // ===================== RESTAURANTS SECTION =====================
       {
         path: 'restaurants',
         data: { animation: 'Restaurants', breadcrumb: 'Restaurants' },
         children: [
+          // Restaurant List
           {
             path: '',
             component: RestaurantListComponent,
             data: { animation: 'RestaurantList', breadcrumb: 'List' },
           },
+          // Add New Restaurant
           {
             path: 'add-restaurant',
             component: AddRestaurantComponent,
             data: { animation: 'AddRestaurant', breadcrumb: 'Add Restaurant' },
           },
+
+          // ========== SPECIFIC RESTAURANT MANAGEMENT (:id) ==========
           {
             path: ':id',
             children: [
+              // Restaurant Overview
               {
                 path: '',
                 component: RestaurantOverviewComponent,
@@ -77,6 +87,8 @@ const routes: Routes = [
                   breadcrumb: 'Overview',
                 },
               },
+
+              // --- Food Management ---
               {
                 path: 'food-list',
                 component: FoodListComponent,
@@ -108,7 +120,16 @@ const routes: Routes = [
                 data: { animation: 'AddExtra', breadcrumb: 'Add Extra' },
               },
 
-              // Riders under restaurants
+              // *** INDIVIDUAL RESTAURANT ORDERS ***
+              // Route: /restaurants/:id/orders
+              // This shows orders for a SPECIFIC restaurant
+              {
+                path: 'orders',
+                component: RestaurantOrderListComponent,
+                data: { animation: 'OrderList', breadcrumb: 'Orders' },
+              },
+
+              // --- Restaurant Riders Management ---
               {
                 path: 'riders',
                 data: { animation: 'Riders', breadcrumb: 'Riders' },
@@ -172,6 +193,8 @@ const routes: Routes = [
           },
         ],
       },
+
+      // ===================== CUSTOMERS SECTION =====================
       {
         path: 'customers',
         data: { animation: 'Customers', breadcrumb: 'Customers' },
@@ -193,6 +216,9 @@ const routes: Routes = [
           },
         ],
       },
+
+      // ===================== GLOBAL ORDERS SECTION =====================
+      // These routes handle ALL orders across the system
       {
         path: 'orders',
         data: { animation: 'Orders', breadcrumb: 'Orders' },
@@ -214,10 +240,13 @@ const routes: Routes = [
           },
         ],
       },
+
+      // ===================== FRANCHISES SECTION =====================
       {
         path: 'franchises',
         data: { breadcrumb: 'Franchises' },
         children: [
+          // Franchise List & Management
           {
             path: '',
             component: FranchiseListComponent,
@@ -233,16 +262,27 @@ const routes: Routes = [
             component: OrdersComponent,
             data: { breadcrumb: 'Orders' },
           },
+
+          // ========== SPECIFIC FRANCHISE MANAGEMENT ==========
           {
             path: ':franchiseId',
             component: FranchiseOverviewComponent,
             data: { breadcrumb: 'Overview' },
           },
+
+          // --- Branch Management ---
           {
             path: ':franchiseId/branches',
             component: BranchListComponent,
             data: { breadcrumb: 'Branches' },
           },
+          {
+            path: ':franchiseId/branches/add-branch',
+            component: AddBranchComponent,
+            data: { breadcrumb: 'Add Branch' },
+          },
+
+          // --- Branch-Specific Food Management ---
           {
             path: ':franchiseId/branches/:branchId/food-list',
             component: BranchListComponent,
@@ -263,6 +303,8 @@ const routes: Routes = [
             component: BranchListComponent,
             data: { breadcrumb: 'Categories' },
           },
+
+          // *** FRANCHISE BRANCH ORDERS ***
           {
             path: ':franchiseId/branches/:branchId/orders',
             component: FranchiseOrderListComponent,
@@ -273,13 +315,8 @@ const routes: Routes = [
             component: FranchiseOrderHistoryComponent,
             data: { breadcrumb: 'Order History' },
           },
-          {
-            path: ':franchiseId/branches/add-branch',
-            component: AddBranchComponent,
-            data: { breadcrumb: 'Add Branch' },
-          },
 
-          // Riders under franchise branches
+          // --- Branch Riders Management ---
           {
             path: ':franchiseId/branches/:branchId/riders',
             data: { animation: 'BranchRiders', breadcrumb: 'Riders' },
@@ -338,6 +375,8 @@ const routes: Routes = [
           },
         ],
       },
+
+      // ===================== UTILITY SECTIONS =====================
       {
         path: 'chat',
         component: ChatComponent,

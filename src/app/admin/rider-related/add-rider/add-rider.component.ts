@@ -159,7 +159,7 @@ export class AddRiderComponent implements OnInit, OnDestroy {
       full_name: 'full_name',
       emailAddress: 'email',
       phoneNumber: 'phone',
-      profileImage: 'photo',
+      profileImage: 'profile_image',
       dateOfBirth: 'date_of_birth',
       birthPlace: 'birth_place',
       birthCertificate: 'birth_certificate',

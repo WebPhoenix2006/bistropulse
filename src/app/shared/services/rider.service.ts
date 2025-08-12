@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import { RiderRequestInterface } from '../../interfaces/rider.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +55,15 @@ export class RiderService {
   getRiders(page: number = 1, pageSize: number = 10) {
     return this.http.get(
       `${this.BASE_URL}/riders/?page=${page}&page_size=${pageSize}`,
+      {
+        headers: this.getAuthHeaders(),
+      }
+    );
+  }
+
+  getRestaurantRiders(restaurantId: string): Observable<RiderRequestInterface> {
+    return this.http.get<RiderRequestInterface>(
+      `${this.BASE_URL}/restaurants/${restaurantId}/riders/`,
       {
         headers: this.getAuthHeaders(),
       }

@@ -33,20 +33,20 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
   source1$ = of('A', 'B', 'C');
   source2$ = timer(1000, 1000).pipe(map((v) => `value ${v}`));
 
-  combineStuff(): void {
-    combineLatest([this.source1$, this.source2$])
-      .pipe(
-        takeUntil(timer(10000)) // Automatically unsubscribes after 10 seconds
-      )
-      .subscribe(([val1, val2]) => {
-        console.log(
-          `Latest from source1: ${val1}, Latest from source2: ${val2}`
-        );
-      });
-  }
+  // combineStuff(): void {
+  //   combineLatest([this.source1$, this.source2$])
+  //     .pipe(
+  //       takeUntil(timer(10000)) // Automatically unsubscribes after 10 seconds
+  //     )
+  //     .subscribe(([val1, val2]) => {
+  //       console.log(
+  //         `Latest from source1: ${val1}, Latest from source2: ${val2}`
+  //       );
+  //     });
+  // }
 
   ngAfterViewInit(): void {
-    this.combineStuff();
+    // this.combineStuff();
   }
 
   restaurants: Array<Restaurant> = [];

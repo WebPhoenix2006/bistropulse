@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { OrderTrackingService } from '../../../shared/services/order-tracking.service';
-import { OrderItem } from '../../../interfaces/order.interface';
+import { Order, OrderItem } from '../../../interfaces/order.interface';
 
 @Component({
   selector: 'app-order-tracking',
@@ -14,7 +14,7 @@ export class OrderTrackingComponent implements OnInit {
   @Input() orderId!: string;
   hasProfile = signal<boolean>(true);
 
-  orderData?: OrderTrackingDetails;
+  orderData?: OrderItem;
   private subscription?: Subscription;
 
   constructor(private trackingService: OrderTrackingService) {}

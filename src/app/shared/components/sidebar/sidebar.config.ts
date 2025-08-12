@@ -16,6 +16,8 @@ export interface SidebarItem {
   routeType?: 'static' | 'dynamic';
 }
 
+export type Role = 'admin' | 'manager' | 'employee' | 'user';
+
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     label: 'Dashboard',
@@ -371,6 +373,22 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         label: 'Franchise Branches',
         route: '/admin/franchises/:franchiseId/branches',
         displayCondition: 'franchise-selected',
+        routeType: 'dynamic',
+      },
+    ],
+  },
+  {
+    label: 'Restaurant Orders',
+    icon: 'books',
+    collapseId: 'restaurantOrders',
+    roles: ['admin', 'manager'],
+    displayCondition: 'restaurant-selected',
+    routeType: 'dynamic',
+    children: [
+      {
+        label: 'Order list',
+        route: '/admin/restaurants/:id/orders',
+        displayCondition: 'restaurant-selected',
         routeType: 'dynamic',
       },
     ],

@@ -1,8 +1,7 @@
 <div class="modal" [class.open]="isOpen" (click)="close()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <img
-      *ngIf="imageUrl"
-      [src]="imageUrl"
+      [src]="imageUrl || '/assets/images/no-profile-image.jpg'"
       alt="Image preview"
       (wheel)="onWheel($event)"
       (mousedown)="onMouseDown($event)"

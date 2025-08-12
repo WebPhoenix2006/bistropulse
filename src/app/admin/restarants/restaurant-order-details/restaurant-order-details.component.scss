@@ -27,18 +27,25 @@
   // Order Header
   .order-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid #eee;
+    flex-direction: column;
 
     .order-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 100% !important;
+
       h4 {
         margin: 0 0 10px 0;
         font-size: 1.5rem;
         font-weight: 600;
         color: #333;
+        display: inline-flex;
       }
 
       .order-meta {
@@ -55,8 +62,16 @@
 
     .order-actions {
       display: flex;
+      padding-inline-start: 22.5px;
       gap: 10px;
+      align-items: center;
+      justify-content: space-between;
       flex-wrap: wrap;
+
+      .first-button-block {
+        .assign-man-button {
+        }
+      }
     }
   }
 

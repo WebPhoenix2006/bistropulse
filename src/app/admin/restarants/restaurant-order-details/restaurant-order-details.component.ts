@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 
 interface DropdownOption {
   label: string;
@@ -62,14 +62,7 @@ interface Order {
 })
 export class RestaurantOrderDetailsComponent implements OnInit {
   // Dropdown options for assign deliveryman
-  assignDeliverymanOptions: DropdownOption[] = [
-    {
-      label: 'John Doe (+880 1234 5678)',
-      value: 'john_doe',
-      icon: 'user',
-      iconPosition: 'left',
-    },
-  ];
+  isDeliverymanDropdownOpen = signal<boolean>(false);
 
   // Dropdown options for payment
   paymentOptions: DropdownOption[] = [

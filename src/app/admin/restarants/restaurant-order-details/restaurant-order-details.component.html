@@ -14,7 +14,22 @@
               <span class="order-date">Sat, Nov 28 • 7:30:35 PM</span>
             </div>
           </div>
-          <div class="order-actions"></div>
+          <div class="order-actions">
+            <div class="first-button-block">
+              <span class="assign-man-button"
+                >Assign Deliveryman
+                <span
+                  ><i
+                    [ngClass]="
+                      isDeliverymanDropdownOpen()
+                        ? 'fa-caret-down'
+                        : 'fa-caret-up'
+                    "
+                    class="fa-solid"
+                  ></i> </span
+              ></span>
+            </div>
+          </div>
         </div>
 
         <!-- Delivery Section -->

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 import { RiderRequestInterface } from '../../../interfaces/rider.interface';
+import { ImageViewerService } from '../../../shared/services/image-viewer.service';
 
 interface DropdownOption {
   label: string;
@@ -74,8 +75,14 @@ export class RestaurantOrderDetailsComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private router: Router,
     private slowNetwork: SlowNetworkService,
-    private toastr: BootstrapToastService
+    private toastr: BootstrapToastService,
+    private viewerService: ImageViewerService
   ) {}
+
+  // *** METHOD FOR USING THE VIEWER SERVICE ***
+  openImage(url: string) {
+    this.viewerService.open(url);
+  }
 
   // ***  IMPORTANT VARIABLES ***
   isLoading = signal<boolean>(false);
@@ -109,6 +116,7 @@ export class RestaurantOrderDetailsComponent implements OnInit {
         this.toastr.showSuccess('Fetched riders');
         this.slowNetwork.clear();
         this.riders = data.results;
+        this.isLoading.set(false);
       },
       error: (err) => {
         this.toastr.showError('Failed to fetch riders');

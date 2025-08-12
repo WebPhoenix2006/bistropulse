@@ -25,6 +25,8 @@ import { ModalComponent } from './components/modal/modal.component';
 import { AnimateComponent } from './components/animate/animate.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { BackToTopComponent } from './components/back-to-top/back-to-top.component';
+import { SmallestSpinnerComponent } from './components/smallest-spinner/smallest-spinner.component';
+import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { BackToTopComponent } from './components/back-to-top/back-to-top.compone
     AnimateComponent,
     BreadcrumbsComponent,
     BackToTopComponent,
+    SmallestSpinnerComponent,
+    ImageViewerComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, RouterLink],
   exports: [
@@ -77,6 +81,8 @@ import { BackToTopComponent } from './components/back-to-top/back-to-top.compone
     AnimateComponent,
     BreadcrumbsComponent,
     BackToTopComponent,
+    SmallestSpinnerComponent,
+    ImageViewerComponent,
   ],
 })
 export class SharedModule {}

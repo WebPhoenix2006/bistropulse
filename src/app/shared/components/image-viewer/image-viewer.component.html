@@ -1,0 +1,29 @@
+<div class="modal" [class.open]="isOpen" (click)="close()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <img
+      *ngIf="imageUrl"
+      [src]="imageUrl"
+      alt="Image preview"
+      (wheel)="onWheel($event)"
+      (mousedown)="onMouseDown($event)"
+      (mousemove)="onMouseMove($event)"
+      (mouseup)="onMouseUp()"
+      (mouseleave)="onMouseUp()"
+      (dblclick)="onDoubleClick()"
+      [style.transform]="
+        'translate(' +
+        translateX +
+        'px,' +
+        translateY +
+        'px) scale(' +
+        scale +
+        ')'
+      "
+      [style.cursor]="scale > 1 ? 'grab' : 'default'"
+      draggable="false"
+    />
+    <button class="close-btn" (click)="close()">
+      <i class="fa-solid fa-times"></i>
+    </button>
+  </div>
+</div>

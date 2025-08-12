@@ -39,6 +39,9 @@
       <ng-template #onlineContent>
         <section [@routeAnimations]="prepareRoute(routerOutlet)">
           <router-outlet #routerOutlet="outlet"></router-outlet>
+          <app-image-viewer /><app-image-viewer
+            #globalViewer
+          ></app-image-viewer>
         </section>
       </ng-template>
     </main>

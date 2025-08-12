@@ -14,11 +14,14 @@ import {
   DestroyRef,
   ViewChild,
   ElementRef,
+  AfterViewInit,
 } from '@angular/core';
 import { OfflineService } from '../../shared/services/offline-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { RouterOutlet } from '@angular/router';
 import { routeAnimations } from '../../shared/animation/animations.service';
+import { ImageViewerService } from '../../shared/services/image-viewer.service';
+import { ImageViewerComponent } from '../../shared/components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-layout',
@@ -27,7 +30,7 @@ import { routeAnimations } from '../../shared/animation/animations.service';
   styleUrls: ['./layout.component.scss'],
   animations: [routeAnimations],
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   private effectRef?: EffectRef;
   isLeftSidebarCollapsed = signal<boolean>(false);
   isSidebarCollapsed = false;
@@ -37,8 +40,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
   toastr = inject(ToastrService);
   cdr = inject(ChangeDetectorRef);
   destroyRef = inject(DestroyRef);
+  viewerService = inject(ImageViewerService);
 
   screenWidth = signal<number>(0); // Initialize with 0 or a safe default
+
+  // *** LOGIC FOR USING THE IMAGE VIEWER ***
+  @ViewChild('globalViewer') globalViewer!: ImageViewerComponent;
+
+  ngAfterViewInit(): void {
+    this.viewerService.register(this.globalViewer);
+  }
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
     this.effectRef = effect(() => {

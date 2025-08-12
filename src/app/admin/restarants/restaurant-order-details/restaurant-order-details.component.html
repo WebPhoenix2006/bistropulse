@@ -20,6 +20,7 @@
                 class="assign-man-button"
                 (click)="toggleDeliverymanDropdown()"
               >
+                <app-smallest-spinner *ngIf="isLoading()" />
                 Assign Deliveryman
                 <span>
                   <i
@@ -57,6 +58,10 @@
                           rider.profile_image || '/assets/images/no-profile.png'
                         "
                         [alt]="rider.full_name"
+                        (click)="
+                          $event.stopPropagation();
+                          openImage(rider.profile_image)
+                        "
                       />
                     </div>
                     <div class="info-con">

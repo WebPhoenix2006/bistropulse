@@ -15,19 +15,73 @@
             </div>
           </div>
           <div class="order-actions">
-            <div class="first-button-block">
-              <span class="assign-man-button"
-                >Assign Deliveryman
-                <span
-                  ><i
+            <div class="first-button-block position-relative">
+              <span
+                class="assign-man-button"
+                (click)="toggleDeliverymanDropdown()"
+              >
+                Assign Deliveryman
+                <span>
+                  <i
                     [ngClass]="
-                      isDeliverymanDropdownOpen()
-                        ? 'fa-caret-down'
-                        : 'fa-caret-up'
+                      !isDeliverymanDropdownOpen()
+                        ? 'fa-caret-up'
+                        : 'fa-caret-down'
                     "
                     class="fa-solid"
-                  ></i> </span
-              ></span>
+                  ></i>
+                </span>
+              </span>
+              <div
+                class="rider__container"
+                [ngClass]="{ show: isDeliverymanDropdownOpen() }"
+              >
+                <div class="rider__container__search">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    [(ngModel)]="searchTerm"
+                  />
+                </div>
+
+                <!-- Show riders if there are results -->
+                <ng-container *ngIf="filteredRiders.length > 0">
+                  <div
+                    class="rider__container__rider"
+                    *ngFor="let rider of filteredRiders"
+                    (click)="selectRider(rider)"
+                  >
+                    <div class="img-con">
+                      <img
+                        [src]="
+                          rider.profile_image || '/assets/images/no-profile.png'
+                        "
+                        [alt]="rider.full_name"
+                      />
+                    </div>
+                    <div class="info-con">
+                      <h1
+                        class="name"
+                        [innerHTML]="highlightMatch(rider.full_name)"
+                      ></h1>
+                      <p
+                        class="number"
+                        [innerHTML]="highlightMatch(rider.phone)"
+                      ></p>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <!-- Show no results message -->
+                <div
+                  class="no-results-con"
+                  *ngIf="filteredRiders.length === 0 && searchTerm"
+                >
+                  <h1>
+                    <span><svg-icons name="glass" /></span>No Results
+                  </h1>
+                </div>
+              </div>
             </div>
           </div>
         </div>

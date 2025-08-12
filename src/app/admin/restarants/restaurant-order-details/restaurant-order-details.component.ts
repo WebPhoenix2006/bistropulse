@@ -1,4 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
+import { RiderService } from '../../../shared/services/rider.service';
+import { RestaurantService } from '../../../shared/services/restaurant.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
+import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
+import { RiderRequestInterface } from '../../../interfaces/rider.interface';
 
 interface DropdownOption {
   label: string;
@@ -61,30 +67,89 @@ interface Order {
   styleUrl: './restaurant-order-details.component.scss',
 })
 export class RestaurantOrderDetailsComponent implements OnInit {
+  // *** CONSTRUCTOR DECLARED ABOVE ***
+  constructor(
+    private riderService: RiderService,
+    private restaurantService: RestaurantService,
+    private activeRoute: ActivatedRoute,
+    private router: Router,
+    private slowNetwork: SlowNetworkService,
+    private toastr: BootstrapToastService
+  ) {}
+
+  // ***  IMPORTANT VARIABLES ***
+  isLoading = signal<boolean>(false);
+  restaurantId = signal<string | null>(null);
+
+  // *** METHOD FOR SETTING RESTAURANT ID ***
+  setRestaurantId(): string {
+    return this.activeRoute.snapshot.paramMap.get('id');
+  }
+
   // Dropdown options for assign deliveryman
   isDeliverymanDropdownOpen = signal<boolean>(false);
+  // Add these properties
+  searchTerm: string = '';
+  riders: RiderRequestInterface[] = [];
+
+  // *** Get Riders Method Below ***
+  getRider(): void {}
+
+  // METHOD FOR GETTING RIDERS
+  getRiders(): void {
+    this.isLoading.set(true);
+    this.slowNetwork.start(() => {
+      if (this.isLoading()) {
+        this.toastr.showWarning('Hmm this is taking longer than usual', 3000);
+      }
+    });
+    this.riderService.getRestaurantRiders(this.restaurantId()).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.toastr.showSuccess('Fetched riders');
+        this.slowNetwork.clear();
+        this.riders = data.results;
+      },
+      error: (err) => {
+        this.toastr.showError('Failed to fetch riders');
+        this.isLoading.set(false);
+        this.slowNetwork.clear();
+      },
+    });
+  }
+
+  // Add these methods
+  toggleDeliverymanDropdown(): void {
+    this.isDeliverymanDropdownOpen.set(!this.isDeliverymanDropdownOpen());
+  }
+
+  highlightMatch(text: string): string {
+    if (!this.searchTerm || !text) {
+      return text;
+    }
+
+    const searchRegex = new RegExp(`(${this.searchTerm})`, 'gi');
+    return text.replace(searchRegex, '<span class="highlight">$1</span>');
+  }
+
+  get filteredRiders() {
+    if (!this.searchTerm.trim()) {
+      return this.riders;
+    }
+    return this.riders.filter(
+      (rider) =>
+        rider.full_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        rider.phone.includes(this.searchTerm)
+    );
+  }
+
+  selectRider(rider: any): void {
+    console.log('Selected rider:', rider);
+    // Handle rider selection logic here
+    this.isDeliverymanDropdownOpen.set(false);
+  }
 
   // Dropdown options for payment
-  paymentOptions: DropdownOption[] = [
-    {
-      label: 'Mark as Paid',
-      value: 'paid',
-      icon: 'check-circle',
-      iconPosition: 'left',
-    },
-    {
-      label: 'Payment Pending',
-      value: 'pending',
-      icon: 'clock',
-      iconPosition: 'left',
-    },
-    {
-      label: 'Payment Failed',
-      value: 'failed',
-      icon: 'times-circle',
-      iconPosition: 'left',
-    },
-  ];
 
   // Dropdown options for status
   statusOptions: DropdownOption[] = [
@@ -202,11 +267,11 @@ export class RestaurantOrderDetailsComponent implements OnInit {
     },
   };
 
-  constructor() {}
-
   ngOnInit(): void {
     // Initialize component
     this.loadOrderDetails();
+    this.restaurantId.set(this.setRestaurantId());
+    this.getRiders();
   }
 
   loadOrderDetails(): void {

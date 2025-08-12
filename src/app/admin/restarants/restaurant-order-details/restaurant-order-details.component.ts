@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { RiderService } from '../../../shared/services/rider.service';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -68,7 +68,7 @@ interface Order {
   styleUrl: './restaurant-order-details.component.scss',
 })
 export class RestaurantOrderDetailsComponent implements OnInit {
-  // *** CONSTRUCTOR DECLARED ABOVE ***
+  // *** CONSTRUCTOR DECLARED BELOW ***
   constructor(
     private riderService: RiderService,
     private restaurantService: RestaurantService,
@@ -126,7 +126,15 @@ export class RestaurantOrderDetailsComponent implements OnInit {
     });
   }
 
-  // Add these methods
+  // **** Hostlistener events
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape(event: KeyboardEvent) {
+    if (this.isDeliverymanDropdownOpen()) {
+      this.isDeliverymanDropdownOpen.set(false);
+    }
+  }
+
+  // *** METHOD FOR TOGGLE DELIEVERY MAN DROP DOWN ***
   toggleDeliverymanDropdown(): void {
     this.isDeliverymanDropdownOpen.set(!this.isDeliverymanDropdownOpen());
   }

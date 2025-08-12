@@ -41,6 +41,13 @@ export class ImageViewerComponent {
     this.scale = Math.max(1, Math.min(this.scale, 4)); // clamp between 1x and 4x
   }
 
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape(event: KeyboardEvent) {
+    if (this.isOpen) {
+      this.close();
+    }
+  }
+
   onMouseDown(event: MouseEvent) {
     if (this.scale > 1) {
       this.isDragging = true;

@@ -1,0 +1,304 @@
+<div id="container" class="container-fluid">
+  <header>
+    <app-h1 text="Orders" />
+
+    <div class="btn-container">
+      <label title="Search By Order ID or Customer">
+        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="text"
+          name="searchTerm"
+          (input)="applyFilters()"
+          [(ngModel)]="searchTerm"
+          placeholder="Search by Order ID or Customer"
+        />
+      </label>
+
+      <div class="position-relative">
+        <app-filter-button
+          [text]="buttonText()"
+          (click)="toggleFilterModal()"
+          id="filter-modal-button"
+        >
+          <span *ngIf="!isFilterModalOpen()">
+            <i class="ri-filter-3-fill"></i>
+          </span>
+          <span *ngIf="isFilterModalOpen()">
+            <i class="fa-solid fa-xmark"></i>
+          </span>
+        </app-filter-button>
+
+        <div
+          *ngIf="isFilterModalOpen()"
+          id="filter-modal"
+          class="container shadow-lg rounder-3"
+        >
+          <h1 class="special-h1">Filter Orders</h1>
+          <div class="row">
+            <!-- Date Range -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Date Range</h1>
+              <select name="dateRange">
+                <option value="">Select Date Range</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7days">Last 7 Days</option>
+                <option value="last30days">Last 30 Days</option>
+              </select>
+            </div>
+
+            <!-- Price Range -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Price Range</h1>
+              <select name="priceRange">
+                <option value="">Select Price Range</option>
+                <option value="0-50">₦0 - ₦50</option>
+                <option value="50-100">₦50 - ₦100</option>
+                <option value="100-200">₦100 - ₦200</option>
+                <option value="200+">₦200+</option>
+              </select>
+            </div>
+
+            <!-- Status -->
+            <div class="modal-input-wrapper col-md-12">
+              <h1>Status</h1>
+              <select name="status">
+                <option value="">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Being Prepared">Being Prepared</option>
+                <option value="On The Way">On The Way</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <!-- Buttons -->
+            <div class="modal-input-wrapper col-md-6">
+              <app-button
+                color="secondary"
+                buttonText="Clear Filter"
+                style="width: 100%"
+              ></app-button>
+            </div>
+            <div class="modal-input-wrapper col-md-6">
+              <app-button
+                buttonText="Apply Filter"
+                style="width: 100%"
+              ></app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <select class="btn rounder-2">
+        <option value="1" selected disabled>
+          <i class="ri-file-download-line"></i> <span>Export</span>
+        </option>
+        <option value="csv">Export as CSV</option>
+        <option value="pdf">Export as PDF</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Status Tabs -->
+  <div class="status-tabs">
+    <button
+      *ngFor="let tab of statusTabs"
+      [class.active]="selectedStatus() === tab.key"
+      (click)="onStatusTabChange(tab.key)"
+      class="status-tab"
+    >
+      {{ tab.label }}
+      <span class="count">{{ tab.count }}</span>
+    </button>
+  </div>
+
+  <!-- Selected Items Actions -->
+  <div class="bulk-actions" *ngIf="getSelectedCount() > 0">
+    <span class="selected-count"
+      >{{ getSelectedCount() }} item(s) selected</span
+    >
+    <div class="action-buttons">
+      <button class="bulk-btn delete" (click)="deleteSelectedOrders()">
+        <i class="ri-delete-bin-line"></i> Delete
+      </button>
+      <button class="bulk-btn export" (click)="exportSelectedOrders()">
+        <i class="ri-file-download-line"></i> Export
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Content -->
+  <div class="body">
+    <ng-container *ngIf="!isLoading(); else loading">
+      <ng-container *ngIf="orders.length > 0; else emptyList">
+        <div class="table-container">
+          <table
+            class="table mt-3 table-hover"
+            *ngIf="filteredOrders.length > 0; else noSearchResults"
+          >
+            <thead>
+              <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    style="cursor: pointer"
+                    [checked]="allChecked()"
+                    (change)="toggleSelectAll()"
+                  />
+                  Order ID <span><i class="ri-arrow-up-down-line"></i></span>
+                </td>
+                <td>Date</td>
+                <td>Customer</td>
+                <td>
+                  Price <span><i class="ri-arrow-up-down-line"></i></span>
+                </td>
+                <td>Status</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr
+                *ngFor="let order of filteredOrders; index as i"
+                class="mb-3"
+                [class.checked]="isSelected(order.id)"
+                style="cursor: pointer"
+                tabindex="0"
+                (click)="viewOrder(order.id)"
+                role="button"
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    style="cursor: pointer"
+                    [checked]="isSelected(order.id)"
+                    (change)="toggleSelection(order.id, $event)"
+                    (click)="$event.stopPropagation()"
+                  />
+                  <span class="order-id">{{ order.id }}</span>
+                </td>
+
+                <td>{{ order.date }}</td>
+
+                <td>
+                  <div class="customer-info">
+                    <div
+                      class="customer-avatar"
+                      *ngIf="order.customer.avatar; else defaultAvatar"
+                    >
+                      <img
+                        [src]="order.customer.avatar"
+                        [alt]="order.customer.name"
+                      />
+                    </div>
+                    <ng-template #defaultAvatar>
+                      <div class="customer-avatar-default">
+                        {{ order.customer.name.charAt(0) }}
+                      </div>
+                    </ng-template>
+                    <span class="customer-name">{{ order.customer.name }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="price">{{ formatPrice(order.price) }}</span>
+                </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class]="getStatusColor(order.status)"
+                  >
+                    {{ order.status }}
+                  </span>
+                </td>
+
+                <td class="position-relative" id="toolbar-container">
+                  <button
+                    class="toolbar-toggle rounded-3"
+                    [class.active]="order.isToolbarOpen"
+                    (click)="toggleOrderToolbar(order.id, $event)"
+                  >
+                    <i class="ri-more-2-fill"></i>
+                  </button>
+
+                  <ul
+                    class="toolbar shadow"
+                    [ngClass]="order.isToolbarOpen ? 'visible' : 'hidden'"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <li (click)="viewOrder(order.id)">
+                      <span><i class="ri-eye-line"></i></span> View Details
+                    </li>
+                    <li
+                      (click)="updateOrderStatus(order.id, 'Being Prepared')"
+                      *ngIf="order.status === 'Pending'"
+                    >
+                      <span><i class="ri-time-line"></i></span> Mark as
+                      Preparing
+                    </li>
+                    <li
+                      (click)="updateOrderStatus(order.id, 'On The Way')"
+                      *ngIf="order.status === 'Being Prepared'"
+                    >
+                      <span><i class="ri-truck-line"></i></span> Mark as On The
+                      Way
+                    </li>
+                    <li
+                      (click)="updateOrderStatus(order.id, 'Delivered')"
+                      *ngIf="order.status === 'On The Way'"
+                    >
+                      <span><i class="ri-check-line"></i></span> Mark as
+                      Delivered
+                    </li>
+                    <li (click)="deleteOrder(order.id)" class="danger">
+                      <span><i class="ri-delete-bin-line"></i></span> Delete
+                      Order
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pages" *ngIf="filteredOrders.length > 0">
+          <div class="count">
+            <span
+              >{{ currentPage }} of {{ totalPages }} ({{
+                totalCount
+              }}
+              orders)</span
+            >
+          </div>
+
+          <app-pagination
+            *ngIf="totalPages > 1"
+            [totalCount]="totalCount"
+            [itemsPerPage]="itemsPerPage"
+            [currentPage]="currentPage"
+            (pageChange)="onPageChange($event)"
+          ></app-pagination>
+        </div>
+      </ng-container>
+
+      <ng-template #noSearchResults>
+        <div class="empty-wrapper">
+          <empty-search />
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #loading>
+      <app-mini-loader loadingText="Loading orders..." />
+    </ng-template>
+
+    <ng-template #emptyList>
+      <div class="empty-wrapper">
+        <app-empty-list />
+      </div>
+    </ng-template>
+  </div>
+</div>

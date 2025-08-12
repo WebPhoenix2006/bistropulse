@@ -4,6 +4,7 @@ import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RiderService } from '../../../shared/services/rider.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 
 @Component({
   selector: 'app-riders',
@@ -25,7 +26,7 @@ export class RidersComponent implements OnInit {
 
   openDropdownIndex: number | null = null;
   constructor(
-    private toastr: ToastrService,
+    private toastr: BootstrapToastService,
     public slowNetwork: SlowNetworkService,
     private filterPipe: FilterByPipe,
     private activeRoute: ActivatedRoute,
@@ -52,7 +53,7 @@ export class RidersComponent implements OnInit {
     this.isLoading = true;
     this.slowNetwork.start(() => {
       if (this.isLoading) {
-        this.toastr.warning('Hmm... slow network');
+        this.toastr.showWarning('Hmm... slow network');
       }
     });
 
@@ -65,9 +66,10 @@ export class RidersComponent implements OnInit {
         this.totalCount = this.filteredList.length;
         this.isLoading = false;
         this.slowNetwork.clear();
+        this.toastr.showSuccess('Fetched riders successfully');
       },
       error: (err) => {
-        this.toastr.error('❌ Failed to fetch riders');
+        this.toastr.showWarning('❌ Failed to fetch riders');
         this.riders = [];
         this.filteredList = [];
         this.totalCount = 0;

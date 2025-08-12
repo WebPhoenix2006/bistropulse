@@ -10,7 +10,19 @@
 
         <!-- 🔸 Customer Profile -->
         <div class="con__profile">
-          <div class="con__avatar">RE</div>
+          <div
+            class="con__img__info"
+            [ngClass]="!hasProfile() ? 'con__avatar' : 'con__image'"
+          >
+            <span *ngIf="!hasProfile()">RE</span>
+            <div class="img">
+              <img
+                *ngIf="hasProfile()"
+                src="/assets/images/avatar.png"
+                alt="Rider img"
+              />
+            </div>
+          </div>
           <span class="con__name">Ralph Edwards</span>
         </div>
       </span>
@@ -162,7 +174,9 @@
 
       <!-- 🔸 Customer Profile -->
       <div class="customer-info__profile">
-        <div class="customer-info__avatar"></div>
+        <div class="customer-info__avatar">
+          <img src="/assets/images/avatar.png" alt="customer image" />
+        </div>
         <div class="customer-info__details">
           <h3>Chelsie Jhonson</h3>
           <p>chelsiee&#64;noreplycompany.com</p>
@@ -196,7 +210,9 @@
       <div class="customer-info__delivery-guy">
         <h4>Delivery Guy</h4>
         <div class="customer-info__delivery-guy-profile">
-          <div class="customer-info__delivery-guy-avatar"></div>
+          <div class="customer-info__delivery-guy-avatar">
+            <img src="/assets/images/avatar.png" alt="rider image" />
+          </div>
           <div class="customer-info__delivery-guy-details">
             <h4>Ralph Edwards</h4>
             <p>+65 001 64 578</p>

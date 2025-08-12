@@ -1,5 +1,6 @@
 import { BootstrapToastService } from './../../../shared/services/bootstrap-toast.service';
 import {
+  AfterViewInit,
   Component,
   HostListener,
   inject,
@@ -11,10 +12,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { Router } from '@angular/router';
 import { Restaurant } from '../../../interfaces/restaurant.interface';
-import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
+import { map, of, timer, combineLatest, takeUntil } from 'rxjs';
 // ... your imports remain the same
 
 @Component({
@@ -24,11 +25,29 @@ import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
   styleUrl: './restaurant-list.component.scss',
   providers: [FilterByPipe],
 })
-export class RestaurantListComponent implements OnInit {
+export class RestaurantListComponent implements OnInit, AfterViewInit {
   isFilterModalOpen = signal<boolean>(false);
   buttonText = signal<string>('Filter');
   searchTerm = signal<string>('');
   isLoading = signal<boolean>(false);
+  source1$ = of('A', 'B', 'C');
+  source2$ = timer(1000, 1000).pipe(map((v) => `value ${v}`));
+
+  combineStuff(): void {
+    combineLatest([this.source1$, this.source2$])
+      .pipe(
+        takeUntil(timer(10000)) // Automatically unsubscribes after 10 seconds
+      )
+      .subscribe(([val1, val2]) => {
+        console.log(
+          `Latest from source1: ${val1}, Latest from source2: ${val2}`
+        );
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.combineStuff();
+  }
 
   restaurants: Array<Restaurant> = [];
   filteredList: Array<Restaurant> = [];

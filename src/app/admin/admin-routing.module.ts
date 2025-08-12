@@ -40,6 +40,7 @@ import { BranchRidersComponent } from './franchise-branch-rider-related/branch-r
 import { BranchRiderShiftsComponent } from './franchise-branch-rider-related/branch-rider-shifts/branch-rider-shifts.component';
 import { AddBranchRiderComponent } from './franchise-branch-rider-related/add-branch-rider/add-branch-rider.component';
 import { RestaurantOrderListComponent } from './restarants/restaurant-order-list/restaurant-order-list.component';
+import { RestaurantOrderDetailsComponent } from './restarants/restaurant-order-details/restaurant-order-details.component';
 
 const routes: Routes = [
   {
@@ -127,6 +128,15 @@ const routes: Routes = [
                 path: 'orders',
                 component: RestaurantOrderListComponent,
                 data: { animation: 'OrderList', breadcrumb: 'Orders' },
+              },
+              // *** INDIVIDUAL ORDER DETAILS ***
+              {
+                path: 'orders/:orderId/order-details',
+                component: RestaurantOrderDetailsComponent,
+                data: {
+                  animation: 'OrderDetails',
+                  breadcrumb: 'Order-Details',
+                },
               },
 
               // --- Restaurant Riders Management ---

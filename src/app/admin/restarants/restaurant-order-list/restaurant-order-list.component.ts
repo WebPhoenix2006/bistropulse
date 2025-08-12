@@ -1,7 +1,6 @@
 import { Component, OnInit, signal, HostListener, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-// Order interface
 interface Order {
   id: string;
   date: string;
@@ -16,8 +15,8 @@ interface Order {
     | 'On The Way'
     | 'Delivered'
     | 'Cancelled';
-  checked: boolean;
-  isToolbarOpen: boolean;
+  checked?: boolean;
+  isToolbarOpen?: boolean;
 }
 
 @Component({
@@ -27,11 +26,14 @@ interface Order {
   styleUrl: './restaurant-order-list.component.scss',
 })
 export class RestaurantOrderListComponent implements OnInit {
+  restaurantId = signal<string>('');
   // Modal and UI management
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());
     this.closeAllToolbars();
   }
+
+  constructor(private router: Router, private activeRoute: ActivatedRoute) {}
 
   @HostListener('document:click', ['$event'])
   handleDocumentClick(event: MouseEvent) {
@@ -71,7 +73,9 @@ export class RestaurantOrderListComponent implements OnInit {
 
   // Order actions
   viewOrder(orderId: string): void {
-    this.router.navigate(['/admin/orders', orderId]);
+    this.router.navigateByUrl(
+      `/admin/restaurants/${this.restaurantId()}/orders/${orderId}/order-details`
+    );
   }
 
   updateOrderStatus(orderId: string, newStatus: Order['status']): void {
@@ -176,11 +180,16 @@ export class RestaurantOrderListComponent implements OnInit {
     { key: 'Cancelled', label: 'Cancelled', count: 0 },
   ];
 
-  private router = inject(Router);
+  getRestaurantId(): string {
+    const id = this.activeRoute.snapshot.paramMap.get('id');
+    this.restaurantId.set(id);
+    return id;
+  }
 
   ngOnInit() {
     this.loadDummyOrders();
     this.applyFilters();
+    this.getRestaurantId();
   }
 
   loadDummyOrders(): void {

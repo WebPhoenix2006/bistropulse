@@ -1,10 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { RiderService } from '../../../shared/services/rider.service';
 import { RestaurantService } from '../../../shared/services/restaurant.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 import { RiderRequestInterface } from '../../../interfaces/rider.interface';
+import { ImageViewerService } from '../../../shared/services/image-viewer.service';
 
 interface DropdownOption {
   label: string;
@@ -67,15 +68,21 @@ interface Order {
   styleUrl: './restaurant-order-details.component.scss',
 })
 export class RestaurantOrderDetailsComponent implements OnInit {
-  // *** CONSTRUCTOR DECLARED ABOVE ***
+  // *** CONSTRUCTOR DECLARED BELOW ***
   constructor(
     private riderService: RiderService,
     private restaurantService: RestaurantService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     private slowNetwork: SlowNetworkService,
-    private toastr: BootstrapToastService
+    private toastr: BootstrapToastService,
+    private viewerService: ImageViewerService
   ) {}
+
+  // *** METHOD FOR USING THE VIEWER SERVICE ***
+  openImage(url: string) {
+    this.viewerService.open(url);
+  }
 
   // ***  IMPORTANT VARIABLES ***
   isLoading = signal<boolean>(false);
@@ -109,6 +116,7 @@ export class RestaurantOrderDetailsComponent implements OnInit {
         this.toastr.showSuccess('Fetched riders');
         this.slowNetwork.clear();
         this.riders = data.results;
+        this.isLoading.set(false);
       },
       error: (err) => {
         this.toastr.showError('Failed to fetch riders');
@@ -118,7 +126,15 @@ export class RestaurantOrderDetailsComponent implements OnInit {
     });
   }
 
-  // Add these methods
+  // **** Hostlistener events
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape(event: KeyboardEvent) {
+    if (this.isDeliverymanDropdownOpen()) {
+      this.isDeliverymanDropdownOpen.set(false);
+    }
+  }
+
+  // *** METHOD FOR TOGGLE DELIEVERY MAN DROP DOWN ***
   toggleDeliverymanDropdown(): void {
     this.isDeliverymanDropdownOpen.set(!this.isDeliverymanDropdownOpen());
   }

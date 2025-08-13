@@ -20,6 +20,7 @@
                 class="assign-man-button"
                 (click)="toggleDeliverymanDropdown()"
               >
+                <app-smallest-spinner *ngIf="isLoading()" />
                 Assign Deliveryman
                 <span>
                   <i
@@ -54,9 +55,14 @@
                     <div class="img-con">
                       <img
                         [src]="
-                          rider.profile_image || '/assets/images/no-profile.png'
+                          rider.profile_image ||
+                          '/assets/images/no-profile-image.jpg'
                         "
                         [alt]="rider.full_name"
+                        (click)="
+                          $event.stopPropagation();
+                          openImage(rider.profile_image)
+                        "
                       />
                     </div>
                     <div class="info-con">
@@ -220,7 +226,7 @@
             </div>
             <div class="item-details">
               <span class="item-name">Star</span>
-              <span class="item-price">₵ 80.00</span>
+              <span class="item-price">&#8358; 80.00</span>
             </div>
           </div>
 
@@ -230,7 +236,7 @@
             </div>
             <div class="item-details">
               <span class="item-name">Star</span>
-              <span class="item-price">₵ 80.00</span>
+              <span class="item-price">&#8358; 80.00</span>
             </div>
           </div>
 
@@ -240,7 +246,7 @@
             </div>
             <div class="item-details">
               <span class="item-name">Star</span>
-              <span class="item-price">₵ 80.00</span>
+              <span class="item-price">&#8358; 80.00</span>
             </div>
           </div>
 
@@ -250,7 +256,7 @@
             </div>
             <div class="item-details">
               <span class="item-name">Star</span>
-              <span class="item-price">₵ 30.00</span>
+              <span class="item-price">&#8358; 30.00</span>
             </div>
           </div>
         </div>
@@ -279,7 +285,7 @@
           </div>
           <div class="summary-item total">
             <span><strong>Total</strong></span>
-            <span><strong>GHC 185.00</strong></span>
+            <span><strong>&#8358; 185.00</strong></span>
           </div>
         </div>
       </div>

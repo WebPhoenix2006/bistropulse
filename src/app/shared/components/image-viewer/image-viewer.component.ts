@@ -1,5 +1,4 @@
 import { Component, Input, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-image-viewer',

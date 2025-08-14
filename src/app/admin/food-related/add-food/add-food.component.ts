@@ -20,6 +20,24 @@ export class AddFoodComponent implements OnInit {
   isSuccessfull = signal<boolean>(false);
   hasDifferentSize = false;
 
+  // Modal controller variables
+  isAddOthersOptionOpen = signal<boolean>(false);
+  newCategoryName = '';
+
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+    public slowNetwork: SlowNetworkService
+  ) {}
+
+  ngOnInit(): void {
+    this.inputs.forEach((input) => {
+      if (input.type === 'select' && input.options?.length) {
+        this.formData[input.name] = input.options[0]; // selects first by default
+      }
+    });
+  }
+
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
 
@@ -35,6 +53,13 @@ export class AddFoodComponent implements OnInit {
     }
   }
 
+  onFileChange(event: Event, name: string) {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (file) {
+      this.formData[name] = file;
+    }
+  }
+
   generateId(): string {
     const chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -44,27 +69,6 @@ export class AddFoodComponent implements OnInit {
     }
     return result;
   }
-
-  ngOnInit(): void {
-    this.inputs.forEach((input) => {
-      if (input.type === 'select' && input.options?.length) {
-        this.formData[input.name] = input.options[0]; // selects first by default
-      }
-    });
-  }
-
-  onFileChange(event: Event, name: string) {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (file) {
-      this.formData[name] = file;
-    }
-  }
-
-  constructor(
-    private router: Router,
-    private toastr: ToastrService,
-    public slowNetwork: SlowNetworkService
-  ) {}
 
   onSubmit(): void {
     const finalFoodData: Food = {
@@ -88,6 +92,47 @@ export class AddFoodComponent implements OnInit {
 
   removeImage(): void {
     this.imagePreview = null;
+  }
+
+  // *** Updated method for adding new category ***
+  onCategoryChange(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+
+    if (selectedValue === 'Others') {
+      // Open the modal instead of using prompt
+      this.isAddOthersOptionOpen.set(true);
+      this.newCategoryName = ''; // Reset input
+
+      // Reset select back to first option temporarily
+      this.formData['category'] = this.inputs[0].options[0];
+    }
+  }
+
+  // *** Method to close modal ***
+  closeModal() {
+    this.isAddOthersOptionOpen.set(false);
+    this.newCategoryName = '';
+  }
+
+  // *** Method to add new category from modal ***
+  addNewCategory() {
+    if (this.newCategoryName && this.newCategoryName.trim()) {
+      const trimmedCategory = this.newCategoryName.trim();
+
+      // Add to the category list (avoid duplicates)
+      const categoryInput = this.inputs.find((i) => i.name === 'category');
+      if (categoryInput && !categoryInput.options.includes(trimmedCategory)) {
+        // Insert before 'Others' option
+        const othersIndex = categoryInput.options.indexOf('Others');
+        categoryInput.options.splice(othersIndex, 0, trimmedCategory);
+      }
+
+      // Set the newly added category as selected
+      this.formData['category'] = trimmedCategory;
+
+      // Close modal
+      this.closeModal();
+    }
   }
 
   inputs = [
@@ -114,7 +159,7 @@ export class AddFoodComponent implements OnInit {
     {
       label: 'Price',
       type: 'number',
-      placeholder: 'GHC 0.00',
+      placeholder: '₦0.00',
       name: 'price',
       class: 'col-md-12',
     },

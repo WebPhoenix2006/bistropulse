@@ -3,6 +3,7 @@ import { CustomersService } from '../../../shared/services/customers.service';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
+import { ImageViewerService } from '../../../shared/services/image-viewer.service';
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
@@ -26,8 +27,14 @@ export class CustomersComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     public slowNetwork: SlowNetworkService,
-    private filterPipe: FilterByPipe
+    private filterPipe: FilterByPipe,
+    private imageViewer: ImageViewerService
   ) {}
+
+  // method for opening image
+  open(url: string): void {
+    this.imageViewer.open(url);
+  }
 
   ngOnInit(): void {
     const token = localStorage.getItem('auth_token');

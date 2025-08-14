@@ -83,6 +83,134 @@
   }
 }
 
+// *** STYLES FOR THE NO IMAGE BLOCK
+// Add these styles to your existing SCSS file
+
+// No Image Container Styles
+.no-image-container {
+  width: 100%;
+  height: 400px; // Same height as the regular image
+  border: 2px dashed #e5e7eb;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: var(--dominant-color, #2563eb);
+    background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.no-image-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  padding: 2rem;
+
+  .upload-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--dominant-color, #2563eb);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    transition: all 0.3s ease;
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .upload-btn {
+    background: var(--dominant-color, #2563eb);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: var(--dominant-color-dark, #1d4ed8);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Hover effect for the entire no-image container
+.no-image-container:hover {
+  .upload-icon {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+  }
+
+  .upload-btn {
+    background: var(--dominant-color-dark, #1d4ed8);
+  }
+}
+
+// Add responsive behavior
+@media (max-width: 768px) {
+  .no-image-container {
+    height: 300px; // Slightly smaller on mobile
+  }
+
+  .no-image-content {
+    padding: 1.5rem;
+
+    .upload-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1rem;
+
+      svg {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+  }
+}
+
 .img-container img {
   width: 100%;
   object-fit: cover;

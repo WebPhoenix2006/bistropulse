@@ -56,7 +56,7 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
     this.restaurantService.getRestaurant(this.restaurantId).subscribe({
       next: (data: Restaurant) => {
         this.toastr.showSuccess('restaurant fetched!');
-        this.restaurant = { ...data, restaurant_image_url: null };
+        this.restaurant = data;
         // console.log(data);
         this.isLoading.set(false);
         this.slowNetwork.clear();

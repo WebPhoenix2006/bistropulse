@@ -132,7 +132,7 @@
                   [class.checked]="restaurant.checked"
                   style="cursor: pointer"
                   tabindex="0"
-                  (click)="selectRestaurant(restaurant.id)"
+                  (click)="selectRestaurant(restaurant.restaurant_id)"
                   role="button"
                 >
                   <td>
@@ -166,7 +166,7 @@
                       class="toolbar-toggle rounded-3"
                       [class.active]="restaurant.isToolbarOpen"
                       (click)="
-                        toggleVisibility(restaurant.id);
+                        toggleVisibility(restaurant.restaurant_id);
                         $event.stopPropagation()
                       "
                     >
@@ -179,7 +179,7 @@
                       "
                       (click)="$event.stopPropagation()"
                     >
-                      <li (click)="selectRestaurant(restaurant.id)">
+                      <li (click)="selectRestaurant(restaurant.restaurant_id)">
                         <span><i class="ri-eye-line"></i></span> View
                       </li>
                       <li>

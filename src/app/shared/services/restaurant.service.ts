@@ -61,12 +61,24 @@ export class RestaurantService {
     }
 
     // Nested Representative object (Django-style dot notation)
-    formData.append('representative.full_name', data.representativeInfo.representativeName);
-    formData.append('representative.phone', String(data.representativeInfo.representativeNumber)); // ✅ number → string
-    formData.append('representative.location', data.representativeInfo.representativeLocation);
+    formData.append(
+      'representative.full_name',
+      data.representativeInfo.representativeName
+    );
+    formData.append(
+      'representative.phone',
+      String(data.representativeInfo.representativeNumber)
+    ); // ✅ number → string
+    formData.append(
+      'representative.location',
+      data.representativeInfo.representativeLocation
+    );
 
     if (data.representativeInfo.representativeImage) {
-      formData.append('representative.photo', data.representativeInfo.representativeImage);
+      formData.append(
+        'representative.photo',
+        data.representativeInfo.representativeImage
+      );
     }
 
     return formData;
@@ -78,7 +90,9 @@ export class RestaurantService {
   uploadRestaurant(data: RestaurantSubmit): Observable<any> {
     const formData = this.buildFormData(data);
     const headers = this.getAuthHeaders(true); // ✅ Don't manually set Content-Type for FormData
-    return this.http.post(`${this.BASE_URL}/restaurants/`, formData, { headers });
+    return this.http.post(`${this.BASE_URL}/restaurants/`, formData, {
+      headers,
+    });
   }
 
   /**
@@ -103,7 +117,9 @@ export class RestaurantService {
   updateRestaurant(id: string, data: RestaurantSubmit): Observable<any> {
     const formData = this.buildFormData(data);
     const headers = this.getAuthHeaders(true);
-    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, formData, { headers });
+    return this.http.put(`${this.BASE_URL}/restaurants/${id}/`, formData, {
+      headers,
+    });
   }
 
   /**
@@ -112,5 +128,29 @@ export class RestaurantService {
   deleteRestaurant(id: string): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.BASE_URL}/restaurants/${id}/`, { headers });
+  }
+
+  // *** method for categories ***
+  getCategories(id: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}`);
+  }
+
+  addCategories(data: any, id: string): Observable<any> {
+    return this.http.post(
+      `${this.BASE_URL}/`,
+      { data },
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  // ** method for foods ***
+  addFood(id: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  getFoods(id: string): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/`);
   }
 }

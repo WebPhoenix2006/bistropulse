@@ -1,4 +1,4 @@
-// ============= UPDATED SIDEBAR CONFIG =============
+// ============= TYPES & INTERFACES =============
 export interface SidebarItem {
   label: string;
   icon?: string;
@@ -6,7 +6,6 @@ export interface SidebarItem {
   collapseId?: string;
   roles?: string[];
   children?: SidebarItem[];
-  // NEW PROPERTIES for dynamic display
   displayCondition?:
     | 'always'
     | 'restaurant-selected'
@@ -18,7 +17,9 @@ export interface SidebarItem {
 
 export type Role = 'admin' | 'manager' | 'employee' | 'user';
 
+// ============= SIDEBAR CONFIGURATION =============
 export const SIDEBAR_ITEMS: SidebarItem[] = [
+  // ============= CORE DASHBOARD =============
   {
     label: 'Dashboard',
     icon: 'dashboard',
@@ -28,7 +29,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     routeType: 'static',
   },
 
-  // ============= CUSTOMER MANAGEMENT =============
+  // ============= USER OVERVIEW (Special Role) =============
+  {
+    label: 'Overview',
+    icon: 'dashboard',
+    route: '/user/overview',
+    roles: ['user'],
+    displayCondition: 'always',
+    routeType: 'static',
+  },
+
+  // ============= MANAGEMENT SECTIONS (Static - Always Visible) =============
+
+  // Customer Management
   {
     label: 'Customers Management',
     icon: 'shop',
@@ -52,7 +65,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= RESTAURANT MANAGEMENT =============
+  // Restaurant Management
   {
     label: 'Restaurant Management',
     icon: 'shop',
@@ -76,7 +89,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= FRANCHISE MANAGEMENT =============
+  // Franchise Management
   {
     label: 'Franchise Management',
     icon: 'shop',
@@ -100,88 +113,11 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= GLOBAL RIDER MANAGEMENT (Static - only shows when no specific context) =============
-  // {
-  //   label: 'Global Rider Management',
-  //   icon: 'bike',
-  //   collapseId: 'globalRiderNav',
-  //   roles: ['admin'],
-  //   displayCondition: 'always', // You might want to change this to show only when no context is selected
-  //   routeType: 'static',
-  //   children: [
-  //     {
-  //       label: 'All Riders Overview',
-  //       route: '/admin/riders', // This would be a new route for global rider overview
-  //       displayCondition: 'always',
-  //       routeType: 'static',
-  //     },
-  //     {
-  //       label: 'Global Rider Shifts',
-  //       route: '/admin/riders/shifts',
-  //       displayCondition: 'always',
-  //       routeType: 'static',
-  //     },
-  //   ],
-  // },
-
-  // ============= ORDER MANAGEMENT (GLOBAL) =============
-  {
-    label: 'Order Management',
-    icon: 'books',
-    collapseId: 'ordernav',
-    roles: ['admin', 'manager'],
-    displayCondition: 'franchise-list-page',
-    routeType: 'static',
-    children: [
-      {
-        label: 'Orders',
-        route: '/admin/orders',
-        displayCondition: 'franchise-list-page',
-        routeType: 'static',
-      },
-      {
-        label: 'Order History',
-        route: '/admin/orders/order-history',
-        displayCondition: 'franchise-list-page',
-        routeType: 'static',
-      },
-      {
-        label: 'Example Menu',
-        route: '/admin/orders/example-menu',
-        displayCondition: 'franchise-list-page',
-        routeType: 'static',
-      },
-    ],
-  },
-
-  // ============= ADVERTISEMENT =============
-  {
-    label: 'Advertisement',
-    icon: 'advertisement',
-    collapseId: 'advertnav',
-    roles: ['admin'],
-    displayCondition: 'always',
-    routeType: 'static',
-    children: [
-      {
-        label: 'Ads List',
-        route: '/admin/ads',
-        displayCondition: 'always',
-        routeType: 'static',
-      },
-      {
-        label: 'New Ad',
-        route: '/admin/ads/new',
-        displayCondition: 'always',
-        routeType: 'static',
-      },
-    ],
-  },
-
-  // ============= EMPLOYEE MANAGEMENT =============
+  // Employee Management
   {
     label: 'Employee Management',
     icon: 'people',
+    collapseId: 'employeeNav',
     roles: ['admin'],
     displayCondition: 'always',
     routeType: 'static',
@@ -201,7 +137,63 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= RESTAURANT FOOD MENU (Dynamic - shows when restaurant selected) =============
+  // Advertisement Management
+  {
+    label: 'Advertisement',
+    icon: 'advertisement',
+    collapseId: 'advertNav',
+    roles: ['admin'],
+    displayCondition: 'always',
+    routeType: 'static',
+    children: [
+      {
+        label: 'Ads List',
+        route: '/admin/ads',
+        displayCondition: 'always',
+        routeType: 'static',
+      },
+      {
+        label: 'New Ad',
+        route: '/admin/ads/new',
+        displayCondition: 'always',
+        routeType: 'static',
+      },
+    ],
+  },
+
+  // ============= GLOBAL ORDER MANAGEMENT =============
+  {
+    label: 'Order Management',
+    icon: 'books',
+    collapseId: 'globalOrderNav',
+    roles: ['admin', 'manager'],
+    displayCondition: 'franchise-list-page',
+    routeType: 'static',
+    children: [
+      {
+        label: 'All Orders',
+        route: '/admin/orders',
+        displayCondition: 'franchise-list-page',
+        routeType: 'static',
+      },
+      {
+        label: 'Order History',
+        route: '/admin/orders/order-history',
+        displayCondition: 'franchise-list-page',
+        routeType: 'static',
+      },
+      {
+        label: 'Example Menu',
+        route: '/admin/orders/example-menu',
+        displayCondition: 'franchise-list-page',
+        routeType: 'static',
+      },
+    ],
+  },
+
+  // ============= RESTAURANT-SPECIFIC SECTIONS (Dynamic) =============
+
+  // Restaurant Food Menu
   {
     label: 'Restaurant Food Menu',
     icon: 'pizza',
@@ -237,7 +229,31 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= RESTAURANT RIDERS (Dynamic - shows when restaurant selected) =============
+  // Restaurant Orders
+  {
+    label: 'Restaurant Orders',
+    icon: 'books',
+    collapseId: 'restaurantOrders',
+    roles: ['admin', 'manager'],
+    displayCondition: 'restaurant-selected',
+    routeType: 'dynamic',
+    children: [
+      {
+        label: 'Order List',
+        route: '/admin/restaurants/:id/orders',
+        displayCondition: 'restaurant-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'Order History',
+        route: '/admin/restaurants/:id/order-history',
+        displayCondition: 'restaurant-selected',
+        routeType: 'dynamic',
+      },
+    ],
+  },
+
+  // Restaurant Riders
   {
     label: 'Restaurant Riders',
     icon: 'bike',
@@ -267,7 +283,35 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= BRANCH FOOD MENU (Dynamic - shows when branch selected) =============
+  // ============= FRANCHISE-SPECIFIC SECTIONS (Dynamic) =============
+
+  // Franchise Orders & Branches
+  {
+    label: 'Franchise Management',
+    icon: 'books',
+    collapseId: 'franchiseManagement',
+    roles: ['admin', 'manager'],
+    displayCondition: 'franchise-selected',
+    routeType: 'dynamic',
+    children: [
+      {
+        label: 'Franchise Branches',
+        route: '/admin/franchises/:franchiseId/branches',
+        displayCondition: 'franchise-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'All Franchise Orders',
+        route: '/admin/franchises/:franchiseId/orders',
+        displayCondition: 'franchise-selected',
+        routeType: 'dynamic',
+      },
+    ],
+  },
+
+  // ============= BRANCH-SPECIFIC SECTIONS (Dynamic) =============
+
+  // Branch Food Menu
   {
     label: 'Branch Food Menu',
     icon: 'pizza',
@@ -297,7 +341,32 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     ],
   },
 
-  // ============= BRANCH RIDERS (Dynamic - shows when branch selected) =============
+  // Branch Orders
+  {
+    label: 'Branch Orders',
+    icon: 'books',
+    collapseId: 'branchOrders',
+    roles: ['admin', 'manager'],
+    displayCondition: 'branch-selected',
+    routeType: 'dynamic',
+    children: [
+      {
+        label: 'Branch Order List',
+        route: '/admin/franchises/:franchiseId/branches/:branchId/orders',
+        displayCondition: 'branch-selected',
+        routeType: 'dynamic',
+      },
+      {
+        label: 'Branch Order History',
+        route:
+          '/admin/franchises/:franchiseId/branches/:branchId/order-history',
+        displayCondition: 'branch-selected',
+        routeType: 'dynamic',
+      },
+    ],
+  },
+
+  // Branch Riders
   {
     label: 'Branch Riders',
     icon: 'bike',
@@ -328,78 +397,60 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       },
     ],
   },
-
-  // ============= BRANCH ORDERS (Dynamic - shows when branch selected) =============
-  {
-    label: 'Branch Orders',
-    icon: 'books',
-    collapseId: 'branchOrders',
-    roles: ['admin', 'manager'],
-    displayCondition: 'branch-selected',
-    routeType: 'dynamic',
-    children: [
-      {
-        label: 'Branch Order List',
-        route: '/admin/franchises/:franchiseId/branches/:branchId/orders',
-        displayCondition: 'branch-selected',
-        routeType: 'dynamic',
-      },
-      {
-        label: 'Branch Order History',
-        route:
-          '/admin/franchises/:franchiseId/branches/:branchId/order-history',
-        displayCondition: 'branch-selected',
-        routeType: 'dynamic',
-      },
-    ],
-  },
-
-  // ============= FRANCHISE ORDERS (Dynamic - shows when franchise selected) =============
-  {
-    label: 'Franchise Orders',
-    icon: 'books',
-    collapseId: 'franchiseOrders',
-    roles: ['admin', 'manager'],
-    displayCondition: 'franchise-selected',
-    routeType: 'dynamic',
-    children: [
-      {
-        label: 'All Franchise Orders',
-        route: '/admin/franchises/:franchiseId/orders',
-        displayCondition: 'franchise-selected',
-        routeType: 'dynamic',
-      },
-      {
-        label: 'Franchise Branches',
-        route: '/admin/franchises/:franchiseId/branches',
-        displayCondition: 'franchise-selected',
-        routeType: 'dynamic',
-      },
-    ],
-  },
-  {
-    label: 'Restaurant Orders',
-    icon: 'books',
-    collapseId: 'restaurantOrders',
-    roles: ['admin', 'manager'],
-    displayCondition: 'restaurant-selected',
-    routeType: 'dynamic',
-    children: [
-      {
-        label: 'Order list',
-        route: '/admin/restaurants/:id/orders',
-        displayCondition: 'restaurant-selected',
-        routeType: 'dynamic',
-      },
-    ],
-  },
-
-  // ============= USER OVERVIEW (for different role) =============
-  {
-    label: 'Overview',
-    icon: 'dashboard',
-    roles: ['user'],
-    displayCondition: 'always',
-    routeType: 'static',
-  },
 ];
+
+// // ============= UTILITY FUNCTIONS (Optional) =============
+
+// /**
+//  * Filter sidebar items based on user role
+//  */
+// export const filterSidebarByRole = (items: SidebarItem[], userRole: Role): SidebarItem[] => {
+//   return items.filter(item =>
+//     item.roles?.includes(userRole)
+//   ).map(item => ({
+//     ...item,
+//     children: item.children?.filter(child =>
+//       !child.roles || child.roles.includes(userRole)
+//     )
+//   }));
+// };
+
+// /**
+//  * Filter sidebar items based on display condition
+//  */
+// export const filterSidebarByCondition = (
+//   items: SidebarItem[],
+//   condition: SidebarItem['displayCondition']
+// ): SidebarItem[] => {
+//   return items.filter(item =>
+//     item.displayCondition === 'always' || item.displayCondition === condition
+//   );
+// };
+
+// /**
+//  * Get sidebar items for specific context
+//  */
+// export const getSidebarForContext = (
+//   userRole: Role,
+//   context: {
+//     selectedRestaurant?: string;
+//     selectedFranchise?: string;
+//     selectedBranch?: string;
+//     isOnFranchiseListPage?: boolean;
+//   }
+// ) => {
+//   let condition: SidebarItem['displayCondition'] = 'always';
+
+//   if (context.selectedBranch) {
+//     condition = 'branch-selected';
+//   } else if (context.selectedFranchise) {
+//     condition = 'franchise-selected';
+//   } else if (context.selectedRestaurant) {
+//     condition = 'restaurant-selected';
+//   } else if (context.isOnFranchiseListPage) {
+//     condition = 'franchise-list-page';
+//   }
+
+//   const roleFiltered = filterSidebarByRole(SIDEBAR_ITEMS, userRole);
+//   return filterSidebarByCondition(roleFiltered, condition);
+// };

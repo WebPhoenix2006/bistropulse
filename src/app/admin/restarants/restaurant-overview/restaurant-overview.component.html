@@ -26,7 +26,11 @@
             </div>
           </div>
 
-          <div class="img-container">
+          <!-- Show image block ONLY if there is an image -->
+          <div
+            class="img-container"
+            *ngIf="restaurant?.restaurant_image_url; else noImageBlock"
+          >
             <div class="img__clip">
               <i class="ri-menu-4-line"></i>
             </div>
@@ -37,14 +41,40 @@
               #restaurantImg
               id="restaurant-img"
               crossorigin="anonymous"
-              *ngIf="restaurant?.restaurant_image_url"
               [src]="restaurant.restaurant_image_url"
               alt="Restaurant Image"
             />
           </div>
 
-          <!-- Info section with dynamic background -->
+          <!-- No image block with same dimensions -->
+          <ng-template #noImageBlock>
+            <div class="img-container no-image-container">
+              <div class="no-image-content">
+                <div class="upload-icon">
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14.5 8L12 5.5L9.5 8M12 5.5V16.5M7 16.5V18.5C7 19.6046 7.89543 20.5 9 20.5H15C16.1046 20.5 17 19.6046 17 18.5V16.5"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h3>No Image Selected</h3>
+                <p>Upload a restaurant image to showcase your business</p>
+                <button class="btn btn-primary upload-btn">Add Image</button>
+              </div>
+            </div>
+          </ng-template>
 
+          <!-- Info section with dynamic background -->
           <h3 class="restaurant-name">{{ restaurant?.name || "N|A" }}</h3>
           <p class="reviews-container">
             <span class="restaurant-reviews">
@@ -95,6 +125,7 @@
                 <img
                   [src]="restaurant?.representative?.photo_url"
                   alt="Profile"
+                  (click)="open(restaurant?.representative?.photo_url)"
                 />
               </ng-container>
               <ng-template #noRepImg>

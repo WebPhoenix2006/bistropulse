@@ -13,6 +13,7 @@ import { Restaurant } from '../../../interfaces/restaurant.interface';
 import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { FastAverageColor } from 'fast-average-color';
+import { ImageViewerService } from '../../../shared/services/image-viewer.service';
 
 @Component({
   selector: 'app-restaurant-overview',
@@ -26,10 +27,16 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private toastr: BootstrapToastService,
     private cdr: ChangeDetectorRef,
-    private slowNetwork: SlowNetworkService
+    private slowNetwork: SlowNetworkService,
+    private imageViewer: ImageViewerService
   ) {}
 
   @ViewChild('restaurantImg') restaurantImgRef!: ElementRef<HTMLImageElement>;
+
+  // method for opening image
+  open(url: string): void {
+    this.imageViewer.open(url);
+  }
 
   isLoading = signal<boolean>(false);
   dominantColor = signal<string>('rgba(17, 19, 21, 0.8)');
@@ -49,7 +56,8 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
     this.restaurantService.getRestaurant(this.restaurantId).subscribe({
       next: (data: Restaurant) => {
         this.toastr.showSuccess('restaurant fetched!');
-        this.restaurant = data;
+        this.restaurant = { ...data, restaurant_image_url: null };
+        // console.log(data);
         this.isLoading.set(false);
         this.slowNetwork.clear();
         this.cdr.detectChanges();
@@ -69,6 +77,13 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
   }
 
   setupColorExtraction(): void {
+    // If restaurant has no image, skip FAC and set fallback immediately
+    if (!this.restaurant?.restaurant_image_url) {
+      console.warn('No image URL, applying fallback color');
+      this.setFallbackColor();
+      return;
+    }
+
     const imgEl = this.restaurantImgRef?.nativeElement;
 
     if (!imgEl) {
@@ -101,8 +116,7 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
       this.applyCSSVariables(
         color.value.slice(0, 3) as [number, number, number]
       );
-
-      console.log(`✅ Color extracted successfully:`, rgbaColor);
+      // console.log(`✅ Color extracted successfully:`, rgbaColor);
     } catch (error) {
       console.error('❌ Color extraction failed:', error);
       this.setFallbackColor();

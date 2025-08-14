@@ -1,3 +1,45 @@
+<!-- Add Category Modal -->
+@if (isAddOthersOptionOpen()) {
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Add New Category</h3>
+      <button type="button" class="close-btn" (click)="closeModal()">
+        <span>&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form (submit)="addNewCategory(); $event.preventDefault()">
+        <div class="input-group">
+          <label for="newCategory">Category Name</label>
+          <input
+            type="text"
+            id="newCategory"
+            [(ngModel)]="newCategoryName"
+            name="newCategory"
+            placeholder="Enter category name..."
+            class="form-control"
+            required
+            #categoryInput
+          />
+        </div>
+
+        <div class="modal-actions">
+          <app-button
+            type="button"
+            buttonText="Cancel"
+            color="secondary"
+            (click)="closeModal()"
+          />
+          <app-button type="submit" buttonText="Add Category" color="primary" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}
+
 <main>
   <h1 class="title ms-2">Add Restaurant</h1>
 
@@ -57,13 +99,16 @@
             </div>
           </div>
           } @else if (input.type === 'select') {
-          <select [(ngModel)]="formData[input.name]" [name]="input.name">
+          <select
+            [(ngModel)]="formData[input.name]"
+            [name]="input.name"
+            (change)="onCategoryChange($event)"
+          >
             @for (option of input.options; track $index) {
-            <option [value]="option">
-              {{ option }}
-            </option>
+            <option [value]="option">{{ option }}</option>
             }
           </select>
+
           }@else if (input.type === 'message') {
           <textarea
             name="{{ input.name }}"
@@ -93,7 +138,7 @@
                   type="{{ input.type }}"
                   name="{{ input.name }}"
                   [(ngModel)]="formData[input.name]"
-                  placeholder="{{ input.placeholder }}"
+                  [placeholder]="'₦' + input.placeholder"
                 />
               </div>
               }
@@ -108,6 +153,7 @@
     </form>
   </div>
 </main>
+
 @if (isLoading()) {
 <app-loading-spinner />
 }

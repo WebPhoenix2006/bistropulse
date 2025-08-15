@@ -1,7 +1,7 @@
 import { Review } from './review.interface';
 
 export interface Food {
-  id: string;
+  id?: string;
   name: string;
   categoryId: string;
   description?: string;

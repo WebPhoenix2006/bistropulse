@@ -8,14 +8,28 @@ export class FilterByPipe implements PipeTransform {
   transform<T extends Record<string, any>>(
     items: T[],
     searchTerm: string,
-    key: keyof T
+    key: keyof T,
+    highlightAll: boolean = true // <-- new flag
   ): T[] {
     if (!searchTerm || !items || !key) return items;
 
-    const lowerSearch = searchTerm.toLowerCase();
+    // Decide regex flags based on highlightAll
+    const flags = highlightAll ? 'gi' : 'i';
+    const searchRegex = new RegExp(`(${searchTerm})`, flags);
 
-    return items.filter((item) =>
-      String(item[key]).toLowerCase().includes(lowerSearch)
-    );
+    return items
+      .filter((item) =>
+        String(item[key]).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .map((item) => {
+        const value = String(item[key]);
+        return {
+          ...item,
+          [key]: value.replace(
+            searchRegex,
+            '<span class="highlight">$1</span>'
+          ),
+        };
+      });
   }
 }

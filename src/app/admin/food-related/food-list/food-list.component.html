@@ -144,7 +144,7 @@
                       [checked]="food.checked"
                       (click)="toggleSelection(i)"
                     />
-                    {{ food.name }}
+                    <span [innerHTML]="food.name"></span>
                   </div>
                 </td>
                 <td>

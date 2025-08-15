@@ -1,4 +1,4 @@
-export interface Customer {
+export interface CustomerInterface {
   id: number;
   customer_id: string;
   name: string;
@@ -9,6 +9,6 @@ export interface Customer {
   location: string;
   photo_url: string;
   created_at: string;
-  checked: boolean;
-  favorite_restaurant_ids: string[];
+  checked?: boolean;
+  favorite_restaurant_ids?: string[];
 }

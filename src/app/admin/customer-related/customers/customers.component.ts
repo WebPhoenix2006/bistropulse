@@ -40,6 +40,7 @@ export class CustomersComponent implements OnInit {
     const token = localStorage.getItem('auth_token');
     if (token) {
       this.loadCustomers();
+      this.applyFilters();
     }
   }
 

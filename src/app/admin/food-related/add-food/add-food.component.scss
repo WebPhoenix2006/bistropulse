@@ -275,3 +275,279 @@ main {
     transform: translateY(0) scale(1);
   }
 }
+
+// CUSTOM SELECT STYLES
+// Add these styles to your existing SCSS file
+
+// Custom Dropdown Styles
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+
+  .dropdown-trigger {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: $secondary;
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover {
+      border-color: #bbb;
+    }
+
+    .selected-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .dropdown-arrow {
+      width: 20px;
+      height: 20px;
+      color: #666;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+
+      &.rotated {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &.open .dropdown-trigger {
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba(100, 150, 250, 0.1);
+  }
+
+  .dropdown-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    transform-origin: top;
+
+    .option-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f5f5f5;
+      transition: background-color 0.2s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: #f8f9fa;
+      }
+
+      &.selected {
+        background: rgba(100, 150, 250, 0.08);
+
+        .option-content {
+          color: $primary;
+          font-weight: 500;
+        }
+      }
+
+      .option-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        cursor: pointer;
+        color: $secondary;
+        font-size: 14px;
+        transition: color 0.2s ease;
+
+        .option-text {
+          flex: 1;
+        }
+
+        .check-icon {
+          width: 16px;
+          height: 16px;
+          color: $primary;
+          flex-shrink: 0;
+          margin-left: 8px;
+        }
+      }
+
+      .option-menu {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-right: 8px;
+
+        .menu-trigger {
+          background: none;
+          border: none;
+          padding: 8px;
+          border-radius: 6px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          opacity: 0.6;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.05);
+            opacity: 1;
+          }
+
+          svg {
+            width: 16px;
+            height: 16px;
+            color: #666;
+          }
+        }
+
+        .mini-toolbar {
+          position: absolute;
+          right: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+          background: white;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+          padding: 4px;
+          margin-right: 8px;
+          white-space: nowrap;
+          z-index: 1001;
+
+          &::before {
+            content: "";
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 6px 0 6px 6px;
+            border-color: transparent transparent transparent white;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            right: -7px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 7px 0 7px 7px;
+            border-color: transparent transparent transparent #e0e0e0;
+            z-index: -1;
+          }
+
+          .toolbar-action {
+            background: none;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+
+            svg {
+              width: 14px;
+              height: 14px;
+              flex-shrink: 0;
+            }
+
+            &:hover {
+              background: #f5f5f5;
+              color: #333;
+            }
+
+            &.delete-action:hover {
+              background: #fee;
+              color: #d63384;
+            }
+          }
+        }
+      }
+
+      // Show menu trigger only on hover
+      &:not(:hover) .option-menu .menu-trigger {
+        opacity: 0;
+      }
+    }
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+
+      &:hover {
+        background: #a8a8a8;
+      }
+    }
+  }
+
+  .dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    cursor: default;
+  }
+}
+
+// Animation Classes (for enter/leave transitions)
+.dropdown-enter {
+  opacity: 0;
+  transform: scaleY(0.8) translateY(-10px);
+}
+
+.dropdown-enter-active {
+  opacity: 1;
+  transform: scaleY(1) translateY(0);
+  transition: all 0.2s ease-out;
+}
+
+.dropdown-leave {
+  opacity: 1;
+  transform: scaleY(1) translateY(0);
+}
+
+.dropdown-leave-active {
+  opacity: 0;
+  transform: scaleY(0.8) translateY(-10px);
+  transition: all 0.15s ease-in;
+}

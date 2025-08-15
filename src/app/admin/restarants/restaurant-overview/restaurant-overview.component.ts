@@ -64,7 +64,7 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
         setTimeout(() => this.setupColorExtraction(), 100);
       },
       error: (err) => {
-        console.error('FETCH ERROR', err);
+        // console.error('FETCH ERROR', err);
         this.toastr.showError('failed to fetch', 2000);
         this.slowNetwork.clear();
         this.isLoading.set(false);
@@ -79,7 +79,7 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
   setupColorExtraction(): void {
     // If restaurant has no image, skip FAC and set fallback immediately
     if (!this.restaurant?.restaurant_image_url) {
-      console.warn('No image URL, applying fallback color');
+      // console.warn('No image URL, applying fallback color');
       this.setFallbackColor();
       return;
     }
@@ -87,7 +87,7 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
     const imgEl = this.restaurantImgRef?.nativeElement;
 
     if (!imgEl) {
-      console.warn('Image element not found');
+      // console.warn('Image element not found');
       return;
     }
 
@@ -118,7 +118,7 @@ export class RestaurantOverviewComponent implements OnInit, AfterViewInit {
       );
       // console.log(`✅ Color extracted successfully:`, rgbaColor);
     } catch (error) {
-      console.error('❌ Color extraction failed:', error);
+      // console.error('❌ Color extraction failed:', error);
       this.setFallbackColor();
     }
   }

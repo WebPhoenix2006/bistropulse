@@ -98,9 +98,10 @@ export class AddBranchComponent implements OnInit {
       this.formData['representativeLocation']
     );
     formData.append(
-      'representative.profile_img',
+      'representative.representativeImage',
       this.formData['representativeImage']
     );
+    formData.append('restaurant_image', this.formData['branchImage']);
 
     // ✅ representative ID must be sent if required by backend
     if (this.formData['representative']) {
@@ -109,7 +110,7 @@ export class AddBranchComponent implements OnInit {
 
     this.franchisesService.addBranch(franchiseId, formData).subscribe({
       next: (res) => {
-        console.log('Branch created!', res);
+        // console.log('Branch created!', res);
         this.toastr.showSuccess('Branch created successfully!');
         this.isLoading.set(false);
         this.isSuccessful.set(true);
@@ -118,7 +119,7 @@ export class AddBranchComponent implements OnInit {
         }, 2000);
       },
       error: (err) => {
-        console.warn('Branch creation failed', err);
+        // console.warn('Branch creation failed', err);
         this.toastr.showError(err.message || 'Failed to create branch');
         this.isLoading.set(false);
       },

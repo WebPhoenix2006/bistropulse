@@ -1,15 +1,65 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, HostListener } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { FoodService } from '../../../shared/services/food-service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { Food } from '../../../interfaces/food.interface';
+import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.service';
 
 @Component({
   selector: 'app-add-food',
   standalone: false,
   templateUrl: './add-food.component.html',
   styleUrl: './add-food.component.scss',
+  animations: [
+    trigger('slideInOut', [
+      state(
+        'in',
+        style({
+          opacity: 1,
+          transform: 'scaleY(1) translateY(0)',
+          visibility: 'visible',
+        })
+      ),
+      state(
+        'out',
+        style({
+          opacity: 0,
+          transform: 'scaleY(0.8) translateY(-10px)',
+          visibility: 'hidden',
+        })
+      ),
+      transition('out => in', [animate('200ms ease-out')]),
+      transition('in => out', [animate('150ms ease-in')]),
+    ]),
+    trigger('fadeSlide', [
+      state(
+        'in',
+        style({
+          opacity: 1,
+          transform: 'translateX(0) scale(1)',
+          visibility: 'visible',
+        })
+      ),
+      state(
+        'out',
+        style({
+          opacity: 0,
+          transform: 'translateX(10px) scale(0.95)',
+          visibility: 'hidden',
+        })
+      ),
+      transition('out => in', [animate('200ms ease-out')]),
+      transition('in => out', [animate('150ms ease-in')]),
+    ]),
+  ],
 })
 export class AddFoodComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
@@ -24,9 +74,13 @@ export class AddFoodComponent implements OnInit {
   isAddOthersOptionOpen = signal<boolean>(false);
   newCategoryName = '';
 
+  // Custom dropdown properties
+  isDropdownOpen = false;
+  openMenuIndex: number | null = null;
+
   constructor(
     private router: Router,
-    private toastr: ToastrService,
+    private toastr: BootstrapToastService,
     public slowNetwork: SlowNetworkService
   ) {}
 
@@ -73,7 +127,6 @@ export class AddFoodComponent implements OnInit {
   onSubmit(): void {
     const finalFoodData: Food = {
       categoryId: this.formData['category'] || '',
-      id: this.generateId(),
       name: this.formData['foodName'] || '',
       price: Number(this.formData['price']) || 0,
       image: this.formData['image'] as File,
@@ -92,6 +145,86 @@ export class AddFoodComponent implements OnInit {
 
   removeImage(): void {
     this.imagePreview = null;
+  }
+
+  // Custom Dropdown Methods
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+    if (this.isDropdownOpen) {
+      this.openMenuIndex = null; // Close any open menus
+    }
+  }
+
+  closeDropdown(): void {
+    this.isDropdownOpen = false;
+    this.openMenuIndex = null;
+  }
+
+  selectOption(option: string, fieldName: string): void {
+    if (option === 'Others') {
+      this.isAddOthersOptionOpen.set(true);
+      this.newCategoryName = '';
+    } else {
+      this.formData[fieldName] = option;
+    }
+    this.closeDropdown();
+  }
+
+  toggleOptionMenu(index: number): void {
+    this.openMenuIndex = this.openMenuIndex === index ? null : index;
+  }
+
+  deleteCategory(category: string, index: number): void {
+    // Don't allow deletion if it's the only category left (besides Others)
+    const categoryInput = this.inputs.find((i) => i.name === 'category');
+    if (categoryInput) {
+      const nonOthersCategories = categoryInput.options.filter(
+        (opt) => opt !== 'Others'
+      );
+
+      if (nonOthersCategories.length <= 1) {
+        this.toastr.showWarning('You must have at least one category', 3000);
+        this.openMenuIndex = null;
+        return;
+      }
+    }
+
+    // Show confirmation dialog
+    if (
+      confirm(`Are you sure you want to delete the category "${category}"?`)
+    ) {
+      if (categoryInput) {
+        // Remove the category from options
+        categoryInput.options = categoryInput.options.filter(
+          (opt) => opt !== category
+        );
+
+        // If the deleted category was selected, reset to first available option
+        if (this.formData['category'] === category) {
+          this.formData['category'] = categoryInput.options[0];
+        }
+
+        // Show success message
+        this.toastr.showSuccess(
+          `Category "${category}" deleted successfully`,
+          3000
+        );
+      }
+    }
+
+    // Close the menu
+    this.openMenuIndex = null;
+  }
+
+  // Updated method to handle closing dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    const dropdownElement = target.closest('.custom-dropdown');
+
+    if (!dropdownElement && this.isDropdownOpen) {
+      this.closeDropdown();
+    }
   }
 
   // *** Updated method for adding new category ***
@@ -119,16 +252,38 @@ export class AddFoodComponent implements OnInit {
     if (this.newCategoryName && this.newCategoryName.trim()) {
       const trimmedCategory = this.newCategoryName.trim();
 
-      // Add to the category list (avoid duplicates)
       const categoryInput = this.inputs.find((i) => i.name === 'category');
-      if (categoryInput && !categoryInput.options.includes(trimmedCategory)) {
+      if (categoryInput) {
+        // Check for duplicates (case-insensitive)
+        const exists = categoryInput.options.some(
+          (opt) => opt.toLowerCase() === trimmedCategory.toLowerCase()
+        );
+
+        if (exists) {
+          this.toastr.showWarning(
+            `Category "${trimmedCategory}" already exists`,
+            3000
+          );
+          return;
+        }
+
         // Insert before 'Others' option
         const othersIndex = categoryInput.options.indexOf('Others');
-        categoryInput.options.splice(othersIndex, 0, trimmedCategory);
-      }
+        if (othersIndex !== -1) {
+          categoryInput.options.splice(othersIndex, 0, trimmedCategory);
+        } else {
+          categoryInput.options.push(trimmedCategory); // Fallback if "Others" is missing
+        }
 
-      // Set the newly added category as selected
-      this.formData['category'] = trimmedCategory;
+        // Set the newly added category as selected
+        this.formData['category'] = trimmedCategory;
+
+        // Show success message
+        this.toastr.showSuccess(
+          `Category "${trimmedCategory}" added successfully`,
+          3000
+        );
+      }
 
       // Close modal
       this.closeModal();

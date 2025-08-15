@@ -143,8 +143,9 @@
                       (change)="toggleSelection(i)"
                       (click)="$event.stopPropagation()"
                     />
-                    {{ restaurant.name }}
+                    <span [innerHTML]="restaurant.name"></span>
                   </td>
+
                   <td>
                     {{ restaurant.representative?.full_name || "No Rep" }}
                   </td>

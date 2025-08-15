@@ -138,6 +138,14 @@ const routes: Routes = [
                   breadcrumb: 'Order-Details',
                 },
               },
+              // {
+              //   path: 'orders/:orderId/order-tracking',
+              //   component: OrderTrackingComponent,
+              //   data: {
+              //     animation: 'OrderDetails',
+              //     breadcrumb: 'Order-Details',
+              //   },
+              // },
 
               // --- Restaurant Riders Management ---
               {

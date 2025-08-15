@@ -1,12 +1,16 @@
-<div class="container">
+<div class="container" *ngIf="orderData">
   <!-- ===== 🔷 HEADER SECTION ===== -->
   <div class="header">
     <!-- 🔹 Header Left Side -->
     <div class="header__left">
       <span class="con">
         <!-- 🔸 Order Title and Status -->
-        <h1 class="con__title">Order Id #12009</h1>
-        <span class="status-badge status-badge--pending">Pending</span>
+        <h1 class="con__title">Order Id #{{ orderData.order_id }}</h1>
+        <span 
+          class="status-badge" 
+          [ngClass]="'status-badge--' + orderData.status.toLowerCase().replace(' ', '-')">
+          {{ orderData.status }}
+        </span>
 
         <!-- 🔸 Customer Profile -->
         <div class="con__profile">
@@ -14,38 +18,46 @@
             class="con__img__info"
             [ngClass]="!hasProfile() ? 'con__avatar' : 'con__image'"
           >
-            <span *ngIf="!hasProfile()">RE</span>
-            <div class="img">
+            <span *ngIf="!hasProfile()">
+              {{ orderData.customer.name.charAt(0).toUpperCase() }}{{ orderData.customer.name.split(' ')[1]?.charAt(0).toUpperCase() || '' }}
+            </span>
+            <div class="img" *ngIf="hasProfile()">
               <img
-                *ngIf="hasProfile()"
-                src="/assets/images/avatar.png"
-                alt="Rider img"
+                [src]="orderData.customer.photo_url"
+                [alt]="orderData.customer.name + ' profile image'"
+                (error)="hasProfile.set(false)"
               />
             </div>
           </div>
-          <span class="con__name">Ralph Edwards</span>
+          <span class="con__name">{{ orderData.customer.name }}</span>
         </div>
       </span>
 
       <!-- 🔸 Navigation Buttons -->
       <div class="btn__con">
-        <button class="btn__1">
+        <button class="btn__1" (click)="onPreviousOrder()">
           <i class="fa fa-arrow-left"></i>
         </button>
-        <button class="btn__1">
+        <button class="btn__1" (click)="onNextOrder()">
           <i class="fa fa-arrow-right"></i>
         </button>
       </div>
     </div>
 
     <!-- 🔹 Order Date -->
-    <div class="header__date m-1">Sat, Nov 29 • 08:30 PM</div>
+    <div class="header__date m-1">{{ getFormattedDate(orderData.date_ordered) }}</div>
 
     <!-- 🔹 Header Actions -->
     <div class="header__actions">
-      <button class="btn btn--secondary">Assign Delivery man</button>
-      <button class="btn btn--secondary">Payment</button>
-      <button class="btn btn--primary">Status</button>
+      <button class="btn btn--secondary" (click)="onAssignDeliveryMan()">
+        Assign Delivery man
+      </button>
+      <button class="btn btn--secondary" (click)="onPaymentAction()">
+        Payment
+      </button>
+      <button class="btn btn--primary" (click)="onStatusChange()">
+        Status
+      </button>
     </div>
   </div>
 
@@ -57,29 +69,22 @@
       <div class="order-status">
         <h3 class="order-status__title">Order Status</h3>
         <ul class="order-status__list">
-          <li class="order-status__item active">
-            <div class="order-status__icon order-status__icon--active">✓</div>
-            <span>Placed</span>
-            <span class="order-status__time">16:25 AM</span>
-          </li>
-          <li class="order-status__item active">
-            <div class="order-status__icon order-status__icon--active">✓</div>
-            <span>Accepted</span>
-            <span class="order-status__time">16:30 AM</span>
-          </li>
-          <li class="order-status__item active">
-            <div class="order-status__icon order-status__icon--active">✓</div>
-            <span>Being prepared</span>
-            <span class="order-status__time">16:35 AM</span>
-          </li>
-          <li class="order-status__item active">
-            <div class="order-status__icon order-status__icon--active">✓</div>
-            <span>On the way</span>
-            <span class="order-status__time">16:40 AM</span>
-          </li>
-          <li class="order-status__item inactive">
-            <div class="order-status__icon order-status__icon--inactive">5</div>
-            <span>Delivered</span>
+          <li 
+            class="order-status__item"
+            *ngFor="let status of statusTimeline; let i = index"
+            [ngClass]="isStatusActive(i) ? 'active' : 'inactive'"
+          >
+            <div 
+              class="order-status__icon"
+              [ngClass]="isStatusActive(i) ? 'order-status__icon--active' : 'order-status__icon--inactive'"
+            >
+              <span *ngIf="isStatusActive(i)">{{ status.icon }}</span>
+              <span *ngIf="!isStatusActive(i)">{{ i + 1 }}</span>
+            </div>
+            <span>{{ status.label }}</span>
+            <span class="order-status__time" *ngIf="isStatusActive(i)">
+              <!-- You can add actual timestamps here if available -->
+            </span>
           </li>
         </ul>
       </div>
@@ -87,82 +92,70 @@
       <!-- 🔸 Order Tracking Map -->
       <div class="order-tracking">
         <h3 class="order-tracking__title">Order Tracking</h3>
-        <div class="order-tracking__map">Map container placeholder</div>
+        <div class="order-tracking__map">
+          <!-- You can integrate a map component here using the location data -->
+          <p>Pickup: {{ orderData.pickup_location.lat }}, {{ orderData.pickup_location.lng }}</p>
+          <p>Dropoff: {{ orderData.dropoff_location.lat }}, {{ orderData.dropoff_location.lng }}</p>
+          <p>Current: {{ orderData.current_location.lat }}, {{ orderData.current_location.lng }}</p>
+        </div>
       </div>
 
       <!-- 🔸 Order Summary Section -->
       <div class="order-summary">
         <h3 class="order-summary__title">Summary</h3>
-        <div class="order-summary__restaurant">Star Valley Restaurant</div>
+        <div class="order-summary__restaurant">Restaurant ID: {{ orderData.restaurant }}</div>
 
         <!-- 🧾 List of Items -->
-        <div class="order-summary__items">
-          <!-- Item 1 -->
-          <div class="order-summary__item">
-            <div class="order-summary__item-image"></div>
-            <div class="order-summary__item-details">
-              <div class="order-summary__item-name">Beef onion pizza</div>
-              <div class="order-summary__item-qty">2 items</div>
+        <div class="order-summary__items" *ngIf="orderData.items && orderData.items.length > 0">
+          <div class="order-summary__item" *ngFor="let item of orderData.items">
+            <div class="order-summary__item-image">
+              <img 
+                *ngIf="item.food_image" 
+                [src]="item.food_image" 
+                [alt]="item.food_name || 'Food item'"
+              >
             </div>
-            <div class="order-summary__item-price">₵60.00</div>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="order-summary__item">
-            <div class="order-summary__item-image"></div>
             <div class="order-summary__item-details">
-              <div class="order-summary__item-name">Cheese pizza</div>
-              <div class="order-summary__item-qty">1 item</div>
+              <div class="order-summary__item-name">
+                {{ item.food_name || 'Food Item #' + item.food }}
+              </div>
+              <div class="order-summary__item-qty">{{ item.quantity }} item{{ item.quantity > 1 ? 's' : '' }}</div>
             </div>
-            <div class="order-summary__item-price">₵30.00</div>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="order-summary__item">
-            <div class="order-summary__item-image"></div>
-            <div class="order-summary__item-details">
-              <div class="order-summary__item-name">Cheese pizza</div>
-              <div class="order-summary__item-qty">1 item</div>
+            <div class="order-summary__item-price">
+              ₵{{ getItemTotal(item).toFixed(2) }}
             </div>
-            <div class="order-summary__item-price">₵30.00</div>
-          </div>
-
-          <!-- Item 4 -->
-          <div class="order-summary__item">
-            <div class="order-summary__item-image"></div>
-            <div class="order-summary__item-details">
-              <div class="order-summary__item-name">Cheese pizza</div>
-              <div class="order-summary__item-qty">1 item</div>
-            </div>
-            <div class="order-summary__item-price">₵30.00</div>
           </div>
         </div>
 
         <!-- 🔸 Summary Totals -->
         <div class="order-summary__total-section">
           <div class="order-summary__row">
-            <span class="order-summary__row-left">Coupon Code</span>
-            <span class="order-summary__row-right">Not Applied</span>
+            <span class="order-summary__row-left">Payment Method</span>
+            <span class="order-summary__row-right">{{ orderData.payment_method }}</span>
           </div>
           <div class="order-summary__row">
-            <span class="order-summary__row-left">Reward Points</span>
-            <span class="order-summary__row-right">Not Used</span>
+            <span class="order-summary__row-left">Payment Status</span>
+            <span class="order-summary__row-right">{{ orderData.payment_status }}</span>
           </div>
-          <div class="order-summary__row">
+          <div class="order-summary__row" *ngIf="orderData.items">
             <span class="order-summary__row-left">Subtotal</span>
-            <span class="order-summary__row-right">150.00</span>
+            <span class="order-summary__row-right">₵{{ getSubtotal().toFixed(2) }}</span>
           </div>
           <div class="order-summary__row">
             <span class="order-summary__row-left">Delivery Fee</span>
-            <span class="order-summary__row-right">₵40.00</span>
+            <span class="order-summary__row-right">₵{{ parseFloat(orderData.delivery_fee).toFixed(2) }}</span>
           </div>
           <div class="order-summary__row">
-            <span class="order-summary__row-left">Fees & Estimated Tax</span>
-            <span class="order-summary__row-right">₵0.00</span>
+            <span class="order-summary__row-left">Platform Fee</span>
+            <span class="order-summary__row-right">₵{{ parseFloat(orderData.platform_fee).toFixed(2) }}</span>
+          </div>
+          <div class="order-summary__row">
+            <span class="order-summary__row-left">Tax</span>
+            <span class="order-summary__row-right">₵{{ parseFloat(orderData.tax).toFixed(2) }}</span>
           </div>
           <div class="order-summary__row total">
             <span class="order-summary__row-left total">Total</span>
-            <span class="order-summary__row-right">GHC 166.00</span>
+            <span class="order-summary__row-right">₵{{ getGrandTotal().toFixed(2) }}</span>
           </div>
         </div>
       </div>
@@ -175,54 +168,98 @@
       <!-- 🔸 Customer Profile -->
       <div class="customer-info__profile">
         <div class="customer-info__avatar">
-          <img src="/assets/images/avatar.png" alt="customer image" />
+          <img 
+            *ngIf="orderData.customer.photo_url; else customerInitials"
+            [src]="orderData.customer.photo_url" 
+            [alt]="orderData.customer.name + ' profile image'"
+            (error)="hasProfile.set(false)"
+          />
+          <ng-template #customerInitials>
+            <span class="avatar-initials">
+              {{ orderData.customer.name.charAt(0).toUpperCase() }}{{ orderData.customer.name.split(' ')[1]?.charAt(0).toUpperCase() || '' }}
+            </span>
+          </ng-template>
         </div>
         <div class="customer-info__details">
-          <h3>Chelsie Jhonson</h3>
-          <p>chelsiee&#64;noreplycompany.com</p>
-          <p>Total Order 30</p>
+          <h3>{{ orderData.customer.name }}</h3>
+          <p>{{ orderData.customer.email }}</p>
+          <p>Customer ID: {{ orderData.customer.customer_id }}</p>
+          <p *ngIf="orderData.customer.is_student" class="student-badge">Student</p>
         </div>
       </div>
 
       <!-- 🔸 Phone Number -->
       <div class="customer-info__section">
         <h4>Phone Number</h4>
-        <p>+98 87600-006770</p>
+        <p>
+          <a href="tel:{{ orderData.customer.phone }}" class="phone-link">
+            {{ orderData.customer.phone }}
+          </a>
+        </p>
       </div>
 
       <!-- 🔸 Location -->
       <div class="customer-info__section">
         <h4>Location</h4>
-        <p>Asakolseo Netkey Road, Accra...</p>
+        <p>{{ orderData.customer.location }}</p>
       </div>
 
       <!-- 🔸 Delivery Address -->
       <div class="customer-info__section">
         <h4>Deliver To</h4>
-        <p>Current Address</p>
-        <p>G-5, Asakolseo Netkey Road</p>
-        <p>Accra, Ghana</p>
-        <p>📍 Add Direction</p>
-        <p>📍 Store distance from address</p>
+        <p>{{ orderData.customer.location }}</p>
+        <p>Coordinates: {{ orderData.dropoff_location.lat }}, {{ orderData.dropoff_location.lng }}</p>
       </div>
 
       <!-- 🔸 Delivery Guy Info -->
-      <div class="customer-info__delivery-guy">
+      <div class="customer-info__delivery-guy" *ngIf="orderData.rider">
         <h4>Delivery Guy</h4>
         <div class="customer-info__delivery-guy-profile">
           <div class="customer-info__delivery-guy-avatar">
-            <img src="/assets/images/avatar.png" alt="rider image" />
+            <img 
+              *ngIf="orderData.rider.profile_image_url; else riderInitials"
+              [src]="orderData.rider.profile_image_url" 
+              [alt]="orderData.rider.full_name + ' profile image'"
+            />
+            <ng-template #riderInitials>
+              <span class="avatar-initials">
+                {{ orderData.rider.full_name.charAt(0).toUpperCase() }}{{ orderData.rider.full_name.split(' ')[1]?.charAt(0).toUpperCase() || '' }}
+              </span>
+            </ng-template>
           </div>
           <div class="customer-info__delivery-guy-details">
-            <h4>Ralph Edwards</h4>
-            <p>+65 001 64 578</p>
+            <h4>{{ orderData.rider.full_name }}</h4>
+            <p>{{ orderData.rider.phone }}</p>
+            <p>Code: {{ orderData.rider.rider_code }}</p>
+            <p class="rider-status" [ngClass]="orderData.rider.is_active ? 'active' : 'inactive'">
+              {{ orderData.rider.is_active ? 'Active' : 'Inactive' }}
+            </p>
           </div>
           <div class="customer-info__delivery-guy-actions">
-            <button class="customer-info__delivery-guy-btn">📞</button>
-            <button class="customer-info__delivery-guy-btn">💬</button>
+            <button 
+              class="customer-info__delivery-guy-btn"
+              (click)="onCallRider()"
+              title="Call rider"
+            >
+              📞
+            </button>
+            <button 
+              class="customer-info__delivery-guy-btn"
+              (click)="onMessageRider()"
+              title="Message rider"
+            >
+              💬
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div class="loading-container" *ngIf="!orderData">
+  <div class="loading-spinner">
+    <p>Loading order details...</p>
   </div>
 </div>

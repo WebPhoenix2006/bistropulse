@@ -52,7 +52,7 @@ export class FoodService {
   // *** method for getting categories ***
   getCategories(id: string): Observable<categorySubmitInterface[]> {
     return this.http.get<categorySubmitInterface[]>(
-      `${this.BASE_URL}/restaurants/${id}/ food-categories/`,
+      `${this.BASE_URL}/restaurants/${id}/food-categories/`,
       {
         headers: this.getAuthHeaders(),
       }

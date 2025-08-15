@@ -32,14 +32,7 @@ export class CategoriesComponent implements OnInit {
     private activeRoute: ActivatedRoute
   ) {}
 
-  CATEGORY_LIST: FoodCategory[] = [
-    { id: 'C001', name: 'Smirnoff Ice', itemCount: 3, checked: false },
-    { id: 'C002', name: 'Rosewood Origin', itemCount: 2, checked: false },
-    { id: 'C003', name: 'Jack Daniels', itemCount: 2, checked: false },
-    { id: 'C004', name: 'Belvedere', itemCount: 5, checked: false },
-    { id: 'C005', name: 'Gulder', itemCount: 5, checked: false },
-    { id: 'C006', name: 'Heineken', itemCount: 6, checked: false },
-  ];
+  CATEGORY_LIST: FoodCategory[] = [];
 
   openDeleteModal(id: string): void {
     this.categoryToDelete = id;
@@ -59,8 +52,9 @@ export class CategoriesComponent implements OnInit {
         this.toastr.showSuccess('added succefully', 2000);
         this.isAddingCategory = false;
         this.newCategoryName = '';
-        console.log(data);
-        this.isCategoryModalOpen = false; // or this.isModalOpen = false if it's a boolean
+        this.isCategoryModalOpen = false;
+        this.getCategories();
+         // or this.isModalOpen = false if it's a boolean
       },
       error: (err) => {
         this.toastr.showError(err.message || 'Failed to add category', 2000);
@@ -71,8 +65,10 @@ export class CategoriesComponent implements OnInit {
 
   getCategories(): void {
     this.foodService.getCategories(this.restaurantId()).subscribe({
-      next: (data: categorySubmitInterface[]) => {
+      next: (data: any) => {
         console.log(data);
+        this.CATEGORY_LIST = data.results;
+        this.applyFilters();
         this.toastr.showSuccess('fetched Categories');
       },
       error: (err) => {
@@ -96,7 +92,6 @@ export class CategoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.applyFilters();
     this.getRestaurantId();
     this.getCategories();
   }

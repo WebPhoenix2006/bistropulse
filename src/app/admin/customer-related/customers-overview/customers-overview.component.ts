@@ -5,18 +5,23 @@ import { CustomerStateService } from '../../../shared/services/customer-state.se
 import { Observable, of } from 'rxjs';
 import { CustomerReview } from '../../../interfaces/customer-review.interface';
 import { MOCK_CUSTOMER_REVIEWS } from '../../../mock-data/customer.review';
+import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 
 @Component({
   selector: 'app-customers-overview',
   standalone: false,
   templateUrl: './customers-overview.component.html',
   styleUrl: './customers-overview.component.scss',
+  providers: [FilterByPipe],
 })
 export class CustomersOverviewComponent implements OnInit {
+  // injectables
   private customerService = inject(CustomersService);
   private customerState = inject(CustomerStateService);
-  searchTerm: string = '';
+  private filterPipe = inject(FilterByPipe);
 
+  // variable declarations
+  searchTerm: string = '';
   customers: any[] = [];
   isLoading = false;
   isEnabled = false;
@@ -25,9 +30,35 @@ export class CustomersOverviewComponent implements OnInit {
   branches: string[] = [];
   activeBranch: string = '';
   checkedOrders: Set<number> = new Set();
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalCount = 0;
 
   favRestuarants: any[] = [];
   customerReviews: CustomerReview[] = [];
+  filteredList: Array<any> = [];
+
+  // filter logic
+  applyFilters(): void {
+    let filtered;
+
+    if (this.searchTerm && this.searchTerm.trim()) {
+      // Apply filter only if there's a search term
+      filtered = this.filterPipe.transform(
+        this.customers,
+        this.searchTerm,
+        'name'
+      );
+    } else {
+      // Show all customers if no search term
+      filtered = this.customers;
+    }
+
+    this.totalCount = filtered.length;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.filteredList = filtered.slice(startIndex, endIndex);
+  }
 
   MOCK_CUSTOMER_ORDERS = [
     {
@@ -173,6 +204,9 @@ export class CustomersOverviewComponent implements OnInit {
             ...customer,
             checked: false,
           })) || [];
+
+        // Add this line to populate filteredList initially
+        this.applyFilters();
 
         this.isLoading = false;
       },

@@ -79,6 +79,7 @@ import { RestaurantOrderDetailsComponent } from './restarants/restaurant-order-d
     OrderTrackingComponent,
     RestaurantOrderListComponent,
     RestaurantOrderDetailsComponent,
+    CustomersOverviewComponent,
   ],
 
   imports: [

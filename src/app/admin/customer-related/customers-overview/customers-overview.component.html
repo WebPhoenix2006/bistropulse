@@ -12,35 +12,48 @@
         <div class="search">
           <label title="Search By Restaurant Name">
             <span><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" placeholder="Search By Restaurant Name" />
+            <input
+              type="text"
+              placeholder="Search By Restaurant Name"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="applyFilters()"
+            />
           </label>
         </div>
 
         <div class="customers-list">
-          <ul class="customers list-unstlyed">
-            <li
-              class="customer"
-              *ngFor="let customer of customers"
-              (click)="selectCustomer(customer)"
-              [class.selected]="isSelected(customer)"
-            >
-              <div class="customer-content">
-                <div class="img">
-                  <img
-                    [src]="
-                      customer.photo_url || 'assets/images/profile-img.png'
-                    "
-                    alt="profile-img"
-                    class="img-fluid object-fit-cover"
-                  />
+          <ng-container *ngIf="filteredList.length > 0; else noResults">
+            <ul class="customers list-unstlyed">
+              <li
+                class="customer"
+                *ngFor="let customer of filteredList"
+                (click)="selectCustomer(customer)"
+                [class.selected]="isSelected(customer)"
+              >
+                <div class="customer-content">
+                  <div class="img">
+                    <img
+                      [src]="
+                        customer.photo_url || 'assets/images/profile-img.png'
+                      "
+                      alt="profile-img"
+                      class="img-fluid object-fit-cover"
+                    />
+                  </div>
+                  <div class="details">
+                    <h5 [innerHTML]="customer.name"></h5>
+                    <p>{{ customer.phone }}</p>
+                  </div>
                 </div>
-                <div class="details">
-                  <h5>{{ customer.name }}</h5>
-                  <p>{{ customer.phone }}</p>
-                </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </ng-container>
+          <ng-template #noResults>
+            <h2 class="no-results">
+              <span><i class="fa-solid fa-magnifying-glass"></i></span>No
+              Results
+            </h2>
+          </ng-template>
         </div>
       </div>
     </div>

@@ -292,15 +292,32 @@ label {
     }
 
     .discount-badge {
+      /* Ribbon variables */
+      --f: 0.4em; /* control the folded part */
+      --r: 0.8em; /* control the ribbon arrow/curve */
+
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #00c48c;
-      color: white;
+      top: 15px;
+      left: -3px;
+      padding: 0.3em 1em 0.3em 0.6em;
       font-size: 12px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 4px;
+      font-weight: 700;
+      color: white;
+      background: #00c48c;
+      line-height: 1.4;
+
+      /* Clip path for ribbon pointing/curving to the right */
+      clip-path: polygon(
+        0 0,
+        calc(100% - var(--r)) 0,
+        100% 50%,
+        calc(100% - var(--r)) 100%,
+        0 100%,
+        var(--f) 50%
+      );
+
+      /* Add some shadow for depth */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
 
     .favorite-icon {
@@ -341,6 +358,7 @@ label {
         color: #333;
       }
     }
+
     .meta {
       margin-top: 6px;
       font-size: 0.875rem;
@@ -626,4 +644,17 @@ label {
   font-size: 0.9rem;
   color: #007bff;
   font-weight: 600;
+}
+
+// styles for no results
+.no-results {
+  color: $secondary;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }

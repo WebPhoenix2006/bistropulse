@@ -6,8 +6,8 @@ import {
   transition,
   animate,
 } from '@angular/animations';
-import { FoodService } from '../../../shared/services/food-service';
-import { Router } from '@angular/router';
+import { FoodService } from '../../../shared/services/food.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { Food } from '../../../interfaces/food.interface';
@@ -64,6 +64,7 @@ import { BootstrapToastService } from '../../../shared/services/bootstrap-toast.
 export class AddFoodComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   formData: { [key: string]: any } = {};
+  restaurantId = signal<string>('');
 
   foodService = inject(FoodService);
   isLoading = signal<boolean>(false);
@@ -81,10 +82,14 @@ export class AddFoodComponent implements OnInit {
   constructor(
     private router: Router,
     private toastr: BootstrapToastService,
-    public slowNetwork: SlowNetworkService
+    public slowNetwork: SlowNetworkService,
+    private activeRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    let id: string;
+    id = this.activeRoute.snapshot.paramMap.get('id');
+    this.restaurantId.set(id);
     this.inputs.forEach((input) => {
       if (input.type === 'select' && input.options?.length) {
         this.formData[input.name] = input.options[0]; // selects first by default
@@ -114,33 +119,44 @@ export class AddFoodComponent implements OnInit {
     }
   }
 
-  generateId(): string {
-    const chars =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  }
-
   onSubmit(): void {
-    const finalFoodData: Food = {
-      categoryId: this.formData['category'] || '',
-      name: this.formData['foodName'] || '',
-      price: Number(this.formData['price']) || 0,
-      image: this.formData['image'] as File,
-      description: this.formData['description'] || '',
-      sizes: this.hasDifferentSize
-        ? {
-            smallPrice: this.formData['smallPrice']?.toString(),
-            mediumPrice: this.formData['mediumPrice']?.toString(),
-            largePrice: this.formData['largePrice']?.toString(),
-          }
-        : undefined,
-    };
+    const formData = new FormData();
 
-    console.log(finalFoodData);
+    formData.append('name', this.formData['foodName'] || '');
+    formData.append('price', this.formData['price']?.toString() || '0');
+
+    if (this.formData['image']) {
+      formData.append('image', this.formData['image']); // File object
+    }
+
+    formData.append('description', this.formData['description'] || '');
+    formData.append('category', this.formData['category']);
+
+    if (this.hasDifferentSize) {
+      formData.append(
+        'smallPrice',
+        this.formData['smallPrice']?.toString() || ''
+      );
+      formData.append(
+        'mediumPrice',
+        this.formData['mediumPrice']?.toString() || ''
+      );
+      formData.append(
+        'largePrice',
+        this.formData['largePrice']?.toString() || ''
+      );
+    }
+
+    // Just to see what’s inside
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    // Send it via your service
+    this.foodService.createFood(formData, this.restaurantId()).subscribe({
+      next: (res) => console.log('✅ Food created:', res),
+      error: (err) => console.error('❌ Error:', err),
+    });
   }
 
   removeImage(): void {

@@ -226,6 +226,8 @@ label {
     cursor: pointer;
     width: 100% !important;
     transition: background 0.3s ease;
+    display: grid;
+    place-items: center;
 
     &:disabled {
       background: #ccc;

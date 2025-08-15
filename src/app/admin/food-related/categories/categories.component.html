@@ -47,13 +47,17 @@
                 required
               />
             </fieldset>
-
             <button
               type="submit"
               class="submit-btn"
-              [disabled]="!categoryForm.valid"
+              [disabled]="!categoryForm.valid || isAddingCategory"
             >
-              Submit
+              <ng-container *ngIf="!isAddingCategory; else addingCategory">
+                <span>submit</span>
+              </ng-container>
+              <ng-template #addingCategory>
+                <app-smallest-spinner />
+              </ng-template>
             </button>
           </form>
         </div>

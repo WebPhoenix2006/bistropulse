@@ -3,7 +3,8 @@ import { Review } from './review.interface';
 export interface Food {
   id?: string;
   name: string;
-  categoryId: string;
+  category?: string | number;
+  categoryId?: string | number;
   description?: string;
   image?: string | File;
   available?: boolean;

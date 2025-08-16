@@ -1,35 +1,37 @@
 <div class="container" *ngIf="orderData">
+
   <!-- ===== 🔷 HEADER SECTION ===== -->
   <div class="header">
     <!-- 🔹 Header Left Side -->
     <div class="header__left">
       <span class="con">
         <!-- 🔸 Order Title and Status -->
-        <h1 class="con__title">Order Id #{{ orderData.order_id }}</h1>
-        <span 
-          class="status-badge" 
-          [ngClass]="'status-badge--' + orderData.status.toLowerCase().replace(' ', '-')">
-          {{ orderData.status }}
+        <h1 class="con__title">Order Id #{{ orderData?.order_id || 'Unknown' }}</h1>
+        <span
+          class="status-badge"
+          [ngClass]="getStatusClass()"
+        >
+          {{ orderData?.status || 'Unknown' }}
         </span>
 
         <!-- 🔸 Customer Profile -->
-        <div class="con__profile">
+        <div class="con__profile" *ngIf="orderData?.customer">
           <div
             class="con__img__info"
             [ngClass]="!hasProfile() ? 'con__avatar' : 'con__image'"
           >
             <span *ngIf="!hasProfile()">
-              {{ orderData.customer.name.charAt(0).toUpperCase() }}{{ orderData.customer.name.split(' ')[1]?.charAt(0).toUpperCase() || '' }}
+              {{ getCustomerInitials() }}
             </span>
-            <div class="img" *ngIf="hasProfile()">
+            <div class="img" *ngIf="hasProfile() && orderData?.customer?.photo_url">
               <img
                 [src]="orderData.customer.photo_url"
-                [alt]="orderData.customer.name + ' profile image'"
+                [alt]="(orderData?.customer?.name || 'Customer') + ' profile image'"
                 (error)="hasProfile.set(false)"
               />
             </div>
           </div>
-          <span class="con__name">{{ orderData.customer.name }}</span>
+          <span class="con__name">{{ orderData?.customer?.name || 'Unknown Customer' }}</span>
         </div>
       </span>
 
@@ -45,7 +47,9 @@
     </div>
 
     <!-- 🔹 Order Date -->
-    <div class="header__date m-1">{{ getFormattedDate(orderData.date_ordered) }}</div>
+    <div class="header__date m-1">
+      {{ getFormattedDate(orderData?.date_ordered) }}
+    </div>
 
     <!-- 🔹 Header Actions -->
     <div class="header__actions">
@@ -69,14 +73,18 @@
       <div class="order-status">
         <h3 class="order-status__title">Order Status</h3>
         <ul class="order-status__list">
-          <li 
+          <li
             class="order-status__item"
             *ngFor="let status of statusTimeline; let i = index"
             [ngClass]="isStatusActive(i) ? 'active' : 'inactive'"
           >
-            <div 
+            <div
               class="order-status__icon"
-              [ngClass]="isStatusActive(i) ? 'order-status__icon--active' : 'order-status__icon--inactive'"
+              [ngClass]="
+                isStatusActive(i)
+                  ? 'order-status__icon--active'
+                  : 'order-status__icon--inactive'
+              "
             >
               <span *ngIf="isStatusActive(i)">{{ status.icon }}</span>
               <span *ngIf="!isStatusActive(i)">{{ i + 1 }}</span>
@@ -94,32 +102,48 @@
         <h3 class="order-tracking__title">Order Tracking</h3>
         <div class="order-tracking__map">
           <!-- You can integrate a map component here using the location data -->
-          <p>Pickup: {{ orderData.pickup_location.lat }}, {{ orderData.pickup_location.lng }}</p>
-          <p>Dropoff: {{ orderData.dropoff_location.lat }}, {{ orderData.dropoff_location.lng }}</p>
-          <p>Current: {{ orderData.current_location.lat }}, {{ orderData.current_location.lng }}</p>
+          <p *ngIf="orderData?.pickup_location">
+            Pickup: {{ orderData.pickup_location.lat }},
+            {{ orderData.pickup_location.lng }}
+          </p>
+          <p *ngIf="orderData?.dropoff_location">
+            Dropoff: {{ orderData.dropoff_location.lat }},
+            {{ orderData.dropoff_location.lng }}
+          </p>
+          <p *ngIf="orderData?.current_location">
+            Current: {{ orderData.current_location.lat }},
+            {{ orderData.current_location.lng }}
+          </p>
         </div>
       </div>
 
       <!-- 🔸 Order Summary Section -->
       <div class="order-summary">
         <h3 class="order-summary__title">Summary</h3>
-        <div class="order-summary__restaurant">Restaurant ID: {{ orderData.restaurant }}</div>
+        <div class="order-summary__restaurant">
+          Restaurant ID: {{ orderData?.restaurant || 'Unknown' }}
+        </div>
 
         <!-- 🧾 List of Items -->
-        <div class="order-summary__items" *ngIf="orderData.items && orderData.items.length > 0">
+        <div
+          class="order-summary__items"
+          *ngIf="orderData?.items && orderData.items.length > 0"
+        >
           <div class="order-summary__item" *ngFor="let item of orderData.items">
             <div class="order-summary__item-image">
-              <img 
-                *ngIf="item.food_image" 
-                [src]="item.food_image" 
-                [alt]="item.food_name || 'Food item'"
-              >
+              <img
+                *ngIf="item?.food_image"
+                [src]="item.food_image"
+                [alt]="item?.food_name || 'Food item'"
+              />
             </div>
             <div class="order-summary__item-details">
               <div class="order-summary__item-name">
-                {{ item.food_name || 'Food Item #' + item.food }}
+                {{ item?.food_name || ("Food Item #" + item?.food) }}
               </div>
-              <div class="order-summary__item-qty">{{ item.quantity }} item{{ item.quantity > 1 ? 's' : '' }}</div>
+              <div class="order-summary__item-qty">
+                {{ item?.quantity || 0 }} item{{ (item?.quantity || 0) > 1 ? "s" : "" }}
+              </div>
             </div>
             <div class="order-summary__item-price">
               ₵{{ getItemTotal(item).toFixed(2) }}
@@ -131,60 +155,76 @@
         <div class="order-summary__total-section">
           <div class="order-summary__row">
             <span class="order-summary__row-left">Payment Method</span>
-            <span class="order-summary__row-right">{{ orderData.payment_method }}</span>
+            <span class="order-summary__row-right">{{
+              orderData?.payment_method || 'Unknown'
+            }}</span>
           </div>
           <div class="order-summary__row">
             <span class="order-summary__row-left">Payment Status</span>
-            <span class="order-summary__row-right">{{ orderData.payment_status }}</span>
+            <span class="order-summary__row-right">{{
+              orderData?.payment_status || 'Unknown'
+            }}</span>
           </div>
-          <div class="order-summary__row" *ngIf="orderData.items">
+          <div class="order-summary__row" *ngIf="orderData?.items && orderData.items.length > 0">
             <span class="order-summary__row-left">Subtotal</span>
-            <span class="order-summary__row-right">₵{{ getSubtotal().toFixed(2) }}</span>
+            <span class="order-summary__row-right"
+              >₵{{ getSubtotal().toFixed(2) }}</span
+            >
           </div>
           <div class="order-summary__row">
             <span class="order-summary__row-left">Delivery Fee</span>
-            <span class="order-summary__row-right">₵{{ parseFloat(orderData.delivery_fee).toFixed(2) }}</span>
+            <span class="order-summary__row-right"
+              >₵{{ getDeliveryFee().toFixed(2) }}</span
+            >
           </div>
           <div class="order-summary__row">
             <span class="order-summary__row-left">Platform Fee</span>
-            <span class="order-summary__row-right">₵{{ parseFloat(orderData.platform_fee).toFixed(2) }}</span>
+            <span class="order-summary__row-right"
+              >₵{{ getPlatformFee().toFixed(2) }}</span
+            >
           </div>
           <div class="order-summary__row">
             <span class="order-summary__row-left">Tax</span>
-            <span class="order-summary__row-right">₵{{ parseFloat(orderData.tax).toFixed(2) }}</span>
+            <span class="order-summary__row-right"
+              >₵{{ getTax().toFixed(2) }}</span
+            >
           </div>
           <div class="order-summary__row total">
             <span class="order-summary__row-left total">Total</span>
-            <span class="order-summary__row-right">₵{{ getGrandTotal().toFixed(2) }}</span>
+            <span class="order-summary__row-right"
+              >₵{{ getGrandTotal().toFixed(2) }}</span
+            >
           </div>
         </div>
       </div>
     </div>
 
     <!-- ===== 🔹 CUSTOMER INFO PANEL ===== -->
-    <div class="customer-info">
+    <div class="customer-info" *ngIf="orderData?.customer">
       <h3 class="customer-info__title">Customer Info</h3>
 
       <!-- 🔸 Customer Profile -->
       <div class="customer-info__profile">
         <div class="customer-info__avatar">
-          <img 
+          <img
             *ngIf="orderData.customer.photo_url; else customerInitials"
-            [src]="orderData.customer.photo_url" 
-            [alt]="orderData.customer.name + ' profile image'"
+            [src]="orderData.customer.photo_url"
+            [alt]="(orderData.customer.name || 'Customer') + ' profile image'"
             (error)="hasProfile.set(false)"
           />
           <ng-template #customerInitials>
             <span class="avatar-initials">
-              {{ orderData.customer.name.charAt(0).toUpperCase() }}{{ orderData.customer.name.split(' ')[1]?.charAt(0).toUpperCase() || '' }}
+              {{ getCustomerInitials() }}
             </span>
           </ng-template>
         </div>
         <div class="customer-info__details">
-          <h3>{{ orderData.customer.name }}</h3>
-          <p>{{ orderData.customer.email }}</p>
-          <p>Customer ID: {{ orderData.customer.customer_id }}</p>
-          <p *ngIf="orderData.customer.is_student" class="student-badge">Student</p>
+          <h3>{{ orderData.customer.name || 'Unknown Customer' }}</h3>
+          <p>{{ orderData.customer.email || 'No email' }}</p>
+          <p>Customer ID: {{ orderData.customer.customer_id || 'Unknown' }}</p>
+          <p *ngIf="orderData.customer.is_student" class="student-badge">
+            Student
+          </p>
         </div>
       </div>
 
@@ -192,58 +232,72 @@
       <div class="customer-info__section">
         <h4>Phone Number</h4>
         <p>
-          <a href="tel:{{ orderData.customer.phone }}" class="phone-link">
+          <a 
+            *ngIf="orderData.customer.phone; else noPhone"
+            [href]="'tel:' + orderData.customer.phone" 
+            class="phone-link"
+          >
             {{ orderData.customer.phone }}
           </a>
+          <ng-template #noPhone>
+            <span>No phone number</span>
+          </ng-template>
         </p>
       </div>
 
       <!-- 🔸 Location -->
       <div class="customer-info__section">
         <h4>Location</h4>
-        <p>{{ orderData.customer.location }}</p>
+        <p>{{ orderData.customer.location || 'Unknown location' }}</p>
       </div>
 
       <!-- 🔸 Delivery Address -->
       <div class="customer-info__section">
         <h4>Deliver To</h4>
-        <p>{{ orderData.customer.location }}</p>
-        <p>Coordinates: {{ orderData.dropoff_location.lat }}, {{ orderData.dropoff_location.lng }}</p>
+        <p>{{ orderData.customer.location || 'Unknown location' }}</p>
+        <p *ngIf="orderData?.dropoff_location">
+          Coordinates: {{ orderData.dropoff_location.lat }},
+          {{ orderData.dropoff_location.lng }}
+        </p>
       </div>
 
       <!-- 🔸 Delivery Guy Info -->
-      <div class="customer-info__delivery-guy" *ngIf="orderData.rider">
+      <div class="customer-info__delivery-guy" *ngIf="orderData?.rider">
         <h4>Delivery Guy</h4>
         <div class="customer-info__delivery-guy-profile">
           <div class="customer-info__delivery-guy-avatar">
-            <img 
+            <img
               *ngIf="orderData.rider.profile_image_url; else riderInitials"
-              [src]="orderData.rider.profile_image_url" 
-              [alt]="orderData.rider.full_name + ' profile image'"
+              [src]="orderData.rider.profile_image_url"
+              [alt]="(orderData.rider.full_name || 'Rider') + ' profile image'"
             />
             <ng-template #riderInitials>
               <span class="avatar-initials">
-                {{ orderData.rider.full_name.charAt(0).toUpperCase() }}{{ orderData.rider.full_name.split(' ')[1]?.charAt(0).toUpperCase() || '' }}
+                {{ getRiderInitials() }}
               </span>
             </ng-template>
           </div>
           <div class="customer-info__delivery-guy-details">
-            <h4>{{ orderData.rider.full_name }}</h4>
-            <p>{{ orderData.rider.phone }}</p>
-            <p>Code: {{ orderData.rider.rider_code }}</p>
-            <p class="rider-status" [ngClass]="orderData.rider.is_active ? 'active' : 'inactive'">
-              {{ orderData.rider.is_active ? 'Active' : 'Inactive' }}
+            <h4>{{ orderData.rider.full_name || 'Unknown Rider' }}</h4>
+            <p>{{ orderData.rider.phone || 'No phone' }}</p>
+            <p>Code: {{ orderData.rider.rider_code || 'Unknown' }}</p>
+            <p
+              class="rider-status"
+              [ngClass]="orderData.rider.is_active ? 'active' : 'inactive'"
+            >
+              {{ orderData.rider.is_active ? "Active" : "Inactive" }}
             </p>
           </div>
           <div class="customer-info__delivery-guy-actions">
-            <button 
+            <button
               class="customer-info__delivery-guy-btn"
               (click)="onCallRider()"
               title="Call rider"
+              [disabled]="!orderData.rider.phone"
             >
               📞
             </button>
-            <button 
+            <button
               class="customer-info__delivery-guy-btn"
               (click)="onMessageRider()"
               title="Message rider"

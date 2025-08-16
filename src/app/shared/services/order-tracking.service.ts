@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http'; // 🔹 Added HttpHeaders
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, filter } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { enviroment } from '../../../environments/environment';
 import { Order } from '../../interfaces/order.interface';
@@ -14,7 +14,8 @@ import { Order } from '../../interfaces/order.interface';
 })
 export class OrderTrackingService {
   private socket$?: WebSocketSubject<any>;
-  private orderUpdates$ = new Subject<Order>();
+  private orderUpdates$ = new BehaviorSubject<Order | null>(null);
+
   private connectionStatus$ = new BehaviorSubject<boolean>(false);
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
@@ -124,7 +125,9 @@ export class OrderTrackingService {
   }
 
   getUpdates(): Observable<Order> {
-    return this.orderUpdates$.asObservable();
+    return this.orderUpdates$
+      .asObservable()
+      .pipe(filter((data): data is Order => data !== null));
   }
 
   getConnectionStatus(): Observable<boolean> {

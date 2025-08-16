@@ -64,6 +64,12 @@ export interface Order {
   items?: OrderItem[]; // Items might be included in some responses
 }
 
+// WebSocket message interface
+export interface WebSocketMessage {
+  action: string;
+  order: Order;
+}
+
 @Component({
   selector: 'app-order-tracking',
   templateUrl: './order-tracking.component.html',
@@ -73,7 +79,7 @@ export interface Order {
 export class OrderTrackingComponent implements OnInit, OnDestroy {
   @Input() orderId!: string;
   @Input() restaurantId!: string;
-  
+
   hasProfile = signal<boolean>(true);
   orderData?: Order;
   private subscription?: Subscription;
@@ -84,7 +90,7 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
     { key: 'Accepted', label: 'Accepted', icon: '✓' },
     { key: 'Being prepared', label: 'Being prepared', icon: '✓' },
     { key: 'On the way', label: 'On the way', icon: '✓' },
-    { key: 'Delivered', label: 'Delivered', icon: '✓' }
+    { key: 'Delivered', label: 'Delivered', icon: '✓' },
   ];
 
   constructor(private trackingService: OrderTrackingService) {}
@@ -99,12 +105,48 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
 
     // Connect to WebSocket for real-time updates
     this.trackingService.connect(this.orderId);
-    
+
     // Subscribe to order updates
     this.subscription = this.trackingService.getUpdates().subscribe({
-      next: (data: Order) => {
+      next: (data: WebSocketMessage | Order) => {
         console.log('✅ Order update received:', data);
-        this.orderData = data;
+        console.log('🔍 Data structure:', JSON.stringify(data, null, 2));
+        
+        // Handle WebSocket message format vs direct order format
+        let orderData: Order;
+        if ('action' in data && 'order' in data) {
+          // WebSocket message format
+          orderData = (data as WebSocketMessage).order;
+          console.log('📦 Extracted order data from WebSocket message');
+        } else {
+          // Direct order format
+          orderData = data as Order;
+          console.log('📦 Using direct order data');
+        }
+        
+        // Fix profile_image_url if it's null but profile_image exists
+        if (orderData.rider && orderData.rider.profile_image && !orderData.rider.profile_image_url) {
+          // Assuming your backend base URL pattern
+          const baseUrl = 'http://bistropulse-backend.onrender.com';
+          orderData.rider.profile_image_url = baseUrl + orderData.rider.profile_image;
+        }
+        
+        // Merge with existing data to prevent field clearing, but prioritize new data
+        if (this.orderData) {
+          this.orderData = { 
+            ...this.orderData, 
+            ...orderData,
+            // Ensure nested objects are properly merged
+            customer: { ...this.orderData.customer, ...orderData.customer },
+            rider: { ...this.orderData.rider, ...orderData.rider },
+            pickup_location: { ...this.orderData.pickup_location, ...orderData.pickup_location },
+            dropoff_location: { ...this.orderData.dropoff_location, ...orderData.dropoff_location },
+            current_location: { ...this.orderData.current_location, ...orderData.current_location }
+          };
+        } else {
+          this.orderData = orderData;
+        }
+        
         this.updateProfileStatus();
       },
       error: (err) => {
@@ -126,7 +168,11 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   private async loadOrderDetails(): Promise<void> {
     try {
       // You'll need to implement this method in your service
-      const orderData = await this.trackingService.getOrderDetails(this.restaurantId, this.orderId);
+      const orderData = await this.trackingService.getOrderDetails(
+        this.restaurantId,
+        this.orderId
+      );
+      console.log('🔍 Initial order data:', JSON.stringify(orderData, null, 2));
       this.orderData = orderData;
       this.updateProfileStatus();
     } catch (error) {
@@ -134,17 +180,9 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateProfileStatus(): void {
-    if (this.orderData?.customer?.photo_url || this.orderData?.rider?.profile_image_url) {
-      this.hasProfile.set(true);
-    } else {
-      this.hasProfile.set(false);
-    }
-  }
-
   // Helper methods for template
   getStatusIndex(status: string): number {
-    return this.statusTimeline.findIndex(s => s.key === status);
+    return this.statusTimeline.findIndex((s) => s.key === status);
   }
 
   isStatusActive(statusIndex: number): boolean {
@@ -156,38 +194,115 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   getFormattedDate(dateString?: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      month: 'short', 
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   }
 
+  getStatusClass(): string {
+    if (!this.orderData?.status) {
+      return 'status-badge--unknown';
+    }
+    return (
+      'status-badge--' + this.orderData.status.toLowerCase().replace(' ', '-')
+    );
+  }
+
+  getCustomerInitials(): string {
+    const name = this.orderData?.customer?.name;
+    if (!name) return '??';
+
+    const parts = name.split(' ');
+    const first = parts[0]?.charAt(0).toUpperCase() || '';
+    const last = parts[1]?.charAt(0).toUpperCase() || '';
+    return first + last;
+  }
+
+  getRiderInitials(): string {
+    const name = this.orderData?.rider?.full_name;
+    if (!name) return '??';
+
+    const parts = name.split(' ');
+    const first = parts[0]?.charAt(0).toUpperCase() || '';
+    const last = parts[1]?.charAt(0).toUpperCase() || '';
+    return first + last;
+  }
+
+  // Safe parseFloat helper method
+  private safeParseFloat(value: string | undefined | null): number {
+    if (value === null || value === undefined || value === '') return 0;
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
+  // Debug helper to check data structure
+  private debugOrderData(): void {
+    if (this.orderData) {
+      console.log('🔍 Current orderData structure:');
+      console.log('- order_id:', this.orderData.order_id);
+      console.log('- status:', this.orderData.status);
+      console.log('- customer:', this.orderData.customer);
+      console.log('- rider:', this.orderData.rider);
+      console.log('- items:', this.orderData.items);
+      console.log('- fees:', {
+        delivery_fee: this.orderData.delivery_fee,
+        platform_fee: this.orderData.platform_fee,
+        tax: this.orderData.tax
+      });
+    }
+  }
+
+  // Fee calculation helper methods
+  getDeliveryFee(): number {
+    return this.safeParseFloat(this.orderData?.delivery_fee);
+  }
+
+  getPlatformFee(): number {
+    return this.safeParseFloat(this.orderData?.platform_fee);
+  }
+
+  getTax(): number {
+    return this.safeParseFloat(this.orderData?.tax);
+  }
+
+  // Update existing methods to handle undefined values safely
   getSubtotal(): number {
     if (!this.orderData?.items) return 0;
     return this.orderData.items.reduce((sum, item) => {
-      return sum + (parseFloat(item.unit_price) * item.quantity);
+      const unitPrice = this.safeParseFloat(item?.unit_price);
+      const quantity = item?.quantity || 0;
+      return sum + unitPrice * quantity;
     }, 0);
   }
 
   getGrandTotal(): number {
     if (!this.orderData) return 0;
     const subtotal = this.getSubtotal();
-    const deliveryFee = parseFloat(this.orderData.delivery_fee || '0');
-    const platformFee = parseFloat(this.orderData.platform_fee || '0');
-    const tax = parseFloat(this.orderData.tax || '0');
+    const deliveryFee = this.getDeliveryFee();
+    const platformFee = this.getPlatformFee();
+    const tax = this.getTax();
     return subtotal + deliveryFee + platformFee + tax;
   }
 
-  // Template helper methods for parsing
-  parseFloat(value: string): number {
-    return parseFloat(value);
+  getItemTotal(item: OrderItem | null | undefined): number {
+    if (!item) return 0;
+    const unitPrice = this.safeParseFloat(item.unit_price);
+    const quantity = item.quantity || 0;
+    return unitPrice * quantity;
   }
 
-  getItemTotal(item: OrderItem): number {
-    return parseFloat(item.unit_price) * item.quantity;
+  // Update the updateProfileStatus method
+  private updateProfileStatus(): void {
+    const hasCustomerPhoto = Boolean(this.orderData?.customer?.photo_url);
+    const hasRiderPhoto = Boolean(this.orderData?.rider?.profile_image_url);
+    this.hasProfile.set(hasCustomerPhoto || hasRiderPhoto);
+    
+    // Debug the current state
+    this.debugOrderData();
   }
 
   // Action methods
@@ -209,12 +324,16 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   onCallCustomer(): void {
     if (this.orderData?.customer?.phone) {
       window.open(`tel:${this.orderData.customer.phone}`);
+    } else {
+      console.log('No customer phone number available');
     }
   }
 
   onCallRider(): void {
     if (this.orderData?.rider?.phone) {
       window.open(`tel:${this.orderData.rider.phone}`);
+    } else {
+      console.log('No rider phone number available');
     }
   }
 

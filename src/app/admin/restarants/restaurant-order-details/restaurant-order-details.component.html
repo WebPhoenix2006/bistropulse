@@ -1,4 +1,4 @@
-<div class="restaurant-order-details">
+<div class="restaurant-order-details" *ngIf="orderData">
   <div class="row">
     <!-- Left Section - Order Details -->
     <div class="col-lg-7 col-md-7 col-sm-12">
@@ -6,12 +6,16 @@
         <!-- Order Header -->
         <div class="order-header">
           <div class="order-info">
-            <h4>Order Id #12009</h4>
+            <h4>Order Id #{{ orderData?.order_id || "Unknown" }}</h4>
             <div class="order-meta">
               <span class="order-status">
-                <span class="status-badge orange-badge">On the way</span>
+                <span class="status-badge" [ngClass]="getStatusClass()">
+                  {{ orderData?.status || "Unknown" }}
+                </span>
               </span>
-              <span class="order-date">Sat, Nov 28 • 7:30:35 PM</span>
+              <span class="order-date">{{
+                getFormattedDate(orderData?.date_ordered)
+              }}</span>
             </div>
           </div>
           <div class="order-actions">
@@ -40,7 +44,7 @@
                 <div class="rider__container__search">
                   <input
                     type="text"
-                    placeholder="Search"
+                    placeholder="Search riders..."
                     [(ngModel)]="searchTerm"
                   />
                 </div>
@@ -101,116 +105,74 @@
           <div class="delivery-content">
             <div class="delivery-info">
               <span class="delivery-label">Order</span>
-              <span class="delivery-time"
-                >Estimated delivery time 12:45:10</span
-              >
+              <span class="delivery-time">
+                Status: {{ orderData?.status || "Unknown" }}
+              </span>
             </div>
-            <div class="delivery-map-container">emmpy map placeholder</div>
+
+            <!-- Order Tracking Map -->
+            <div class="delivery-map-container">
+              <p *ngIf="orderData?.pickup_location">
+                📍 Pickup: {{ orderData.pickup_location.lat }},
+                {{ orderData.pickup_location.lng }}
+              </p>
+              <p *ngIf="orderData?.dropoff_location">
+                🏠 Dropoff: {{ orderData.dropoff_location.lat }},
+                {{ orderData.dropoff_location.lng }}
+              </p>
+              <p *ngIf="orderData?.current_location">
+                🚚 Current: {{ orderData.current_location.lat }},
+                {{ orderData.current_location.lng }}
+              </p>
+              <p *ngIf="!orderData?.pickup_location">
+                Map integration coming soon...
+              </p>
+            </div>
 
             <!-- Delivery Progress -->
             <div class="delivery-progress">
-              <div class="progress-item completed">
+              <div
+                class="progress-item"
+                *ngFor="let person of getDeliveryProgress(); let i = index"
+                [ngClass]="{
+                  completed: isDeliveryPersonCompleted(person),
+                  active: isDeliveryPersonActive(person)
+                }"
+              >
                 <div class="progress-icon">
-                  <i class="fa-solid fa-check"></i>
+                  <i
+                    class="fa-solid fa-check"
+                    *ngIf="isDeliveryPersonCompleted(person)"
+                  ></i>
+                  <div
+                    class="active-indicator"
+                    *ngIf="isDeliveryPersonActive(person)"
+                  ></div>
+                  <i
+                    class="fa-solid fa-star"
+                    *ngIf="isDeliveryPersonPending(person)"
+                  ></i>
                 </div>
                 <div class="progress-details">
-                  <div class="deliveryman-info">
+                  <div
+                    class="deliveryman-info"
+                    *ngIf="person.name !== 'Started' && person.avatar"
+                  >
                     <img
-                      src="assets/images/profile-img.png"
-                      alt="Ronald Richards"
+                      [src]="person.avatar || 'assets/images/profile-img.png'"
+                      [alt]="person.name"
                       class="deliveryman-avatar"
                     />
                     <div class="deliveryman-details">
-                      <h6>Ronald Richards</h6>
-                      <span>+8801905007770</span>
+                      <h6>{{ person.name }}</h6>
+                      <span *ngIf="person.phone">{{ person.phone }}</span>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="progress-item completed">
-                <div class="progress-icon">
-                  <i class="fa-solid fa-check"></i>
-                </div>
-                <div class="progress-details">
-                  <div class="deliveryman-info">
-                    <img
-                      src="assets/images/profile-img.png"
-                      alt="Chelsie Johnson"
-                      class="deliveryman-avatar"
-                    />
-                    <div class="deliveryman-details">
-                      <h6>Chelsie Johnson</h6>
-                      <span>+8801905007770</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="progress-item completed">
-                <div class="progress-icon">
-                  <i class="fa-solid fa-check"></i>
-                </div>
-                <div class="progress-details">
-                  <div class="deliveryman-info">
-                    <img
-                      src="assets/images/profile-img.png"
-                      alt="Darrell Steward"
-                      class="deliveryman-avatar"
-                    />
-                    <div class="deliveryman-details">
-                      <h6>Darrell Steward</h6>
-                      <span>+8801905007770</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="progress-item active">
-                <div class="progress-icon">
-                  <div class="active-indicator"></div>
-                </div>
-                <div class="progress-details">
-                  <div class="status-info">
-                    <span class="status-text">Started</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="progress-item">
-                <div class="progress-icon">
-                  <i class="fa-solid fa-star"></i>
-                </div>
-                <div class="progress-details">
-                  <div class="deliveryman-info">
-                    <img
-                      src="assets/images/profile-img.png"
-                      alt="Albert Flores"
-                      class="deliveryman-avatar"
-                    />
-                    <div class="deliveryman-details">
-                      <h6>Albert Flores</h6>
-                      <span>+8801905007770</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="progress-item">
-                <div class="progress-icon">
-                  <i class="fa-solid fa-star"></i>
-                </div>
-                <div class="progress-details">
-                  <div class="deliveryman-info">
-                    <img
-                      src="assets/images/profile-img.png"
-                      alt="Wade Warren"
-                      class="deliveryman-avatar"
-                    />
-                    <div class="deliveryman-details">
-                      <h6>Wade Warren</h6>
-                      <span>+8801905007770</span>
-                    </div>
+                  <div
+                    class="status-info"
+                    *ngIf="person.name === 'Started' || !person.avatar"
+                  >
+                    <span class="status-text">{{ person.name }}</span>
                   </div>
                 </div>
               </div>
@@ -219,44 +181,22 @@
         </div>
 
         <!-- Order Items -->
-        <div class="order-items-section">
-          <div class="order-item">
+        <div
+          class="order-items-section"
+          *ngIf="orderData?.items && orderData.items.length > 0"
+        >
+          <div class="order-item" *ngFor="let item of orderData.items">
             <div class="item-icon">
               <i class="fa-solid fa-utensils"></i>
             </div>
             <div class="item-details">
-              <span class="item-name">Star</span>
-              <span class="item-price">&#8358; 80.00</span>
-            </div>
-          </div>
-
-          <div class="order-item">
-            <div class="item-icon">
-              <i class="fa-solid fa-utensils"></i>
-            </div>
-            <div class="item-details">
-              <span class="item-name">Star</span>
-              <span class="item-price">&#8358; 80.00</span>
-            </div>
-          </div>
-
-          <div class="order-item">
-            <div class="item-icon">
-              <i class="fa-solid fa-utensils"></i>
-            </div>
-            <div class="item-details">
-              <span class="item-name">Star</span>
-              <span class="item-price">&#8358; 80.00</span>
-            </div>
-          </div>
-
-          <div class="order-item">
-            <div class="item-icon">
-              <i class="fa-solid fa-utensils"></i>
-            </div>
-            <div class="item-details">
-              <span class="item-name">Star</span>
-              <span class="item-price">&#8358; 30.00</span>
+              <span class="item-name">
+                {{ item?.food_name || "Food Item #" + item?.food }}
+                <small *ngIf="item?.quantity > 1"> x{{ item.quantity }}</small>
+              </span>
+              <span class="item-price">{{
+                formatCurrency(getItemTotal(item))
+              }}</span>
             </div>
           </div>
         </div>
@@ -264,28 +204,37 @@
         <!-- Order Summary -->
         <div class="order-summary">
           <div class="summary-item">
-            <span>Co-pay</span>
-            <span>Not Applied ></span>
+            <span>Payment Method</span>
+            <span>{{ orderData?.payment_method || "Not specified" }}</span>
           </div>
           <div class="summary-item">
-            <span>Reward Points</span>
-            <span>Not Used ></span>
+            <span>Payment Status</span>
+            <span>{{ orderData?.payment_status || "Unknown" }}</span>
           </div>
-          <div class="summary-item">
+          <div
+            class="summary-item"
+            *ngIf="orderData?.items && orderData.items.length > 0"
+          >
             <span>Subtotal</span>
-            <span>105.00</span>
+            <span>{{ formatCurrency(getSubtotal()) }}</span>
           </div>
           <div class="summary-item">
             <span>Delivery Fee</span>
-            <span>2.40 +0.00</span>
+            <span>{{ formatCurrency(getDeliveryFee()) }}</span>
           </div>
           <div class="summary-item">
-            <span>Fees & Estimated Tax Co</span>
-            <span>1.00</span>
+            <span>Platform Fee</span>
+            <span>{{ formatCurrency(getPlatformFee()) }}</span>
+          </div>
+          <div class="summary-item">
+            <span>Tax</span>
+            <span>{{ formatCurrency(getTax()) }}</span>
           </div>
           <div class="summary-item total">
             <span><strong>Total</strong></span>
-            <span><strong>&#8358; 185.00</strong></span>
+            <span
+              ><strong>{{ formatCurrency(getGrandTotal()) }}</strong></span
+            >
           </div>
         </div>
       </div>
@@ -293,7 +242,7 @@
 
     <!-- Right Section - Customer Info -->
     <div class="col-lg-5 col-md-5 col-sm-12">
-      <div class="customer-section">
+      <div class="customer-section" *ngIf="orderData?.customer">
         <div class="section-header">
           <h5><i class="fa-solid fa-user"></i> Customer info</h5>
         </div>
@@ -302,16 +251,30 @@
         <div class="customer-profile">
           <div class="customer-avatar">
             <img
-              src="assets/images/profile-img.png"
-              alt="Chelsie Johnson"
+              *ngIf="orderData.customer.photo_url; else customerInitials"
+              [src]="orderData.customer.photo_url"
+              [src]="orderData.customer.photo_url"
+              [alt]="(orderData.customer.name || 'Customer') + ' profile image'"
               class="img-fluid"
+              (error)="hasProfile.set(false)"
             />
+            <ng-template #customerInitials>
+              <div class="avatar-initials">
+                {{ getCustomerInitials() }}
+              </div>
+            </ng-template>
           </div>
           <div class="customer-details">
-            <h4>Chelsie Johnson</h4>
-            <p>chelsiejohnson&#64;hotmail.com</p>
+            <h4>{{ orderData.customer.name || "Unknown Customer" }}</h4>
+            <p>{{ orderData.customer.email || "No email provided" }}</p>
             <div class="customer-stats">
-              <span class="total-orders">Total Order 39</span>
+              <span class="total-orders"
+                >Customer ID:
+                {{ orderData.customer.customer_id || "Unknown" }}</span
+              >
+              <span class="student-badge" *ngIf="orderData.customer.is_student"
+                >Student</span
+              >
             </div>
           </div>
         </div>
@@ -320,7 +283,19 @@
         <div class="contact-info">
           <div class="contact-item">
             <span class="contact-label">Phone Number</span>
-            <span class="contact-value">+88 01600-009770</span>
+            <span class="contact-value">
+              <a
+                *ngIf="orderData.customer.phone; else noPhone"
+                [href]="'tel:' + orderData.customer.phone"
+                class="phone-link"
+                (click)="onCallCustomer()"
+              >
+                {{ orderData.customer.phone }}
+              </a>
+              <ng-template #noPhone>
+                <span>No phone number</span>
+              </ng-template>
+            </span>
           </div>
         </div>
 
@@ -328,7 +303,9 @@
         <div class="location-info">
           <div class="location-item">
             <span class="location-label">Location</span>
-            <span class="location-value">Asafoatse Nettey Road, Accra...</span>
+            <span class="location-value">{{
+              orderData.customer.location || "Unknown location"
+            }}</span>
           </div>
         </div>
 
@@ -342,39 +319,172 @@
             <div class="address-details">
               <div class="address-type">Current Address</div>
               <div class="address-text">
-                12 C, Asafoatse Nettey Road, Accra, Ghana
+                {{ orderData.customer.location || "Address not provided" }}
               </div>
             </div>
           </div>
-          <div class="address-item">
+          <div class="address-item" *ngIf="orderData?.dropoff_location">
             <div class="address-icon">
-              <i class="fa-solid fa-plus"></i>
+              <i class="fa-solid fa-map-pin"></i>
             </div>
             <div class="address-details">
-              <div class="address-type">Add Direction</div>
-              <div class="address-text">Rest House on floor etc...</div>
+              <div class="address-type">Coordinates</div>
+              <div class="address-text">
+                {{ orderData.dropoff_location.lat }},
+                {{ orderData.dropoff_location.lng }}
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Delivery Guy -->
-        <div class="delivery-guy">
+        <div class="delivery-guy" *ngIf="orderData?.rider">
           <h6>Delivery Guy</h6>
           <div class="delivery-guy-info">
             <div class="delivery-guy-avatar">
               <img
-                src="assets/images/profile-img.png"
-                alt="John Doe"
+                *ngIf="orderData.rider.profile_image_url; else riderInitials"
+                [src]="orderData.rider.profile_image_url"
+                [alt]="
+                  (orderData.rider.full_name || 'Rider') + ' profile image'
+                "
                 class="img-fluid"
               />
+              <ng-template #riderInitials>
+                <div class="avatar-initials">
+                  {{ getRiderInitials() }}
+                </div>
+              </ng-template>
             </div>
             <div class="delivery-guy-details">
-              <h6>John Doe</h6>
-              <span>+880 1234 5678</span>
+              <h6>{{ orderData.rider.full_name || "Unknown Rider" }}</h6>
+              <span *ngIf="orderData.rider.phone">{{
+                orderData.rider.phone
+              }}</span>
+              <span *ngIf="orderData.rider.rider_code"
+                >Code: {{ orderData.rider.rider_code }}</span
+              >
+              <p
+                class="rider-status"
+                [ngClass]="orderData.rider.is_active ? 'active' : 'inactive'"
+              >
+                {{ orderData.rider.is_active ? "Active" : "Inactive" }}
+              </p>
             </div>
+            <div class="delivery-guy-actions">
+              <button
+                class="delivery-guy-btn"
+                (click)="onCallRider()"
+                title="Call rider"
+                [disabled]="!orderData.rider.phone"
+              >
+                <i class="fa-solid fa-phone"></i>
+              </button>
+              <button
+                class="delivery-guy-btn"
+                (click)="onMessageRider()"
+                title="Message rider"
+              >
+                <i class="fa-solid fa-message"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Delivery Guy Assigned -->
+        <div class="delivery-guy" *ngIf="!orderData?.rider">
+          <h6>Delivery Guy</h6>
+          <div class="no-delivery-guy">
+            <p>No delivery person assigned yet</p>
+            <button
+              class="btn btn-primary btn-sm"
+              (click)="toggleDeliverymanDropdown()"
+            >
+              Assign Rider
+            </button>
+          </div>
+        </div>
+
+        <!-- Real-time Connection Status -->
+        <div class="connection-status" *ngIf="orderData">
+          <div class="status-indicator">
+            <div class="connection-dot"></div>
+            <span class="status-text">Real-time updates active</span>
+          </div>
+        </div>
+
+        <!-- Order Actions -->
+        <div class="order-actions-panel">
+          <h6>Quick Actions</h6>
+          <div class="action-buttons">
+            <!-- Status Update Buttons -->
+            <button
+              class="btn btn-sm btn-outline-primary"
+              (click)="onStatusChange('Accepted')"
+              [disabled]="isLoading() || orderData?.status === 'Accepted'"
+            >
+              Accept Order
+            </button>
+            <button
+              class="btn btn-sm btn-outline-warning"
+              (click)="onStatusChange('Being prepared')"
+              [disabled]="isLoading() || orderData?.status === 'Being prepared'"
+            >
+              Start Preparing
+            </button>
+            <button
+              class="btn btn-sm btn-outline-info"
+              (click)="onStatusChange('On the way')"
+              [disabled]="isLoading() || orderData?.status === 'On the way'"
+            >
+              Out for Delivery
+            </button>
+            <button
+              class="btn btn-sm btn-outline-success"
+              (click)="onStatusChange('Delivered')"
+              [disabled]="isLoading() || orderData?.status === 'Delivered'"
+            >
+              Mark as Delivered
+            </button>
+          </div>
+
+          <!-- Payment Status Actions -->
+          <div
+            class="payment-actions"
+            *ngIf="orderData?.payment_status !== 'Paid'"
+          >
+            <h6>Payment Actions</h6>
+            <button
+              class="btn btn-sm btn-success"
+              (click)="onPaymentStatusChange('Paid')"
+              [disabled]="isLoading()"
+            >
+              Mark as Paid
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div class="loading-container" *ngIf="!orderData && isLoading()">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading order details...</p>
+  </div>
+</div>
+
+<!-- Error state -->
+<div class="error-container" *ngIf="!orderData && !isLoading()">
+  <div class="error-message">
+    <i class="fa-solid fa-exclamation-triangle"></i>
+    <h3>Order Not Found</h3>
+    <p>
+      The requested order could not be loaded. Please check the order ID and try
+      again.
+    </p>
+    <button class="btn btn-primary" (click)="loadOrderDetails()">Retry</button>
   </div>
 </div>

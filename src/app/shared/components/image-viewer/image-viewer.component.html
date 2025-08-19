@@ -3,6 +3,9 @@
     <img
       [src]="imageUrl || '/assets/images/no-profile-image.jpg'"
       alt="Image preview"
+      #imgEl
+      (load)="onImageLoad()"
+      [attr.crossorigin]="'anonymous'"
       (wheel)="onWheel($event)"
       (mousedown)="onMouseDown($event)"
       (mousemove)="onMouseMove($event)"

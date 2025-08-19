@@ -1,4 +1,12 @@
-import { Component, Input, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostListener,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
+import { FastAverageColor } from 'fast-average-color';
 
 @Component({
   selector: 'app-image-viewer',
@@ -6,8 +14,54 @@ import { Component, Input, HostListener } from '@angular/core';
   templateUrl: './image-viewer.component.html',
   styleUrls: ['./image-viewer.component.scss'],
 })
-export class ImageViewerComponent {
+export class ImageViewerComponent implements OnDestroy {
   @Input() imageUrl: string | null = null;
+
+  @ViewChild('imgEl') imgEl!: ElementRef<HTMLImageElement>;
+
+  // destroy to free memory
+  ngOnDestroy(): void {
+    this.fac.destroy();
+  }
+
+  // *** initialize the fast average color ***
+  private fac = new FastAverageColor();
+  dominant: {
+    rgba: string;
+    hex: string;
+    isDark: boolean;
+    isLight: boolean;
+    value: [number, number, number, number];
+  } | null = null;
+
+  // method for waiting till image loads
+  async onImageLoad() {
+    // return if there isn't and image
+    if (!this.imageUrl || !this.imgEl.nativeElement) {
+      this.dominant = null;
+      return;
+    }
+
+    // use fac to get the dominant color
+    try {
+      const result = await this.fac.getColorAsync(this.imgEl.nativeElement);
+
+      this.dominant = {
+        rgba: result.rgba,
+        hex: result.hex,
+        isDark: result.isDark,
+        isLight: result.isLight,
+        value: result.value, // [r,g,b,a]
+      };
+      const [r, g, b] = result?.value;
+      const solidColor = this.dominant.hex;
+      const transparent = `rgba(${r}, ${g}, ${b}, 0.5)`;
+      document.documentElement.style.setProperty('--image-color', transparent);
+      document.documentElement.style.setProperty('--solid-color', solidColor);
+    } catch (err) {
+      this.dominant = null;
+    }
+  }
 
   isOpen = false;
   scale = 1;

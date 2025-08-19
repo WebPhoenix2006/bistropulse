@@ -13,7 +13,7 @@ import { CustomersOverviewComponent } from './customer-related/customers-overvie
 import { FoodListComponent } from './food-related/food-list/food-menu.component';
 import { AddFoodComponent } from './food-related/add-food/add-food.component';
 import { OrdersComponent } from './order-related/orders/orders.component';
-import { AddOrderComponent } from './order-related/add-order/add-order.component';
+import { AddOrderComponent } from './restarants/add-order/add-order.component';
 import { ChatComponent } from './chat/chat.component';
 import { OtpManagementComponent } from './otp-management/otp-management.component';
 import { FoodDetailsComponent } from './food-related/food-details/food-details.component';
@@ -138,6 +138,15 @@ const routes: Routes = [
                   breadcrumb: 'Order-Details',
                 },
               },
+              // **** === add order page *** ====
+              {
+                path: 'add-order',
+                component: AddOrderComponent,
+                data: {
+                  animation: 'AddOrder',
+                  breadcrumb: 'Add-order',
+                },
+              },
               // {
               //   path: 'orders/:orderId/order-tracking',
               //   component: OrderTrackingComponent,
@@ -158,11 +167,11 @@ const routes: Routes = [
                     data: { animation: 'RidersList', breadcrumb: 'List' },
                   },
                   {
-            path: 'add-rider',
-            component: AddRiderComponent,
-            data: { animation: 'AddRider', breadcrumb: 'Add Rider' },
-          },
-          {
+                    path: 'add-rider',
+                    component: AddRiderComponent,
+                    data: { animation: 'AddRider', breadcrumb: 'Add Rider' },
+                  },
+                  {
                     path: 'shifts',
                     component: RiderShiftsComponent,
                     data: { animation: 'RiderShifts', breadcrumb: 'Shifts' },

@@ -626,3 +626,410 @@
     }
   }
 }
+
+// Additional styles to add to your existing restaurant-order-details.component.scss
+
+// Avatar initials styles
+.avatar-initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4f46e5;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 50%;
+}
+
+// Student badge
+.student-badge {
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+// Phone link styling
+.phone-link {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Rider status styles
+.rider-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 4px;
+
+  &.active {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  &.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+// Delivery guy action buttons
+.delivery-guy-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+
+  .delivery-guy-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f9fafb;
+      color: #4f46e5;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// No delivery guy assigned state
+.no-delivery-guy {
+  text-align: center;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+
+  p {
+    color: #666;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+}
+
+// Real-time connection status
+.connection-status {
+  margin-top: 20px;
+  padding: 12px;
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 6px;
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .connection-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    .status-text {
+      font-size: 12px;
+      color: #0369a1;
+      font-weight: 500;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// Order actions panel
+.order-actions-panel {
+  margin-top: 25px;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  h6 {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+
+    .btn {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .payment-actions {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 15px;
+
+    h6 {
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #666;
+    }
+  }
+}
+
+// Enhanced loading state
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .loading-spinner {
+    text-align: center;
+    color: #666;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #4f46e5;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    p {
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Error state
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .error-message {
+    text-align: center;
+    max-width: 400px;
+    padding: 40px 20px;
+
+    i {
+      font-size: 48px;
+      color: #f59e0b;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: #374151;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+
+    p {
+      color: #6b7280;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  }
+}
+
+// Enhanced status badges with more colors
+.status-badge {
+  &.orange-badge {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  &.red-badge {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  &.lightblue-badge {
+    background: #dbeafe;
+    color: #2563eb;
+  }
+
+  &.green-badge {
+    background: #d1fae5;
+    color: #059669;
+  }
+
+  &.darkblue-badge {
+    background: #e0e7ff;
+    color: #5b21b6;
+  }
+
+  &.gray-badge {
+    background: #f3f4f6;
+    color: #6b7280;
+  }
+}
+
+// Highlight styles for search
+.highlight {
+  background-color: #fef3c7;
+  color: #d97706;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+// Enhanced delivery map container
+.delivery-map-container {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border: 2px dashed #d1d5db;
+  margin-bottom: 20px;
+  font-family: "Courier New", monospace;
+
+  p {
+    margin: 4px 0;
+    font-size: 12px;
+    color: #374151;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+  }
+}
+
+// Improved delivery progress styling
+.delivery-progress {
+  .progress-item {
+    padding: 12px 0;
+
+    &:not(:last-child)::after {
+      height: 30px;
+    }
+
+    .progress-icon {
+      position: relative;
+      z-index: 2;
+    }
+
+    .deliveryman-avatar {
+      border: 2px solid #e5e7eb;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    &.active {
+      .deliveryman-info {
+        .deliveryman-details {
+          h6 {
+            color: #f59e0b;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive improvements
+@media (max-width: 768px) {
+  .order-actions-panel {
+    .action-buttons {
+      .btn {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+    }
+  }
+
+  .delivery-guy-actions {
+    flex-direction: column;
+    gap: 4px;
+
+    .delivery-guy-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+    }
+  }
+
+  .connection-status {
+    .status-indicator {
+      .status-text {
+        font-size: 11px;
+      }
+    }
+  }
+}

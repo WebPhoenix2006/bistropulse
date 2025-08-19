@@ -43,6 +43,7 @@ import { BranchRidersComponent } from './franchise-branch-rider-related/branch-r
 import { AddBranchRiderComponent } from './franchise-branch-rider-related/add-branch-rider/add-branch-rider.component';
 import { RestaurantOrderListComponent } from './restarants/restaurant-order-list/restaurant-order-list.component';
 import { RestaurantOrderDetailsComponent } from './restarants/restaurant-order-details/restaurant-order-details.component';
+import { AddOrderComponent } from './restarants/add-order/add-order.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { RestaurantOrderDetailsComponent } from './restarants/restaurant-order-d
     RestaurantOrderListComponent,
     RestaurantOrderDetailsComponent,
     CustomersOverviewComponent,
+    AddOrderComponent,
   ],
 
   imports: [

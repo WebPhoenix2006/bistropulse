@@ -16,6 +16,7 @@ import { SlowNetworkService } from '../../../shared/services/slow-nerwork.servic
 import { RestaurantContextService } from '../../../shared/services/restaurant-context.service';
 import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { map, of, timer, combineLatest, takeUntil } from 'rxjs';
+import { ExportService } from '../../../shared/utils/export.utils';
 // ... your imports remain the same
 
 @Component({
@@ -32,6 +33,18 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
   isLoading = signal<boolean>(false);
   source1$ = of('A', 'B', 'C');
   source2$ = timer(1000, 1000).pipe(map((v) => `value ${v}`));
+  exportService = new ExportService();
+
+  // options for exporting to csv drop down
+   exportOptions = [
+      {
+        label: 'To .csv',
+        value: 'csv',
+        icon: 'location',
+        iconPosition: 'left',
+        action: () => this.exportService.exportToCsv('restaurantsTable', 'restaurants.csv')
+      },
+    ];
 
   // combineStuff(): void {
   //   combineLatest([this.source1$, this.source2$])

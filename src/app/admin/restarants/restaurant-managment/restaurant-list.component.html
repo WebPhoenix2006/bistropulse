@@ -86,11 +86,14 @@
         buttonText="Add Resturant"
         routerLink="/admin/restaurants/add-restaurant"
       />
-      <select class="btn rounder-2">
-        <option value="1" selected disabled>
-          <i class="ri-file-download-line"></i> <span>Export</span>
-        </option>
-      </select>
+      <div class="py-1 btn" (click)="$event.stopPropagation()">
+        <app-dropdown
+          [ellipsis]="false"
+          placeholder="Export"
+          [options]="exportOptions"
+        ></app-dropdown>
+        <span><i class="fa fa-caret-down"></i></span>
+      </div>
     </div>
   </header>
   <!-- ======= BEGINNING OF SECOND HALF OF THE PAGE ====== -->
@@ -102,6 +105,7 @@
         <ng-container *ngIf="filteredRestaurants as filtered">
           <div class="table-container">
             <table
+            id="restaurantsTable"
               class="table mt-3 table-hover"
               *ngIf="filteredRestaurants.length > 0; else noSearchResults"
             >

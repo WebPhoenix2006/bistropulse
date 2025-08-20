@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, HostListener, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ExportService } from '../../../shared/utils/export.utils';
 
 interface Order {
   id: string;
@@ -27,6 +28,18 @@ interface Order {
 })
 export class RestaurantOrderListComponent implements OnInit {
   restaurantId = signal<string>('');
+
+  exportService = new ExportService();
+
+   exportOptions = [
+    {
+      label: 'To .csv',
+      value: 'csv',
+      icon: 'location',
+      iconPosition: 'left',
+      action: () => this.exportService.exportToCsv('ordersTable', 'orders.csv')
+    },
+  ];
   // Modal and UI management
   toggleFilterModal(): void {
     this.isFilterModalOpen.set(!this.isFilterModalOpen());

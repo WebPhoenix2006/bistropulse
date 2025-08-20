@@ -12,9 +12,10 @@ export class DropdownComponent {
     value: any;
     icon: string;
     iconPosition: string;
+    action?: () => void;
   }[] = [];
   @Input() ellipsis: boolean = false;
-  @Input() placeholder: string = 'Select option';
+  @Input() placeholder: string = '';
 
   @Output() selected = new EventEmitter<any>();
 
@@ -26,6 +27,9 @@ export class DropdownComponent {
 
   selectOption(option: any) {
     this.selected.emit(option);
+    if(option.action && typeof option.action === 'function'){
+      option.action();
+    }
     this.isOpen = false;
   }
 

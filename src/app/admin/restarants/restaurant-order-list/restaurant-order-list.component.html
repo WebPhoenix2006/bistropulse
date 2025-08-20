@@ -94,13 +94,15 @@
         [routerLink]="`/admin/restaurants/${restaurantId()}/add-order`"
       />
 
-      <select class="btn rounder-2">
-        <option value="1" selected disabled>
-          <i class="ri-file-download-line"></i> <span>Export</span>
-        </option>
-        <option value="csv">Export as CSV</option>
-        <option value="pdf">Export as PDF</option>
-      </select>
+      <div class="py-1  btn" (click)="$event.stopPropagation()">
+        <app-dropdown
+          [ellipsis]="false"
+          placeholder="Export"
+          [options]="exportOptions"
+          
+        ></app-dropdown>
+        <span><i class="fa fa-caret-down"></i></span>
+      </div>
     </div>
   </header>
 
@@ -138,6 +140,7 @@
       <ng-container *ngIf="orders.length > 0; else emptyList">
         <div class="table-container">
           <table
+          id="ordersTable"
             class="table mt-3 table-hover"
             *ngIf="filteredOrders.length > 0; else noSearchResults"
           >

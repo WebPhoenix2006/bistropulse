@@ -20,11 +20,20 @@
         routerLink="/admin/customers/add-customer"
       ></app-button>
 
-      <select class="btn rounder-2">
+      <!-- <select class="btn rounder-2">
         <option value="1" selected disabled>
           <i class="ri-file-download-line"></i> <span>Export</span>
         </option>
-      </select>
+      </select> -->
+      <div class="py-1  btn" (click)="$event.stopPropagation()">
+        <app-dropdown
+          [ellipsis]="false"
+          placeholder="Export"
+          [options]="exportOptions"
+          
+        ></app-dropdown>
+        <span><i class="fa fa-caret-down"></i></span>
+      </div>
     </div>
   </header>
 
@@ -35,6 +44,7 @@
     >
       <ng-container *ngIf="filteredCustomers as filtered">
         <table
+        id="customersTable"
           class="table table-hover"
           *ngIf="filtered.length > 0; else noSearchResults"
         >

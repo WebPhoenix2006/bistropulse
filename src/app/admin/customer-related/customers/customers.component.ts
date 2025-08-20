@@ -4,6 +4,7 @@ import { FilterByPipe } from '../../../shared/pipes/filter.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { SlowNetworkService } from '../../../shared/services/slow-nerwork.service';
 import { ImageViewerService } from '../../../shared/services/image-viewer.service';
+import { ExportService } from '../../../shared/utils/export.utils';
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
@@ -23,6 +24,17 @@ export class CustomersComponent implements OnInit {
   totalCount = 0;
 
   openDropdownIndex: number | null = null;
+  exportService =  new ExportService();
+
+  exportOptions = [
+    {
+      label: 'To .csv',
+      value: 'csv',
+      icon: 'location',
+      iconPosition: 'left',
+      action: () => this.exportService.exportToCsv('customersTable', 'customers.csv')
+    },
+  ];
 
   constructor(
     private toastr: ToastrService,
@@ -71,7 +83,7 @@ export class CustomersComponent implements OnInit {
       },
     });
   }
-
+  
   applyFilters(): void {
     const filtered = this.filterPipe.transform(
       this.customers,
